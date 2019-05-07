@@ -26,7 +26,7 @@ public class GeneradorClases extends javax.swing.JFrame {
     public GeneradorClases() {
         initComponents();
         root = new DefaultMutableTreeNode("Nodes", true);
-        getList(root, new File("src/middlewareWeaver/nodes/"));
+        getList(root, new File("src/middlewareVision/nodes/"));
         treeModel = new DefaultTreeModel(root);
         jTree1.setModel(treeModel);
         readConfigs();
@@ -165,8 +165,8 @@ public class GeneradorClases extends javax.swing.JFrame {
     boolean exist = false;
 
     public void readConfigs() {
-        AreaNames = FileUtils.readFile(new File("src/middlewareWeaver/config/AreaNames.java"));
-        InitClass = FileUtils.readFile(new File("src/middlewareWeaver/config/Init.java"));
+        AreaNames = FileUtils.readFile(new File("src/middlewareVision/config/AreaNames.java"));
+        InitClass = FileUtils.readFile(new File("src/middlewareVision/config/Init.java"));
     }
 
     public boolean bigNodeExist(String path, String name) {
@@ -224,8 +224,8 @@ public class GeneradorClases extends javax.swing.JFrame {
                     Import = "import " + path.replace("src\\", "").replace("\\", ".") + "." + Name;
                     FileUtils.write(path + "/" + Name, BigNodeClass, "java");
 
-                    FileUtils.write("src/middlewareWeaver/config/AreaNames", AreaNames.replace("//@addNodes", addAreas + "\n\t" + "//@addNodes"), "java");
-                    FileUtils.write("src/middlewareWeaver/config/Init", InitClass.replace("//@addNodes", initNodes + "\n\t\t" + "//@addNodes")
+                    FileUtils.write("src/middlewareVision/config/AreaNames", AreaNames.replace("//@addNodes", addAreas + "\n\t" + "//@addNodes"), "java");
+                    FileUtils.write("src/middlewareVision/config/Init", InitClass.replace("//@addNodes", initNodes + "\n\t\t" + "//@addNodes")
                             .replace("//@import", Import + ";\n" + "//@import"), "java");
                     readConfigs();
                 }
@@ -233,7 +233,7 @@ public class GeneradorClases extends javax.swing.JFrame {
                 if (exist) {
                     existingClass = existingClass.replaceAll("//@AddProcess", addProcess + "\n\t//@AddProcess");
                     existingClass = existingClass.replaceAll("//@SendProcess", sendProcess + "\n\t//@SendProcess");
-                    FileUtils.write("src/middlewareWeaver/config/AreaNames", AreaNames.replace("//@addNodes", addAreas + "\n\t" + "//@addNodes"), "java");
+                    FileUtils.write("src/middlewareVision/config/AreaNames", AreaNames.replace("//@addNodes", addAreas + "\n\t" + "//@addNodes"), "java");
                     FileUtils.write(path + "/" + Name, existingClass, "java");
                     readConfigs();
                 }
