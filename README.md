@@ -9,8 +9,8 @@ La primera versión pública de la implementación del sistema sensorial visual
  * Tiene un generador de nodos y procesos automático en el paquete _src/generator_
  * El primer frame es una ventana que representa el ojo, las imagenes cambian si se le da click, las imagenes que aparecerán ahí están en la carpeta _images_
  
- ##Requerimientos
+ ## Requerimientos
  
- *Tener en el proyecto el archivo opencv_java330.dll para Windows, si se usa otro sistema, reemplazar por el archivo equivalente al DLL
- *Tener el jar _kmiddle.jar_
- *El proyecto fué hecho en NetBeans, así que es mas facil que funcione si tienen NetBeans
+ * Tener en el proyecto el archivo opencv_java330.dll para Windows, si se usa otro sistema, reemplazar por el archivo equivalente al DLL
+ * Tener el jar _kmiddle.jar_
+ * El proyecto fué hecho en NetBeans, así que es mas facil que funcione si tienen NetBeans
