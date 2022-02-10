@@ -21,8 +21,8 @@ public class layoutManager {
      * set manually the locations of the windows
      */
     public static void initLayout(){
-        int h=4;
-        int v=10;
+        int h=Config.h;
+        int v=Config.v;
         for(int i=0;i<v;i++){
             for(int j=0;j<h;j++){
                 points.put(i*h+j, getPoint(i,j));

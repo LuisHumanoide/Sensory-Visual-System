@@ -9,16 +9,24 @@ package utils;
  *
  * @author Humanoide
  */
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import matrix.matrix;
+import middlewareVision.nodes.Visual.V4.V4Memory;
 
 /**
  *
@@ -39,7 +47,7 @@ public class FileUtils {
                 = new BufferedReader(new InputStreamReader(in))) {
             String line = null;
             while ((line = reader.readLine()) != null) {
-                //System.out.println(line);
+                //Msg.print(line);
                 content = content + line + "\n";
             }
             in.close();
@@ -47,6 +55,16 @@ public class FileUtils {
             System.err.println(x);
         }
         return content;
+    }
+
+    /**
+     * Delete a file
+     *
+     * @param path
+     */
+    public static void deleteFile(String path) {
+        File file = new File(path);
+        file.delete();
     }
 
     /**
@@ -75,6 +93,148 @@ public class FileUtils {
                 e2.printStackTrace();
             }
         }
+    }
+
+    public static void createDir(String path) {
+        File directory = new File(path);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+    }
+
+    /**
+     * save all activations needed
+     *
+     * @param path
+     */
+    public static void saveActivations(String path) {
+        //saveV1activations(path);
+        //saveV2activations(path);
+        try {
+            //saveV4activations(path);
+        } catch (Exception ex) {
+        }
+        saveV1Images(path);
+        saveV2images(path);
+        try {
+            saveV4images(path);
+        } catch (Exception ex) {
+        }
+        //saveContours(path);
+        saveContoursImages(path);
+
+    }
+
+    public static void saveV1Images(String path) {
+        String newDir = path + "\\\\V1ImageMaps";
+        createDir(newDir);
+        for (int i = 0; i < V4Memory.getV1Map().length; i++) {
+            BufferedImage bi = Convertor.Mat2Img(V4Memory.getV1Map()[i]);
+            File outputfile = new File(newDir + "\\" + i + ".jpg");
+            try {
+                ImageIO.write(bi, "jpg", outputfile);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+        }
+    }
+
+    public static void saveV1activations(String path) {
+        String newDir = path + "\\\\V1maps";
+        createDir(newDir);
+        for (int i = 0; i < V4Memory.getV1Map().length; i++) {
+            matrix saveMat = Convertor.MatToMatrix(V4Memory.getV1Map()[i]);
+            WriteObjectToFile(saveMat, newDir + "\\\\" + i);
+        }
+    }
+
+    public static void saveV2activations(String path) {
+        String newDir = path + "\\\\V2maps";
+        createDir(newDir);
+        for (int i = 0; i < V4Memory.getV2Map().length; i++) {
+            for (int j = 0; j < V4Memory.getV2Map()[0].length; j++) {
+                matrix saveMat = Convertor.MatToMatrix(V4Memory.getV2Map()[i][j]);
+                WriteObjectToFile(saveMat, newDir + "\\\\" + i + "_" + j);
+            }
+        }
+    }
+
+    public static void saveV2images(String path) {
+        String newDir = path + "\\\\V2ImageMaps";
+        createDir(newDir);
+        for (int i = 0; i < V4Memory.getV2Map().length; i++) {
+            for (int j = 0; j < V4Memory.getV2Map()[0].length; j++) {
+                BufferedImage bi = Convertor.Mat2Img(V4Memory.getV2Map()[i][j]);
+                File outputfile = new File(newDir + "\\" + i + "_" + j + ".jpg");
+                try {
+                    ImageIO.write(bi, "jpg", outputfile);
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                }
+            }
+        }
+    }
+
+    public static void saveContours(String path) {
+        String newDir = path + "\\\\Contours";
+        createDir(newDir);
+        matrix saveMat = Convertor.MatToMatrix(V4Memory.getContours1());
+        WriteObjectToFile(saveMat, newDir + "\\\\" + 1);
+        matrix saveMat2 = Convertor.MatToMatrix(V4Memory.getContours2());
+        WriteObjectToFile(saveMat2, newDir + "\\\\" + 2);
+    }
+
+    public static void saveContoursImages(String path) {
+        String newDir = path + "\\\\ContoursImages";
+        createDir(newDir);
+        BufferedImage bi1 = Convertor.Mat2Img2(V4Memory.getContours1());
+        File outputfile1 = new File(newDir + "\\" + "1.jpg");
+        BufferedImage bi2 = Convertor.Mat2Img2(V4Memory.getContours2());
+        File outputfile2 = new File(newDir + "\\" + "2.jpg");
+
+        try {
+            ImageIO.write(bi1, "jpg", outputfile1);
+            ImageIO.write(bi2, "jpg", outputfile2);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public static void WriteObjectToFile(Object serObj, String filepath) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filepath + ".amap");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(serObj);
+            objectOut.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void saveV4activations(String path) {
+        String newDir = path + "\\\\V4maps";
+        createDir(newDir);
+        for (int i = 0; i < V4Memory.getActivationArray().length; i++) {
+            matrix saveMat = Convertor.MatToMatrix(V4Memory.getActivationArray()[i]);
+            WriteObjectToFile(saveMat, newDir + "\\\\" + i);
+        }
+    }
+
+    public static void saveV4images(String path) {
+        String newDir = path + "\\\\V4ImageMaps";
+        createDir(newDir);
+        for (int i = 0; i < V4Memory.getActivationArray().length; i++) {
+            BufferedImage bi = Convertor.Mat2Img(V4Memory.getActivationArray()[i]);
+            File outputfile = new File(newDir + "\\" + i + ".jpg");
+            try {
+                ImageIO.write(bi, "jpg", outputfile);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+        }
+
     }
 
     /**
@@ -110,6 +270,30 @@ public class FileUtils {
         }
 
         return arr_res;
+    }
+
+    /**
+     * Read file object
+     *
+     * @param filepath
+     * @return
+     */
+    public static Object ReadObjectFromFile(String filepath) {
+
+        try {
+
+            FileInputStream fileIn = new FileInputStream(filepath);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            Object obj = objectIn.readObject();
+
+            objectIn.close();
+            return obj;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
 }

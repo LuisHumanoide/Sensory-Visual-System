@@ -5,9 +5,12 @@
  */
 package utils;
 
+import VisualMemory.Cell;
 import java.util.ArrayList;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 
 /**
  *
@@ -38,6 +41,24 @@ public class MatrixUtils {
         }
         return result;
     }
+    
+    public static Mat maxSum(Cell... mat) {
+
+        Mat result = Mat.zeros(mat[0].mat.height(), mat[0].mat.width(), CvType.CV_32FC1);
+        ArrayList<Double> values = new ArrayList<>();
+
+        for (int x = 0; x < mat[0].mat.height(); x++) {
+            for (int y = 0; y < mat[0].mat.width(); y++) {
+                for (int i = 0; i < mat.length; i++) {
+                    values.add(mat[i].mat.get(x, y)[0]);
+                }
+                result.put(x, y, maximun(values));
+                values.clear();
+
+            }
+        }
+        return result;
+    }
 
     /**
      * find the maximun double in a list
@@ -53,6 +74,16 @@ public class MatrixUtils {
             }
         }
         return max;
+    }
+    
+    public static Mat multiply(Mat [] mat){
+        Mat mul=Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
+        Core.add(mul, new Scalar(1), mul);
+        Core.multiply(mul, mat[0], mul);
+        for(int i=1;i<mat.length;i++){
+            Core.multiply(mul, mat[i], mul);
+        }
+        return mul;
     }
 
 }

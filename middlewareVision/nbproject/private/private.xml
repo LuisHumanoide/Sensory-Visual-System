@@ -3,23 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/utils/layoutManager.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/matrix/MatrixSerialization.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/spike/Location.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/V1.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/matrix/matrix.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/utils/Convertor.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/V1SimpleCells.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/utils/Config.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/config/Init.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/V1ComplexCells.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/V2Proccess.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/V1Layers.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/V1DoubleOpponent.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/config/AreaNames.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/RetinaProccess.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/middlewareWeaver/nodes/Visual/LGNProcess.java</file>
-            <file>file:/C:/Users/carlos/Documents/leopardo-fusiforme/JAVA/middlewareWeaver/src/spike/Modalities.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/gui/VisualizerFrame.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/VisualMemory/InitCellMemory.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/utils/Config.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/VisualMemory/V1Bank.java</file>
         </group>
     </open-files>
 </project-private>
