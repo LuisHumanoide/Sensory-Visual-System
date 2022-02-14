@@ -5,7 +5,7 @@
  */
 package MiniPrograms;
 
-import generator.VisPanel;
+import gui.components.VisPanel;
 import generator.visualizerTest;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -152,6 +152,7 @@ public class RFgenerator extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("Generar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,9 +160,8 @@ public class RFgenerator extends javax.swing.JFrame {
             }
         });
 
-        jSlider1.setMaximum(20);
+        jSlider1.setMaximum(200);
         jSlider1.setMinimum(1);
-        jSlider1.setValue(4);
         jSlider1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jSlider1MouseDragged(evt);
@@ -436,7 +436,7 @@ public class RFgenerator extends javax.swing.JFrame {
 
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged
         // TODO add your handling code here:
-        RFlist.scale = jSlider1.getValue();
+        RFlist.scale = (jSlider1.getValue()*0.1);
         visPanel1.repaint();
     }//GEN-LAST:event_jSlider1MouseDragged
 

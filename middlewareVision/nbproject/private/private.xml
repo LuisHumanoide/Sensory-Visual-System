@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/gui/VisualizerFrame.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/VisualMemory/InitCellMemory.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/utils/Config.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/cuayollotol/middlewareVision/src/VisualMemory/V1Bank.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/MotionV1Speeds.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/RFgenerator.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/RFGeneratorNew.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/gui/components/VisPanel.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/gui/components/ListPanel.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/GaborList.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/RFlist.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/RF.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/GaussianVisualizer.java</file>
         </group>
     </open-files>
 </project-private>

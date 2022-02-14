@@ -7,6 +7,8 @@ package MiniPrograms;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import utils.FileUtils;
 
 /**
@@ -16,10 +18,14 @@ import utils.FileUtils;
 public class RFlist {
 
     public static ArrayList<RF> RFs;
-    public static ArrayList<RF> RFs2;
+    public static ArrayList<String> combinations;
     public static ArrayList<String> folders;
-    public static int scale = 4;
+    public static double scale = 4;
     public static String folder;
+
+    public RFlist() {
+
+    }
 
     static String[] initFolderList() {
         String folders[] = FileUtils.readFile(new File("FolderRFS.txt")).split("\\n");
@@ -28,12 +34,24 @@ public class RFlist {
 
     static void initList() {
         RFs = new ArrayList<RF>();
-        RFs2 = new ArrayList<RF>();
+        combinations = new ArrayList<String>();
     }
 
     static void addElement(double rx, double ry, int px, int py, double intensity, double angle, String combination, int size) {
         RF rf = new RF(rx, ry, px, py, intensity, angle, combination, size);
+        addCombination(combination);
         RFs.add(rf);
+    }
+
+    static void addCombination(String combination) {
+        if (!combinations.contains(combination)) {
+            combinations.add(combination);
+        }
+    }
+
+    static void addElement(Object rx, Object ry, Object px, Object py, Object intensity, Object angle, Object combination, Object size) {
+        addElement(Double.parseDouble("" + rx), Double.parseDouble("" + ry), Integer.parseInt("" + px), Integer.parseInt("" + py),
+                Double.parseDouble("" + intensity), Double.parseDouble("" + angle), "" + combination, Integer.parseInt("" + size));
     }
 
     /*
@@ -41,9 +59,9 @@ public class RFlist {
         RF rf = new RF(rx * scale, ry * scale, (int) (px * scale), (int) (py * scale), intensity, angle, combination, (int) (size * scale));
         RFs2.add(rf);
     }*/
-
     static void clearList() {
         RFs.clear();
+        combinations.clear();
     }
 
     static void saveList(String name) {
@@ -79,7 +97,13 @@ public class RFlist {
                     values[6],
                     Integer.parseInt(values[7]));
             RFs.add(rf);
+            addCombination(values[6]);
         }
+    }
+
+    public void addElements(Object... objects) {
+        RFlist.addElement(Double.parseDouble((String) objects[0]), Double.parseDouble((String) objects[1]), Integer.parseInt((String) objects[2]), Integer.parseInt((String) objects[3]),
+                Double.parseDouble((String) objects[4]), Double.parseDouble((String) objects[5]), (String) objects[6], Integer.parseInt((String) objects[7]));
     }
 
 }

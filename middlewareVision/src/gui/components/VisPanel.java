@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package generator;
+package gui.components;
 
 import MiniPrograms.RFlist;
 import MiniPrograms.RF;
@@ -65,12 +65,13 @@ public class VisPanel extends javax.swing.JPanel {
 
         if (RFlist.RFs.size() > 0) {
             int sizeRect = RFlist.RFs.get(0).size;
-            g.drawRect(tx(0,sizeRect* RFlist.scale), ty(0,sizeRect* RFlist.scale), sizeRect* RFlist.scale, sizeRect* RFlist.scale);
+            g.drawRect(tx(0, (int) (sizeRect * RFlist.scale)), ty(0, (int) (sizeRect * RFlist.scale)), (int) (sizeRect * RFlist.scale), (int) (sizeRect * RFlist.scale));
             for (RF rf : RFlist.RFs) {
-                int comb=Integer.parseInt(rf.combination);
-                g.setColor(new Color(255 - (31) * (comb/ 10), (31) * (comb / 10), (31) * (comb % 10)));
-                dString(g, "" + rf.combination, rf.px * RFlist.scale, rf.py * RFlist.scale);
-                Oval(g, rf.px * RFlist.scale, rf.py * RFlist.scale, (int) rf.rx * RFlist.scale, (int) rf.ry * RFlist.scale, rf.angle);
+                int comb = RFlist.combinations.indexOf(rf.combination)+1;
+                double frac=(double)comb/RFlist.combinations.size();
+                g.setColor(new Color((int)(frac*255),(int)(1.5*frac*255)%255,255-(int)(frac*255)));
+                dString(g, "" + rf.combination, (int) (rf.px * RFlist.scale), (int) (rf.py * RFlist.scale));
+                Oval(g, (int) (rf.px * RFlist.scale), (int) (rf.py * RFlist.scale), (int) (rf.rx * RFlist.scale), (int) (rf.ry * RFlist.scale), rf.angle);
             }
         }
     }

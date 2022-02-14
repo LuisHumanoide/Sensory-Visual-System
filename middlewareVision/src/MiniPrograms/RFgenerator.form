@@ -202,6 +202,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Generar"/>
           </Properties>
           <Events>
@@ -210,9 +213,8 @@
         </Component>
         <Component class="javax.swing.JSlider" name="jSlider1">
           <Properties>
-            <Property name="maximum" type="int" value="20"/>
+            <Property name="maximum" type="int" value="200"/>
             <Property name="minimum" type="int" value="1"/>
-            <Property name="value" type="int" value="4"/>
           </Properties>
           <Events>
             <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jSlider1MouseDragged"/>

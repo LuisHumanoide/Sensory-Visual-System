@@ -11,6 +11,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
+import java.lang.reflect.ParameterizedType;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import utils.FileUtils;
 
@@ -28,16 +31,25 @@ public class ListPanel extends javax.swing.JPanel {
     }
 
     int numCols;
+    int[] columnsToDuplicate;
+    Object[] defaultVector;
+    int[] copyOrder;
+    int[] pasteOrder;
+    boolean hasColumnsForDuplicating = false;
+    public boolean removeAction = true;
     String clipboardString;
     String filePath;
     String extension;
 
+    //boolean disableSave=false;
     DefaultTableModel model;
 
     public void setColumnNames(String... names) {
         model = new DefaultTableModel(null, names);
-        jTable1.setModel(model);
+        table.setModel(model);
         numCols = names.length;
+        defaultVectorNull();
+        defaultCopyPasteOrder();
     }
 
     public void setClipboardString(String string) {
@@ -47,6 +59,57 @@ public class ListPanel extends javax.swing.JPanel {
     public void setFilePath(String path, String extension) {
         filePath = path;
         this.extension = extension;
+    }
+
+    public void setColumnToDuplicate(int... values) {
+        columnsToDuplicate = values;
+        hasColumnsForDuplicating = true;
+    }
+
+    public void setDefaultVector(Object[] vector) {
+        defaultVector = vector;
+    }
+
+    public void disableSaveButton() {
+        saveButton.setVisible(false);
+    }
+
+    public void defaultVectorNull() {
+        defaultVector = new Object[table.getColumnCount()];
+        for (int i = 0; i < defaultVector.length; i++) {
+            defaultVector[i] = null;
+        }
+    }
+
+    public void defaultCopyPasteOrder() {
+        copyOrder = new int[table.getColumnCount()];
+        pasteOrder = new int[table.getColumnCount()];
+        for (int i = 0; i < copyOrder.length; i++) {
+            copyOrder[i] = i;
+            pasteOrder[i] = i;
+        }
+    }
+
+    public void setCopyOrder(int... indexes) {
+        if (indexes.length == copyOrder.length) {
+            copyOrder = indexes;
+        }
+    }
+
+    public void setPasteOrder(int... indexes) {
+        if (indexes.length == pasteOrder.length) {
+            pasteOrder = indexes;
+        }
+    }
+
+    void duplicateColumnValues() {
+        if (hasColumnsForDuplicating) {
+            for (int i = 0; i < table.getRowCount(); i++) {
+                for (int c : columnsToDuplicate) {
+                    table.setValueAt(table.getValueAt(0, c), i, c);
+                }
+            }
+        }
     }
 
     /**
@@ -65,11 +128,11 @@ public class ListPanel extends javax.swing.JPanel {
         copyButton = new javax.swing.JButton();
         pasteButton = new javax.swing.JButton();
         upButton = new javax.swing.JButton();
-        dowbButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        downButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -136,32 +199,32 @@ public class ListPanel extends javax.swing.JPanel {
         });
         jPanel1.add(upButton);
 
-        dowbButton.setBackground(new java.awt.Color(60, 88, 94));
-        dowbButton.setForeground(new java.awt.Color(255, 255, 255));
-        dowbButton.setText("Down");
-        dowbButton.addActionListener(new java.awt.event.ActionListener() {
+        downButton.setBackground(new java.awt.Color(60, 88, 94));
+        downButton.setForeground(new java.awt.Color(255, 255, 255));
+        downButton.setText("Down");
+        downButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dowbButtonActionPerformed(evt);
+                downButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(dowbButton);
+        jPanel1.add(downButton);
 
-        jButton1.setBackground(new java.awt.Color(45, 69, 86));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setBackground(new java.awt.Color(45, 69, 86));
+        saveButton.setForeground(new java.awt.Color(255, 255, 255));
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
+        jPanel1.add(saveButton);
 
         add(jPanel1);
 
         jPanel2.setBackground(new java.awt.Color(75, 75, 75));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setBackground(new java.awt.Color(255, 255, 255));
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -169,7 +232,12 @@ public class ListPanel extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        table.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tableKeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -187,123 +255,128 @@ public class ListPanel extends javax.swing.JPanel {
     boolean empty = true;
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        Object[] rowData = new Object[numCols];
-        int row = jTable1.getSelectedRow();
-        for (int i = 0; i < numCols; i++) {
-            rowData[i] = null;
-        }
-        model.addRow(rowData);
+        int row = table.getSelectedRow();
+        model.addRow(defaultVector);
         if (!empty && row != -1) {
             //int row = jTable1.getSelectedRow();
-            int s = jTable1.getRowCount();
+            int s = table.getRowCount();
             for (int i = s - 1; i > row; i--) {
-                for (int j = 0; j < jTable1.getColumnCount(); j++) {
-                    jTable1.setValueAt(jTable1.getValueAt(i - 1, j), i, j);
+                for (int j = 0; j < table.getColumnCount(); j++) {
+                    table.setValueAt(table.getValueAt(i - 1, j), i, j);
                 }
             }
 
-            for (int j = 0; j < jTable1.getColumnCount(); j++) {
-                jTable1.setValueAt(rowData[j], row + 1, j);
+            for (int j = 0; j < table.getColumnCount(); j++) {
+                table.setValueAt(defaultVector[j], row + 1, j);
             }
-            jTable1.setRowSelectionInterval(jTable1.getSelectedRow() + 1, jTable1.getSelectedRow() + 1);
+            table.setRowSelectionInterval(table.getSelectedRow() + 1, table.getSelectedRow() + 1);
         } else {
-            jTable1.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(0, 0);
         }
         empty = false;
+        duplicateColumnValues();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        // TODO add your handling code here:        
-        int row = jTable1.getSelectedRow();
+        // TODO add your handling code here:   
+        if (removeAction) {
+            removeRow();
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
+
+    public void removeRow() {
+        int row = table.getSelectedRow();
         if (row != -1 && !empty) {
-            model.removeRow(jTable1.getSelectedRow());
-            if (jTable1.getRowCount() <= 0) {
+            model.removeRow(table.getSelectedRow());
+            if (table.getRowCount() <= 0) {
                 empty = true;
             } else {
                 if (row > 0) {
-                    jTable1.setRowSelectionInterval(row - 1, row - 1);
+                    table.setRowSelectionInterval(row - 1, row - 1);
                 } else {
-                    jTable1.setRowSelectionInterval(0, 0);
+                    table.setRowSelectionInterval(0, 0);
                 }
             }
 
         }
-    }//GEN-LAST:event_removeButtonActionPerformed
-
+        duplicateColumnValues();
+    }
     private void duplicateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_duplicateButtonActionPerformed
         // TODO add your handling code here:
         Object[] rowData = new Object[numCols];
         for (int i = 0; i < numCols; i++) {
             rowData[i] = null;
         }
-        model.addRow(rowData);
-        int row = jTable1.getSelectedRow();
-        int s = jTable1.getRowCount();
+        model.addRow(defaultVector);
+        int row = table.getSelectedRow();
+        int s = table.getRowCount();
         for (int i = s - 1; i > row; i--) {
-            for (int j = 0; j < jTable1.getColumnCount(); j++) {
-                jTable1.setValueAt(jTable1.getValueAt(i - 1, j), i, j);
+            for (int j = 0; j < table.getColumnCount(); j++) {
+                table.setValueAt(table.getValueAt(i - 1, j), i, j);
             }
         }
 
-        for (int j = 0; j < jTable1.getColumnCount(); j++) {
-            jTable1.setValueAt(jTable1.getValueAt(row, j), row + 1, j);
+        for (int j = 0; j < table.getColumnCount(); j++) {
+            table.setValueAt(table.getValueAt(row, j), row + 1, j);
         }
-        jTable1.setRowSelectionInterval(jTable1.getSelectedRow() + 1, jTable1.getSelectedRow() + 1);
+        table.setRowSelectionInterval(table.getSelectedRow() + 1, table.getSelectedRow() + 1);
+        duplicateColumnValues();
     }//GEN-LAST:event_duplicateButtonActionPerformed
 
     private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
         // TODO add your handling code here:
-        int row = jTable1.getSelectedRow();
+        int row = table.getSelectedRow();
         Object[] rowData = new Object[numCols];
         for (int i = 0; i < numCols; i++) {
-            rowData[i] = jTable1.getValueAt(row, i);
+            rowData[i] = table.getValueAt(row, i);
         }
-        if (row < jTable1.getRowCount()) {
-            if (jTable1.getSelectedRow() > 0) {
-                for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                    jTable1.setValueAt(jTable1.getValueAt(row - 1, i), row, i);
+        if (row < table.getRowCount()) {
+            if (table.getSelectedRow() > 0) {
+                for (int i = 0; i < table.getColumnCount(); i++) {
+                    table.setValueAt(table.getValueAt(row - 1, i), row, i);
                 }
-                for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                    jTable1.setValueAt(rowData[i], row - 1, i);
+                for (int i = 0; i < table.getColumnCount(); i++) {
+                    table.setValueAt(rowData[i], row - 1, i);
                 }
 
-                jTable1.setRowSelectionInterval(row - 1, row - 1);
+                table.setRowSelectionInterval(row - 1, row - 1);
             }
         }
     }//GEN-LAST:event_upButtonActionPerformed
 
-    private void dowbButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dowbButtonActionPerformed
+    private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
         // TODO add your handling code here:
-        int row = jTable1.getSelectedRow();
+        int row = table.getSelectedRow();
         Object[] rowData = new Object[numCols];
         for (int i = 0; i < numCols; i++) {
-            rowData[i] = jTable1.getValueAt(row, i);
+            rowData[i] = table.getValueAt(row, i);
         }
-        if (row < jTable1.getRowCount() - 1) {
-            for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                jTable1.setValueAt(jTable1.getValueAt(row + 1, i), row, i);
+        if (row < table.getRowCount() - 1) {
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                table.setValueAt(table.getValueAt(row + 1, i), row, i);
             }
-            for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                jTable1.setValueAt(rowData[i], row + 1, i);
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                table.setValueAt(rowData[i], row + 1, i);
             }
-            if (jTable1.getSelectedRow() < jTable1.getRowCount()) {
-                jTable1.setRowSelectionInterval(row + 1, row + 1);
+            if (table.getSelectedRow() < table.getRowCount()) {
+                table.setRowSelectionInterval(row + 1, row + 1);
             }
         }
-    }//GEN-LAST:event_dowbButtonActionPerformed
+    }//GEN-LAST:event_downButtonActionPerformed
 
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
         // TODO add your handling code here:
         copy();
+        duplicateColumnValues();
     }//GEN-LAST:event_copyButtonActionPerformed
 
     public void copy() {
         try {
-            int row = jTable1.getSelectedRow();
+            int row = table.getSelectedRow();
             String cString = clipboardString + " ";
-            for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                cString = cString + jTable1.getValueAt(row, i);
-                if (i < jTable1.getColumnCount() - 1) {
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                cString = cString + table.getValueAt(row, copyOrder[i]);
+                if (i < table.getColumnCount() - 1) {
                     cString = cString + " ";
                 }
             }
@@ -313,9 +386,13 @@ public class ListPanel extends javax.swing.JPanel {
         } catch (Exception ex) {
         }
     }
-    
+
     private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
         // TODO add your handling code here:
+        paste();
+    }//GEN-LAST:event_pasteButtonActionPerformed
+
+    public void paste(){
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
 
@@ -325,36 +402,43 @@ public class ListPanel extends javax.swing.JPanel {
             if (t.isDataFlavorSupported(dataFlavorStringJava)) {
                 String texto = (String) t.getTransferData(dataFlavorStringJava);
                 if (texto.contains(clipboardString)) {
-                    int row = jTable1.getSelectedRow();
+                    int row = table.getSelectedRow();
                     String values[] = texto.split(" ");
-                    for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                        jTable1.setValueAt(values[i + 1], row, i);
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        if (pasteOrder[i] >= 0) {
+                            table.setValueAt(values[pasteOrder[i]+1], row, i);
+                        }
                     }
                 }
             }
         } catch (Exception ex) {
 
         }
-    }//GEN-LAST:event_pasteButtonActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        duplicateColumnValues();
+    }
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
         if (filePath != null && extension != null) {
             save();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void tableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyReleased
+        // TODO add your handling code here:
+        duplicateColumnValues();
+    }//GEN-LAST:event_tableKeyReleased
 
     public void save() {
         String saveString = "";
-        for (int i = 0; i < jTable1.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount(); i++) {
             if (CompleteRow(i)) {
-                for (int j = 0; j < jTable1.getColumnCount(); j++) {
-                    saveString = saveString + jTable1.getValueAt(i, j);
-                    if (j < jTable1.getColumnCount() - 1) {
+                for (int j = 0; j < table.getColumnCount(); j++) {
+                    saveString = saveString + table.getValueAt(i, j);
+                    if (j < table.getColumnCount() - 1) {
                         saveString = saveString + " ";
                     }
                 }
-                if (i < jTable1.getRowCount() - 1) {
+                if (i < table.getRowCount() - 1) {
                     saveString = saveString + "\n";
                 }
             }
@@ -365,6 +449,7 @@ public class ListPanel extends javax.swing.JPanel {
     public void loadFile() {
         File file = new File(filePath + "." + extension);
         if (file.exists()) {
+            removeAllRows();
             String fileContent = FileUtils.readFile(file);
             String lines[] = fileContent.split("\\n");
             if (lines.length > 0) {
@@ -372,26 +457,32 @@ public class ListPanel extends javax.swing.JPanel {
             }
             for (int i = 0; i < lines.length; i++) {
                 Object[] rowData = new Object[numCols];
-                int row = jTable1.getSelectedRow();
+                int row = table.getSelectedRow();
                 for (int k = 0; k < numCols; k++) {
                     rowData[k] = null;
                 }
                 model.addRow(rowData);
             }
-            for (int i = 0; i < jTable1.getRowCount(); i++) {
+            for (int i = 0; i < table.getRowCount(); i++) {
                 String values[] = lines[i].split(" ");
-                for (int j = 0; j < jTable1.getColumnCount(); j++) {
-                    jTable1.setValueAt(values[j], i, j);
+                for (int j = 0; j < table.getColumnCount(); j++) {
+                    table.setValueAt(values[j], i, j);
                 }
             }
-            jTable1.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(0, 0);
+        }
+    }
+
+    public void removeAllRows() {
+        for (int i = table.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
         }
     }
 
     public boolean CompleteRow(int row) {
         boolean band = true;
-        for (int i = 0; i < jTable1.getColumnCount(); i++) {
-            if (jTable1.getValueAt(row, i) == null) {
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            if (table.getValueAt(row, i) == null) {
                 band = false;
                 break;
             }
@@ -402,15 +493,15 @@ public class ListPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton copyButton;
-    private javax.swing.JButton dowbButton;
-    private javax.swing.JButton duplicateButton;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton downButton;
+    public javax.swing.JButton duplicateButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JButton pasteButton;
-    private javax.swing.JButton removeButton;
+    public javax.swing.JButton pasteButton;
+    public javax.swing.JButton removeButton;
+    private javax.swing.JButton saveButton;
+    public javax.swing.JTable table;
     private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables
 }
