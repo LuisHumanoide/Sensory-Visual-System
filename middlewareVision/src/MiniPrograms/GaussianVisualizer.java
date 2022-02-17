@@ -774,6 +774,10 @@ public class GaussianVisualizer extends javax.swing.JFrame {
 
     private void paste1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paste1ActionPerformed
         // TODO add your handling code here:
+        paste1();
+    }//GEN-LAST:event_paste1ActionPerformed
+
+    public void paste1(){
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
 
@@ -794,8 +798,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         }
         visualize();
         convolution();
-    }//GEN-LAST:event_paste1ActionPerformed
-
+    }
     private void copy1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copy1ActionPerformed
         // TODO add your handling code here:
         try {

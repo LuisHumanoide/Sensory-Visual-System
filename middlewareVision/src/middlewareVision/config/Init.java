@@ -19,8 +19,7 @@ import middlewareVision.nodes.Attention.TestAttention;
 
 /*
 https://www.enmimaquinafunciona.com/pregunta/90466/como-clonar-git-repositorio-solo-algunos-directorios
-*/
-
+ */
 public class Init extends Igniter {
 
     private boolean DEBUG = true;
@@ -33,25 +32,28 @@ public class Init extends Igniter {
             Retina.class.getName(),
             LGN.class.getName(),
             V1.class.getName(),
-            V2.class.getName(),         
-            //V4.class.getName(),
-	    //TestAttention.class.getName(),
-		//@addNodes
+            V2.class.getName(), //V4.class.getName(),
+        //TestAttention.class.getName(),
+        //@addNodes
         };
 
         //SimpleLogger.setDebug(DEBUG);
-
         configuration.setLocal(true);
         configuration.setDebug(!DEBUG);
         configuration.setTCP();
         configuration.setEntityID(ENTITY_ID);
+        Init.restart();
+        setAreas(areaNames);
+        run();
+        
+    }
+
+    public static void restart() {
         InitCellMemory.initCellMemory();
         V4Memory.initV1Map();
         //Controls cc=new Controls();
         //cc.setVisible(true);
         Visualizer.initVisualizer(1000);
-        setAreas(areaNames);
-        run();
         SpecialKernels.loadKernels();
     }
 

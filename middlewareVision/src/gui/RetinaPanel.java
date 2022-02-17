@@ -241,8 +241,6 @@ public class RetinaPanel extends javax.swing.JPanel {
         if (!stereo) {
             rp.setImage(image, blackImage);
         }
-        //rp.setImage(image, image2);
-        //repaint();
     }
 
     /**
@@ -488,9 +486,11 @@ public class RetinaPanel extends javax.swing.JPanel {
         JScrollPane scroll = new JScrollPane(jTree1);
         pTree.setBackground(jTree1.getBackground());
         controls = new ControlsPanel();
+        tools=new ToolsJPanel(this);
         tabbed = new JTabbedPane();
         tabbed.add("Folders", scroll);
         tabbed.add("Controls", controls);
+        tabbed.add("Tools",tools);
         this.add(tabbed);
         this.add(Box.createRigidArea(new Dimension(15, 50)));
 
@@ -553,6 +553,7 @@ public class RetinaPanel extends javax.swing.JPanel {
     public boolean play = false;
 
     ControlsPanel controls;
+    ToolsJPanel tools;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;

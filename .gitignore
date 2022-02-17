@@ -1,2 +1,4 @@
 /middlewareVision/dist/
 *.class
+*.log
+middlewareVision/log/

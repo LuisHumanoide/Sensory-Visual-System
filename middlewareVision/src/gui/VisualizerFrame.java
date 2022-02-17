@@ -73,6 +73,12 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
         this.setVisible(true);
     }
 
+    public void restartLabels() {
+        for (int i = 0; i < labels.length; i++) {
+            labels[i].setIcon(null);
+        }
+    }
+
     void loadNimbus() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -138,8 +144,8 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
 
     public void down() {
         //if (labels[maxLabel].getY() >= this.getHeight() - labels[0].getSize().height) {
-            moveV(1);
-       // }
+        moveV(1);
+        // }
     }
 
     public void move(int n) {

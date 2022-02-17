@@ -22,9 +22,13 @@ public class Visualizer {
 
     static VisualizerFrame vis;
     public static HashMap<String, Integer> limits;
+    static boolean opened = false;
 
     public static void initVisualizer(int n) {
-        vis = new VisualizerFrame(n);
+        if (!opened) {
+            vis = new VisualizerFrame(n);
+            opened=true;
+        }
         limits = new HashMap<String, Integer>();
         limits.put("init", 0);
     }
