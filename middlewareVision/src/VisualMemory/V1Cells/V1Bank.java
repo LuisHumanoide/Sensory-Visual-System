@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory;
+package VisualMemory.V1Cells;
 
+import VisualMemory.V1Cells.SimpleCells;
+import VisualMemory.V1Cells.HypercomplexCells;
+import VisualMemory.V1Cells.DoubleOpponentCells;
+import VisualMemory.V1Cells.ComplexCells;
 import MiniPrograms.RF;
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class V1Bank {
     public static ComplexCells[][][] CC;
     public static HypercomplexCells[][][] HCC;
     public static DoubleOpponentCells[][][] DOC;
+    public static MotionCellsV1[][][] MC;
     static String fileName = "RFV1//Gabor//filters.txt";
     static String HCfiles = "RFV1HC//";
 
@@ -48,6 +53,7 @@ public class V1Bank {
         CC = new ComplexCells[dimensions[0]][gaborLines.length][dimensions[2]];
         HCC = new HypercomplexCells[dimensions[0]][gaborLines.length][dimensions[2]];
         DOC = new DoubleOpponentCells[dimensions[0]][dimensions[1]][dimensions[2]];
+        MC= new MotionCellsV1[dimensions[0]][gaborLines.length][dimensions[2]];
 
         for (int i1 = 0; i1 < dimensions[0]; i1++) {
             for (int i2 = 0; i2 < dimensions[1]; i2++) {
@@ -62,7 +68,9 @@ public class V1Bank {
                     SC[i1][i2][i3] = new SimpleCells(Config.gaborOrientations);
                     CC[i1][i2][i3] = new ComplexCells(Config.gaborOrientations);
                     HCC[i1][i2][i3] = new HypercomplexCells(Config.HCfilters, Config.gaborOrientations);
+                    MC[i1][i2][i3] = new MotionCellsV1("speeds.txt");
                     CC[i1][i2][i3].setSimpleCells(SC[i1][i2][i3]);
+                    MC[i1][i2][i3].setPrevious(CC[i1][i2][i3].Cells);
                 }
             }
         }
@@ -164,7 +172,7 @@ public class V1Bank {
             Core.add(compKernel, kn, compKernel);
         }
         return compKernel;
-
     }
+    
 
 }

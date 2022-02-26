@@ -1,8 +1,8 @@
 package middlewareVision.nodes.Visual.V1;
 
-import VisualMemory.V1Bank;
-import static VisualMemory.V1Bank.CC;
-import static VisualMemory.V1Bank.HCC;
+import VisualMemory.V1Cells.V1Bank;
+import static VisualMemory.V1Cells.V1Bank.CC;
+import static VisualMemory.V1Cells.V1Bank.HCC;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;

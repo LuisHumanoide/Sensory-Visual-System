@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory;
+package VisualMemory.V1Cells;
 
+import VisualMemory.Cell;
 import org.opencv.core.Mat;
 import utils.Config;
 import utils.Functions;

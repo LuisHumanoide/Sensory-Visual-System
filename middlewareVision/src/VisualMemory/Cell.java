@@ -22,6 +22,22 @@ public class Cell {
     public int id;
     public Mat filter;
 
+    public Mat getMat() {
+        return mat;
+    }
+
+    public void setMat(Mat mat) {
+        this.mat = mat;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Cell(Mat mat, Cell[] previous, Cell[] next) {
         this.mat = mat;
         this.previous = previous;

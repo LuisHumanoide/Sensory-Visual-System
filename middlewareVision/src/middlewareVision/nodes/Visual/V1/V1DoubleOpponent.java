@@ -1,7 +1,7 @@
 package middlewareVision.nodes.Visual.V1;
 
-import VisualMemory.LGNBank;
-import VisualMemory.V1Bank;
+import VisualMemory.LGNCells.LGNBank;
+import VisualMemory.V1Cells.V1Bank;
 import gui.Visualizer;
 import imgio.RetinalImageIO;
 import imgio.RetinalTextIO;

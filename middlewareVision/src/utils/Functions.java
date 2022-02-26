@@ -89,27 +89,27 @@ public class Functions {
         Mat num = new Mat();
         Mat den = new Mat();
         Mat h = new Mat();
-        
+
         Scalar dl3 = new Scalar((double) 1 / l3);
         Scalar d2l3 = new Scalar((double) 2 / l3);
         Scalar dl3_2 = new Scalar((double) 1 / (l3 * l3));
-        
+
         Core.multiply(src1, src2, vlvr);
-        
+
         Core.add(src1, src2, vlpvr);
         Core.add(vlpvr, d2l3, num);
-        
+
         Core.multiply(vlpvr, dl3, den);
-        
+
         Core.add(den, vlpvr, den);
         Core.add(den, dl3_2, den);
-        
+
         Core.divide(num, den, h);
-        
+
         Core.multiply(vlvr, h, dst);
-        
+
         Imgproc.threshold(dst, dst, 0, 1, Imgproc.THRESH_TOZERO);
-        
+
         return dst;
     }
 
@@ -117,44 +117,64 @@ public class Functions {
         return MatrixUtils.maxSum(cells);
     }
 
-    
     /**
      * Perform the curvature filtering
+     *
      * @param src the original image to filter
      * @param cFilter the curvature filter class
      * @param convex if it's neccesary to substract the convex result
-     * @return the activation matrix corresponding to an specific curvature in an specific orientation
+     * @return the activation matrix corresponding to an specific curvature in
+     * an specific orientation
      */
     public static Mat curvatureFiltering(Mat src, CurvatureFilter cFilter, boolean convex) {
-        
+
         Mat concaveFiltered[];
         Mat convexFiltered[];
-        
+
         concaveFiltered = new Mat[cFilter.n];
         convexFiltered = new Mat[cFilter.n];
-        
+
         Mat concaveResult = Mat.zeros(src.rows(), src.cols(), src.type());
         Mat convexResult = Mat.zeros(src.rows(), src.cols(), src.type());
-        
+
         Core.add(concaveResult, Scalar.all(1), concaveResult);
         Core.add(convexResult, Scalar.all(1), convexResult);
-        
+
         for (int i = 0; i < cFilter.n; i++) {
             concaveFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(cFilter.concaveFilters[i], cFilter.angle));
             Core.multiply(concaveFiltered[i], Scalar.all(cFilter.mul), concaveFiltered[i]);
             concaveResult = concaveResult.mul(concaveFiltered[i]);
-            
+
             if (convex) {
                 convexFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(cFilter.convexFilters[i], cFilter.angle));
                 Core.multiply(convexFiltered[i], Scalar.all(cFilter.mul), convexFiltered[i]);
                 convexResult = convexResult.mul(convexFiltered[i]);
             }
         }
-        
+
         if (convex) {
             Core.subtract(concaveResult, convexResult, concaveResult);
         }
         return concaveResult;
     }
+
+    public static Mat motionProcess(Mat[] T, int dx, double angle) {
+        Mat result = new Mat();
+        Mat filter = new Mat();
+        for(int i=1;i<T.length;i++){
+            T[i]=SpecialKernels.displaceKernel(T[i], -angle, dx);
+            //T[i]=T[i-1];
+        }
+        //result=MatrixUtils.maxSum(T);
+        result=MatrixUtils.multiply(T);
+        result=SpecialKernels.displaceKernel(result,-angle,(int)(-dx*(T.length/2)));
+
+        return result;
+    }
+
+   /* public static Mat motionProcess(Mat T[], int dx, double angle) {
+        Mat result = new Mat();
+        return result;
+    }*/
 
 }

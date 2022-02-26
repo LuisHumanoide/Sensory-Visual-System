@@ -1,6 +1,6 @@
 package middlewareVision.nodes.Visual.V4;
 
-import VisualMemory.V1Bank;
+import VisualMemory.V1Cells.V1Bank;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;

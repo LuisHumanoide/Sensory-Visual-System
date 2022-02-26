@@ -3,28 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory;
+package VisualMemory.V1Cells;
+
+import VisualMemory.Cell;
 
 
 /**
  *
  * @author Laptop
  */
-public class SimpleOpponentCells {
+public class DoubleOpponentCells {
     
     public int scale;
     public Cell[] Cells;
 
-    public SimpleOpponentCells(int scale, Cell[] SimpleOpponentCells) {
+    public DoubleOpponentCells(int scale, Cell[] DoubleOpponentCells) {
         this.scale = scale;
-        this.Cells = SimpleOpponentCells;
+        this.Cells = DoubleOpponentCells;
     }
     
-    public SimpleOpponentCells(int scale,int number){
+    public DoubleOpponentCells(int scale,int number){
         this.scale=scale;
         Cells=new Cell[number];
         for(int i=0;i<number;i++){
             Cells[i]=new Cell();
         }
     }
+    
+    public DoubleOpponentCells(int number){
+        Cells=new Cell[number];
+        for(int i=0;i<number;i++){
+            Cells[i]=new Cell();
+        }
+    }
+    
 }

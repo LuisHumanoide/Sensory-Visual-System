@@ -5,6 +5,10 @@
  */
 package VisualMemory;
 
+import VisualMemory.LGNCells.LGNBank;
+import VisualMemory.V1Cells.V1Bank;
+import VisualMemory.V2Cells.V2Bank;
+
 /**
  *
  * @author Laptop

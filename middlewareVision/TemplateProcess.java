@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import spike.Modalities;
 import utils.LongSpike;
-import utils.SimpleLogger;
 
 /**
  *
@@ -24,7 +23,7 @@ public class @Process extends Activity {
 
     @Override
     public void init() {
-        SimpleLogger.log(this, "SMALL NODE @Process");
+        
     }
 
     @Override

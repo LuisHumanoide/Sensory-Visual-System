@@ -1,8 +1,8 @@
 package middlewareVision.nodes.Attention;
 
 import VisualMemory.Cell;
-import VisualMemory.V1Bank;
-import VisualMemory.V2Bank;
+import VisualMemory.V1Cells.V1Bank;
+import VisualMemory.V2Cells.V2Bank;
 import gui.Visualizer;
 import java.io.IOException;
 import java.util.ArrayList;

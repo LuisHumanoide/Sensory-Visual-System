@@ -5,7 +5,7 @@
  */
 package middlewareVision.nodes.Visual.V4;
 
-import VisualMemory.V1Bank;
+import VisualMemory.V1Cells.V1Bank;
 import spike.Location;
 import gui.FrameActivity;
 import gui.Visualizer;

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory;
+package VisualMemory.V1Cells;
 
+import VisualMemory.Cell;
+import utils.Config;
 import utils.Functions;
 
 /**
@@ -18,7 +20,6 @@ public class ComplexCells {
     public Cell sumCell;
     public SimpleCells simpleCells;
 
-
     public ComplexCells(int scale, Cell[] complexCells) {
         this.scale = scale;
         this.Cells = complexCells;
@@ -27,40 +28,42 @@ public class ComplexCells {
     public ComplexCells(int scale, int number) {
         this.scale = scale;
         Cells = new Cell[number];
-        sumCell=new Cell();
+        sumCell = new Cell();
         for (int i = 0; i < number; i++) {
             Cells[i] = new Cell();
         }
     }
-    
+
     public ComplexCells(int number) {
         this.scale = -1;
         Cells = new Cell[number];
-        sumCell=new Cell();
+        sumCell = new Cell();
         for (int i = 0; i < number; i++) {
             Cells[i] = new Cell();
         }
     }
-    
-    public void setSimpleCells(SimpleCells cells){
-        simpleCells=cells;
-    }
-    
-    public void energyProcess(){
-        int x=Cells.length;
-        for(int i=0;i<x;i++){
-            Cells[i].mat=Functions.energyProcess(simpleCells.Even[i].mat, simpleCells.Odd[i].mat);
+
+    public void setSimpleCells(SimpleCells cells) {
+        simpleCells = cells;
+        for (int i = 0; i < Config.gaborOrientations; i++) {
+            Cells[i].setPrevious(simpleCells.Even[i],simpleCells.Odd[i]);
         }
     }
-    
+
+    public void energyProcess() {
+        int x = Cells.length;
+        for (int i = 0; i < x; i++) {
+            Cells[i].mat = Functions.energyProcess(simpleCells.Even[i].mat, simpleCells.Odd[i].mat);
+        }
+    }
+
     public ComplexCells(int scale, int number, int n1, int n2, int nf) {
         this.scale = scale;
         Cells = new Cell[number];
         for (int i = 0; i < number; i++) {
             Cells[i] = new Cell();
-            Cells[i].setPrevious(V1Bank.SC[n1][nf][n2].Even[i],V1Bank.SC[n1][nf][n2].Odd[i]);
+            Cells[i].setPrevious(V1Bank.SC[n1][nf][n2].Even[i], V1Bank.SC[n1][nf][n2].Odd[i]);
         }
     }
-
 
 }

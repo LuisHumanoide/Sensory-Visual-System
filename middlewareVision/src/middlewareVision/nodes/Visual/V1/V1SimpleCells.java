@@ -1,7 +1,7 @@
 package middlewareVision.nodes.Visual.V1;
 
-import VisualMemory.V1Bank;
-import static VisualMemory.V1Bank.SC;
+import VisualMemory.V1Cells.V1Bank;
+import static VisualMemory.V1Cells.V1Bank.SC;
 import spike.Location;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory;
+package VisualMemory.V2Cells;
 
+import VisualMemory.Cell;
 import java.io.File;
 import org.opencv.core.Mat;
 import utils.FileUtils;

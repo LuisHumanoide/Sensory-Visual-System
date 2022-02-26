@@ -5,8 +5,8 @@
  */
 package gui;
 
-import VisualMemory.LGNBank;
-import VisualMemory.V1Bank;
+import VisualMemory.LGNCells.LGNBank;
+import VisualMemory.V1Cells.V1Bank;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;

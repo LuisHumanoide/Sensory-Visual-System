@@ -5,7 +5,7 @@
  */
 package middlewareVision.nodes.Attention;
 
-import VisualMemory.V1Bank;
+import VisualMemory.V1Cells.V1Bank;
 import org.opencv.core.Mat;
 import utils.SpecialKernels;
 

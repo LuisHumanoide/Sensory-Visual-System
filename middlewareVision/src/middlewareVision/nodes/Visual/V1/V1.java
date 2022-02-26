@@ -28,6 +28,8 @@ public class V1 extends Area{
 	
 	//addProcess(ReichardtMotion.class);
 	
+	addProcess(V1MotionCellsNew.class);
+	
 	//@AddProcess
     }
 
@@ -51,6 +53,8 @@ public class V1 extends Area{
 	//send(AreaNames.V1MotionCells2,data);
 	
 	//send(AreaNames.ReichardtMotion,data);
+	
+	send(AreaNames.V1MotionCellsNew,data);
 	
 	//@SendProcess
     }

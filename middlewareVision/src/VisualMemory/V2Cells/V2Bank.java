@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory;
+package VisualMemory.V2Cells;
 
+import VisualMemory.V2Cells.CurvatureCells;
+import VisualMemory.V2Cells.AngleCells;
 import utils.Config;
 import utils.FileUtils;
 

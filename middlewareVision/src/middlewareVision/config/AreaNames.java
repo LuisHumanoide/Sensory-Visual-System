@@ -48,6 +48,8 @@ public class AreaNames {
 	
 	public static int V2CurvatureCells = IDHelper.generateID("V2", 3 , 0);
 	
+	public static int V1MotionCellsNew = IDHelper.generateID("V1", 9 , 0);
+	
 	//@addNodes
         //no quitar el comentario de add Nodes
 }

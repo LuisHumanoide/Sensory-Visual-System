@@ -1,6 +1,6 @@
 package middlewareVision.nodes.Visual.LGN;
 
-import VisualMemory.LGNBank;
+import VisualMemory.LGNCells.LGNBank;
 import imgio.RetinalImageIO;
 import imgio.RetinalTextIO;
 import spike.Location;

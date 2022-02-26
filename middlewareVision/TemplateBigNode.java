@@ -2,7 +2,6 @@
 
 import kmiddle2.nodes.areas.Area;
 import middlewareVision.config.AreaNames;
-import utils.SimpleLogger;
 
 
 /**
@@ -18,7 +17,7 @@ public class @Name extends Area{
 
     @Override
     public void init() {
-        SimpleLogger.log(this,"BIG NODE @Name");
+        
     }
 
     @Override

@@ -1,6 +1,6 @@
 package middlewareVision.nodes.Visual.V4;
 
-import VisualMemory.V2Bank;
+import VisualMemory.V2Cells.V2Bank;
 import gui.Visualizer;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
