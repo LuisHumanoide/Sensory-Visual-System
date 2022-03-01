@@ -53,15 +53,16 @@ public class V1DoubleOpponent extends Activity {
     ****************************************************************************
     Variables
     ****************************************************************************
-    */
-    /*
+     */
+ /*
     MATRICES DEL LGN
-    */
-    /*
+     */
+ /*
     MATRICES PROCESADAS DOBLE OPONENTES
-    */
+     */
     //Mat DKL2[];
-    int indexFrame=8;
+    int indexFrame = 8;
+
     /*
     ****************************************************************************
     Constructor y metodos para recibir
@@ -76,35 +77,35 @@ public class V1DoubleOpponent extends Activity {
     public void init() {
     }
 
-    numSync sync=new numSync(0,1,2);
-    
+    numSync sync = new numSync(0, 1, 2);
+
     @Override
     public void receive(int nodeID, byte[] data) {
         try {
             LongSpike spike = new LongSpike(data);
             Location l = (Location) spike.getLocation();
             int i1 = l.getValues()[0];
-            
+
             if (spike.getModality() == Modalities.VISUAL) {
                 sync.addReceived(i1);
             }
             if (sync.isComplete()) {
-                Mat DKL_L[]={LGNBank.SOC[0][0][0].Cells[0].mat,
-                    LGNBank.SOC[0][0][0].Cells[1].mat,
-                    LGNBank.SOC[0][0][0].Cells[2].mat
+                Mat DKL_L[] = {LGNBank.SOC[0][0].Cells[0].mat,
+                    LGNBank.SOC[0][0].Cells[1].mat,
+                    LGNBank.SOC[0][0].Cells[2].mat
                 };
-                Mat DKL_R[]={LGNBank.SOC[0][0][1].Cells[0].mat,
-                    LGNBank.SOC[0][0][1].Cells[1].mat,
-                    LGNBank.SOC[0][0][1].Cells[2].mat
+                Mat DKL_R[] = {LGNBank.SOC[0][1].Cells[0].mat,
+                    LGNBank.SOC[0][1].Cells[1].mat,
+                    LGNBank.SOC[0][1].Cells[2].mat
                 };
-                transduction(DKL_L,0,0);
-                transduction(DKL_R,0,1);
-                for(int i=0;i<3;i++){
-                        LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i,1), 0, 0);
-                        send(AreaNames.V4Color, sendSpike.getByteArray());
-                        send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
-                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0][0].Cells[i].mat), "dkl' L", 4, i);
-                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0][1].Cells[i].mat), "dkl' R", 5, i);
+                transduction(DKL_L, 0);
+                transduction(DKL_R, 1);
+                for (int i = 0; i < 3; i++) {
+                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, 1), 0, 0);
+                    send(AreaNames.V4Color, sendSpike.getByteArray());
+                    send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
+                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
+                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
                 }
             }
 
@@ -123,10 +124,10 @@ public class V1DoubleOpponent extends Activity {
      *
      * @param DKL
      */
-    public void transduction(Mat[] DKL,int scale,int eye) {
-        V1Bank.DOC[scale][0][eye].Cells[0].mat=LMM(DKL);
-        V1Bank.DOC[scale][0][eye].Cells[1].mat=SMLPM(DKL);
-        V1Bank.DOC[scale][0][eye].Cells[2].mat=LGNBank.SOC[0][0][eye].Cells[2].mat.clone();
+    public void transduction(Mat[] DKL, int eye) {
+        V1Bank.DOC[0][eye].Cells[0].mat = LMM(DKL);
+        V1Bank.DOC[0][eye].Cells[1].mat = SMLPM(DKL);
+        V1Bank.DOC[0][eye].Cells[2].mat = LGNBank.SOC[0][eye].Cells[2].mat.clone();
     }
 
     /**
@@ -170,9 +171,9 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     * 
+     *
      * @param DKL
-     * @return 
+     * @return
      */
     private Mat SMLPM(Mat[] DKL) {
         Mat SKernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, 1, -0.5, 0.5, 0.5, 5);

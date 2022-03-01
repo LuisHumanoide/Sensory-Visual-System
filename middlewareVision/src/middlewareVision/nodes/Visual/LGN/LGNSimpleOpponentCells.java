@@ -128,20 +128,20 @@ public class LGNSimpleOpponentCells extends Activity {
             if (sync.isComplete()) {
                 //mandar a hacer la transduccion
                 Mat DKL_L[] = transduction(LMSConesL, 0, 0);
-                LGNBank.SOC[0][0][0].Cells[0].mat = DKL_L[0];
-                LGNBank.SOC[0][0][0].Cells[1].mat = DKL_L[1];
-                LGNBank.SOC[0][0][0].Cells[2].mat = DKL_L[2];
+                LGNBank.SOC[0][0].Cells[0].mat = DKL_L[0];
+                LGNBank.SOC[0][0].Cells[1].mat = DKL_L[1];
+                LGNBank.SOC[0][0].Cells[2].mat = DKL_L[2];
                 
                 Mat DKL_R[] = transduction(LMSConesR, 0, 0);
-                LGNBank.SOC[0][0][1].Cells[0].mat = DKL_R[0];
-                LGNBank.SOC[0][0][1].Cells[1].mat = DKL_R[1];
-                LGNBank.SOC[0][0][1].Cells[2].mat = DKL_R[2];
+                LGNBank.SOC[0][1].Cells[0].mat = DKL_R[0];
+                LGNBank.SOC[0][1].Cells[1].mat = DKL_R[1];
+                LGNBank.SOC[0][1].Cells[2].mat = DKL_R[2];
                 /*
                 mostrar las imagenes procesadas
                  */
                 for (int i = 0; i < LMSConesL.length; i++) {
-                    Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0][0].Cells[i].mat), "dkl L" + i, 2, i);
-                    Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0][1].Cells[i].mat), "dkl R" + i, 3, i);
+                    Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "dkl L" + i, 2, i);
+                    Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "dkl R" + i, 3, i);
                     //mandar los spikes de salida a las celulas simples y doble oponentes de V1
                     LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, -1), 0, 0);
                     //send(AreaNames.V1SimpleCells, sendSpike.getByteArray());

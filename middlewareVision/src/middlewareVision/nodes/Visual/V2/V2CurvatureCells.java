@@ -35,12 +35,12 @@ public class V2CurvatureCells extends Activity {
             if (spike.getModality() == Modalities.VISUAL) {
                 curvatureProcess();
                 for (int k = 0; k < x1; k++) {
-                    for (int i = 0; i < V2Bank.CurvC[0][0][0].getnCurvatures(); i++) {
-                        Visualizer.setImage(V2Bank.CurvC[0][k][0].composedCells[i].mat, "curvature L radius:" + V2Bank.CurvC[0][0][0].filters[i][0].radius, Visualizer.getRow("HC") + k*x1+ 1, i);
-                        Visualizer.setImage(V2Bank.CurvC[0][k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0][0].filters[i][0].radius, Visualizer.getRow("HC") + k*x1+ 2, i);
+                    for (int i = 0; i < V2Bank.CurvC[0][0].getnCurvatures(); i++) {
+                        Visualizer.setImage(V2Bank.CurvC[k][0].composedCells[i].mat, "curvature L radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("HC") + k * x1 + 1, i);
+                        Visualizer.setImage(V2Bank.CurvC[k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("HC") + k * x1 + 2, i);
                     }
                 }
-                Visualizer.addLimit("Curv", Visualizer.getRow("HC")+(x1-1)*x1+2);
+                Visualizer.addLimit("Curv", Visualizer.getRow("HC") + (x1 - 1) * x1 + 2);
             }
         } catch (Exception ex) {
             //Logger.getLogger(V2CurvatureCells.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,16 +48,15 @@ public class V2CurvatureCells extends Activity {
     }
 
     void curvatureProcess() {
-        x0 = V2Bank.CurvC.length;
-        x1 = V2Bank.CurvC[0].length;
-        x2 = V2Bank.CurvC[0][0].length;
-        for (int i = 0; i < x0; i++) {
-            for (int j = 0; j < x1; j++) {
-                for (int k = 0; k < x2; k++) {
-                    V2Bank.CurvC[i][j][k].filterCurvatureCells(V1Bank.CC[i][j][k].sumCell.mat);
-                }
+        x1 = V2Bank.CurvC.length;
+        x2 = V2Bank.CurvC[0].length;
+
+        for (int j = 0; j < x1; j++) {
+            for (int k = 0; k < x2; k++) {
+                V2Bank.CurvC[j][k].filterCurvatureCells(V1Bank.CC[j][k].sumCell.mat);
             }
         }
+
     }
 
 }

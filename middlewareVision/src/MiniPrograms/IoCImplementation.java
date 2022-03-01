@@ -12,7 +12,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 /**
- *
+ * https://www.desmos.com/calculator/fmhmpnyd9g
  * @author Laptop
  */
 public class IoCImplementation extends javax.swing.JFrame {
@@ -181,8 +181,6 @@ public class IoCImplementation extends javax.swing.JFrame {
         double w3 = v2.intensity * Math.cos(v2.angle + Math.PI *0.5);
         double w4 = v2.intensity * Math.sin(v2.angle + Math.PI *0.5);
         
-        
-
         double t0 = (-q4 * (w1 - q1) + q3 * (w2 - q2)) / (q4 * w3 - q3 * w4);
         double t1 = (w1 - q1 + w3 * t0) / q3;
         System.out.println("w1:"+w1+" w2"+w2+" w3:"+w3+" w4:"+w4+" t0"+t0+" t1"+t1);

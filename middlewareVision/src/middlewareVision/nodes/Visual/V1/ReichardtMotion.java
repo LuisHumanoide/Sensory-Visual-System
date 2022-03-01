@@ -59,7 +59,7 @@ public class ReichardtMotion extends Activity {
                 for (int i = 1; i < nFrames; i++) {
                     M[index][i] = displaceKernel(M[index][i - 1], index * (float) (Math.PI / Config.gaborOrientations), Config.displace);
                 }
-                M[index][0] = V1Bank.SC[0][0][0].Even[index].mat.clone();
+                M[index][0] = V1Bank.SC[0][0].Even[index].mat.clone();
                 Visualizer.setImage(Convertor.Mat2Img(MatrixUtils.multiply(M[index])), "basic motion 2", 28*2 + index);
             }
 

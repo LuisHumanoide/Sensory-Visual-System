@@ -57,12 +57,12 @@ public class ComplexCells {
         }
     }
 
-    public ComplexCells(int scale, int number, int n1, int n2, int nf) {
+    public ComplexCells(int scale, int number, int n2, int nf) {
         this.scale = scale;
         Cells = new Cell[number];
         for (int i = 0; i < number; i++) {
             Cells[i] = new Cell();
-            Cells[i].setPrevious(V1Bank.SC[n1][nf][n2].Even[i], V1Bank.SC[n1][nf][n2].Odd[i]);
+            Cells[i].setPrevious(V1Bank.SC[nf][n2].Even[i], V1Bank.SC[nf][n2].Odd[i]);
         }
     }
 

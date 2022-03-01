@@ -13,16 +13,15 @@ import VisualMemory.LGNCells.SimpleOpponentCells;
  */
 public class LGNBank {
 
-    public static SimpleOpponentCells[][][] SOC;
+    public static SimpleOpponentCells[][] SOC;
 
-    public static void initializeCells(int... dimensions) {
+    public static void initializeCells(int scales) {
 
-        SOC = new SimpleOpponentCells[dimensions[0]][dimensions[1]][dimensions[2]];
-        for (int i1 = 0; i1 < dimensions[0]; i1++) {
-            for (int i2 = 0; i2 < dimensions[1]; i2++) {
-                for (int i3 = 0; i3 < dimensions[2]; i3++) {
-                    SOC[i1][i2][i3] = new SimpleOpponentCells(0, 3);
-                }
+        SOC = new SimpleOpponentCells[scales][2];
+
+        for (int i2 = 0; i2 < scales; i2++) {
+            for (int i3 = 0; i3 < 2; i3++) {
+                SOC[i2][i3] = new SimpleOpponentCells(0, 3);
             }
         }
 

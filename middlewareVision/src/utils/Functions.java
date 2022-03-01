@@ -158,23 +158,23 @@ public class Functions {
         return concaveResult;
     }
 
+    /**
+     * Simple motion process function, the receives an array of matrixes, displaces the kernel and
+     * perform a multiplication, resulting in the activation of motion detection
+     * @param T
+     * @param dx
+     * @param angle
+     * @return 
+     */
     public static Mat motionProcess(Mat[] T, int dx, double angle) {
         Mat result = new Mat();
-        Mat filter = new Mat();
         for(int i=1;i<T.length;i++){
             T[i]=SpecialKernels.displaceKernel(T[i], -angle, dx);
-            //T[i]=T[i-1];
         }
-        //result=MatrixUtils.maxSum(T);
         result=MatrixUtils.multiply(T);
         result=SpecialKernels.displaceKernel(result,-angle,(int)(-dx*(T.length/2)));
-
         return result;
     }
 
-   /* public static Mat motionProcess(Mat T[], int dx, double angle) {
-        Mat result = new Mat();
-        return result;
-    }*/
 
 }

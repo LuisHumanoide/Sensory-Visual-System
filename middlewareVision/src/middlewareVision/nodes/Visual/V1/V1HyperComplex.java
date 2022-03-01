@@ -41,15 +41,15 @@ public class V1HyperComplex extends Activity {
                 for (int j = 0; j < Config.gaborBanks; j++) {
                     for (int k = 0; k < Config.HCfilters; k++) {
                         for (int i = 0; i < Config.gaborOrientations; i++) {
-                            Visualizer.setImage(V1Bank.HCC[0][j][0].Cells[k][i].mat,
+                            Visualizer.setImage(V1Bank.HCC[j][0].Cells[k][i].mat,
                                     "end stopped L " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 1 + 2 * k + 2 * j * Config.gaborBanks, i);
-                            Visualizer.setImage(V1Bank.HCC[0][j][1].Cells[k][i].mat,
+                            Visualizer.setImage(V1Bank.HCC[j][1].Cells[k][i].mat,
                                     "end stopped R " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i);
 
                             if (i == Config.gaborOrientations - 1) {
-                                Visualizer.setImage(Functions.maxSum(V1Bank.HCC[0][j][0].Cells[k]),
+                                Visualizer.setImage(Functions.maxSum(V1Bank.HCC[j][0].Cells[k]),
                                         "end stopped L " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 1 + 2 * k + 2 * j * Config.gaborBanks, i + 2);
-                                Visualizer.setImage(Functions.maxSum(V1Bank.HCC[0][j][1].Cells[k]),
+                                Visualizer.setImage(Functions.maxSum(V1Bank.HCC[j][1].Cells[k]),
                                         "end stopped R " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i + 2);
                             }
                         }
@@ -65,7 +65,7 @@ public class V1HyperComplex extends Activity {
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(index), 0, 0);
                     send(AreaNames.V2AngularCells, sendSpike1.getByteArray());
                     send(AreaNames.V4Contour, sendSpike1.getByteArray());
-                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.HCC[0][0][0].Cells[0][index].mat), "end stopped " + index, nFrame * 2 + index);
+                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.HCC[0][0].Cells[0][index].mat), "end stopped " + index, nFrame * 2 + index);
                 }
             }
 
@@ -78,16 +78,15 @@ public class V1HyperComplex extends Activity {
      * Make the convolution that result in the activation of HyperComplex Cells
      */
     void convolveHCC() {
-        int i0 = HCC.length;
-        int i1 = HCC[0].length;
-        int i2 = HCC[0][0].length;
-        for (int x0 = 0; x0 < i0; x0++) {
-            for (int x1 = 0; x1 < i1; x1++) {
-                for (int x2 = 0; x2 < i2; x2++) {
-                    HCC[x0][x1][x2].convolve(CC[x0][x1][x2].Cells);
-                }
+        int i1 = HCC.length;
+        int i2 = HCC[0].length;
+
+        for (int x1 = 0; x1 < i1; x1++) {
+            for (int x2 = 0; x2 < i2; x2++) {
+                HCC[x1][x2].convolve(CC[x1][x2].Cells);
             }
         }
+
     }
 
     /*
@@ -102,7 +101,7 @@ public class V1HyperComplex extends Activity {
                 Imgproc.threshold(endStop, endStop, 0.4, 1, Imgproc.THRESH_TOZERO);
                 double w = Config.endstop;
                 Core.addWeighted(edges, w, endStop, 1 - w, 0, endStop);
-                V1Bank.HCC[0][0][0].Cells[0][index].mat = endStop;
+                V1Bank.HCC[0][0].Cells[0][index].mat = endStop;
                 V4Memory.v1Map[index] = endStop;
                 LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(index, 4), 0, 0);
     }*/

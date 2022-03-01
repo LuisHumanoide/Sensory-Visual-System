@@ -52,7 +52,7 @@ public class V4Color extends Activity {
 
             if (spike.getModality() == Modalities.VISUAL) {
 
-                DKL[i1] = Convertor.MatToMatrix(V1Bank.DOC[0][0][0].Cells[i1].mat);
+                DKL[i1] = Convertor.MatToMatrix(V1Bank.DOC[0][0].Cells[i1].mat);
                 sync.addReceived(i1);
             }
 

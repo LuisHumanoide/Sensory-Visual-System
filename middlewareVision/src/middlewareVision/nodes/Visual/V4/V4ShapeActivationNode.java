@@ -62,7 +62,7 @@ public class V4ShapeActivationNode extends Activity {
                 rfbank = V4CellStructure.V4Bank.get(index);
                 ArrayList matsList = new ArrayList();
                 for (RFlist list : rfbank.RFCellBank) {
-                    Mat activationMat = activationShape(filterMats(list, 0, 0, 0));
+                    Mat activationMat = activationShape(filterMats(list, 0, 0));
                     matsList.add(activationMat);
                 }
                 Mat activation = sumMats(matsList);
@@ -90,13 +90,13 @@ public class V4ShapeActivationNode extends Activity {
      * @param list
      * @return
      */
-    ArrayList<Mat> filterMats(RFlist list, int scale, int freq, int eye) {
+    ArrayList<Mat> filterMats(RFlist list, int freq, int eye) {
         ArrayList<Mat> listMat = new ArrayList();
-        if (V2Bank.AC[scale][freq][eye].Cells.length > 0) {
+        if (V2Bank.AC[freq][eye].Cells.length > 0) {
             for (indexMat imat : list.RFs) {
                 Mat filteredMat = new Mat();
                 try {
-                    Imgproc.filter2D(V2Bank.AC[scale][freq][eye].Cells[imat.index[0]][imat.index[1]].mat, filteredMat, CV_32F, imat.getMat());
+                    Imgproc.filter2D(V2Bank.AC[freq][eye].Cells[imat.index[0]][imat.index[1]].mat, filteredMat, CV_32F, imat.getMat());
                     Imgproc.threshold(filteredMat, filteredMat, 0, 1, Imgproc.THRESH_TOZERO);
                 } catch (Exception e) {
                     System.out.println("no existe la matriz" + imat.index[0] + "     " + imat.index[1] + "  .....  " + e);

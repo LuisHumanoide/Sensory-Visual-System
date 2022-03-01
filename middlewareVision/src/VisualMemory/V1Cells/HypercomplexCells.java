@@ -50,14 +50,14 @@ public class HypercomplexCells {
         }
     }
     
-    public HypercomplexCells(int scale, int numFilters,int number, int n1, int n2, int nf){
+    public HypercomplexCells(int scale, int numFilters,int number, int n2, int nf){
         Cells=new Cell[numFilters][number];
         filters=new Mat[numFilters];
         for(int i=0;i<numFilters;i++){
             filters[i]=new Mat();
             for(int j=0;j<number;j++){
                 Cells[i][j]=new Cell();
-                Cells[i][j].setPrevious(V1Bank.CC[n1][nf][n2].Cells[j]);
+                Cells[i][j].setPrevious(V1Bank.CC[nf][n2].Cells[j]);
             }
         }
     }

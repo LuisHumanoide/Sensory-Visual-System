@@ -54,13 +54,13 @@ public class V1MotionCellsNew extends Activity {
     }
 
     public void visualize(int x0, int x1, int x2) {
-        i3 = V1Bank.MC[0][0][0].cells.length;
+        i3 = V1Bank.MC[0][0].cells.length;
         for (int i = 0; i < i3; i++) {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                 if (j < Config.gaborOrientations) {
-                    Visualizer.setImage(MC[x0][x1][x2].cells[i][j].mat, "motion", (i1 * i2 * x1) + (i * i2*2) +x2, 6 + j);
+                    Visualizer.setImage(MC[x1][x2].cells[i][j].mat, "motion", (i1 * i2 * x1) + (i * i2 * 2) + x2, 6 + j);
                 } else {
-                    Visualizer.setImage(MC[x0][x1][x2].cells[i][j].mat, "motion", (i1 * i2 * x1) + (1+ i * i2*2) +x2, 6 + (j-Config.gaborOrientations));
+                    Visualizer.setImage(MC[x1][x2].cells[i][j].mat, "motion", (i1 * i2 * x1) + (1 + i * i2 * 2) + x2, 6 + (j - Config.gaborOrientations));
                 }
             }
         }
@@ -70,13 +70,13 @@ public class V1MotionCellsNew extends Activity {
         /*int i0 = MC.length;
         int i1 = MC[0].length;
         int i2 = MC[0][0].length;*/
-        for (int i = 0; i < i0; i++) {
-            for (int j = 0; j < i1; j++) {
-                for (int k = 0; k < i2; k++) {
-                    MC[i][j][k].motionProcess();
-                }
+
+        for (int j = 0; j < i1; j++) {
+            for (int k = 0; k < i2; k++) {
+                MC[j][k].motionProcess();
             }
         }
+
     }
 
 }

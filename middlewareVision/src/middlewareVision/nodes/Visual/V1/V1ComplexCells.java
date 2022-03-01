@@ -86,13 +86,13 @@ public class V1ComplexCells extends Activity {
                 energyProcessCC();
                 for (int k = 0; k < Config.gaborBanks; k++) {
                     for (int i = 0; i < Config.gaborOrientations; i++) {
-                        Visualizer.setImage(V1Bank.CC[0][k][0].Cells[i].mat, "Complex L" + k + " " + i, Visualizer.getRow("SCsup") + 2 * k, i);
-                        Visualizer.setImage(V1Bank.CC[0][k][1].Cells[i].mat, "Complex R" + k + " " + i, Visualizer.getRow("SCsup") + 2 * k + 1, i);
+                        Visualizer.setImage(V1Bank.CC[k][0].Cells[i].mat, "Complex L" + k + " " + i, Visualizer.getRow("SCsup") + 2 * k, i);
+                        Visualizer.setImage(V1Bank.CC[k][1].Cells[i].mat, "Complex R" + k + " " + i, Visualizer.getRow("SCsup") + 2 * k + 1, i);
                         if (i == Config.gaborOrientations - 1) {
-                            V1Bank.CC[0][k][0].sumCell.mat = Functions.maxSum(V1Bank.CC[0][k][0].Cells);
-                            V1Bank.CC[0][k][1].sumCell.mat = Functions.maxSum(V1Bank.CC[0][k][1].Cells);
-                            Visualizer.setImage(V1Bank.CC[0][k][0].sumCell.mat, "Combined Complex L" + k + " ", Visualizer.getRow("SCsup") + 2 * k, i + 2);
-                            Visualizer.setImage(V1Bank.CC[0][k][1].sumCell.mat, "Combined Complex R" + k + " ", Visualizer.getRow("SCsup") + 2 * k + 1, i + 2);
+                            V1Bank.CC[k][0].sumCell.mat = Functions.maxSum(V1Bank.CC[k][0].Cells);
+                            V1Bank.CC[k][1].sumCell.mat = Functions.maxSum(V1Bank.CC[k][1].Cells);
+                            Visualizer.setImage(V1Bank.CC[k][0].sumCell.mat, "Combined Complex L" + k + " ", Visualizer.getRow("SCsup") + 2 * k, i + 2);
+                            Visualizer.setImage(V1Bank.CC[k][1].sumCell.mat, "Combined Complex R" + k + " ", Visualizer.getRow("SCsup") + 2 * k + 1, i + 2);
                         }
 
                     }
@@ -109,7 +109,7 @@ public class V1ComplexCells extends Activity {
                 for (int i = 0; i < Config.gaborOrientations; i++) {
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
                     send(AreaNames.V1HyperComplex, sendSpike1.getByteArray());
-                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.CC[0][0][0].Cells[i].mat), "energy " + i, i + nFrame * 2);
+                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.CC[0][0].Cells[i].mat), "energy " + i, i + nFrame * 2);
                 }
             }
 
@@ -119,16 +119,15 @@ public class V1ComplexCells extends Activity {
     }
 
     void energyProcessCC() {
-        int i0 = CC.length;
-        int i1 = CC[0].length;
-        int i2 = CC[0][0].length;
-        for (int x0 = 0; x0 < i0; x0++) {
-            for (int x1 = 0; x1 < i1; x1++) {
-                for (int x2 = 0; x2 < i2; x2++) {
-                    CC[x0][x1][x2].energyProcess();
-                }
+        int i1 = CC.length;
+        int i2 = CC[0].length;
+
+        for (int x1 = 0; x1 < i1; x1++) {
+            for (int x2 = 0; x2 < i2; x2++) {
+                CC[x1][x2].energyProcess();
             }
         }
+
     }
 
 }

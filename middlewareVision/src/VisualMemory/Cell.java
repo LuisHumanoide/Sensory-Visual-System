@@ -48,6 +48,10 @@ public class Cell {
         mat = Mat.zeros(new Size(Config.width, Config.heigth), CvType.CV_32FC1);
     }
     
+    public Cell(int size){
+        mat = Mat.zeros(new Size(size,size), CvType.CV_32FC1);
+    }
+    
     public Cell(Mat mat){
         this.mat=mat;
     }

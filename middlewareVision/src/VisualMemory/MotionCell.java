@@ -21,13 +21,14 @@ import utils.Functions;
 public class MotionCell extends Cell {
 
     Mat matT[];
-    int stages=3;
+    int stages = 3;
     public Mat mat1st;
-    
+
     //time displacement
     int dt;
     //distance displacement
     int dx;
+    double angle;
 
     int timeCount = 0;
 
@@ -35,18 +36,18 @@ public class MotionCell extends Cell {
 
     public MotionCell() {
         super();
-        matT=new Mat[stages];
-        for(int i=0;i<stages;i++){
-            matT[i]=Mat.zeros(new Size(Config.width, Config.heigth), CvType.CV_32FC1);
+        matT = new Mat[stages];
+        for (int i = 0; i < stages; i++) {
+            matT[i] = Mat.zeros(new Size(Config.width, Config.heigth), CvType.CV_32FC1);
         }
         mat1st = Mat.zeros(new Size(Config.width, Config.heigth), CvType.CV_32FC1);
     }
 
     public void addDelay(Mat mat) {
-        for(int i=stages-1;i>0;i--){
-            matT[i]=matT[i-1].clone();
+        for (int i = stages - 1; i > 0; i--) {
+            matT[i] = matT[i - 1].clone();
         }
-        matT[0]=mat.clone();
+        matT[0] = mat.clone();
     }
 
     public void setDxDt(int dx, int dt) {
@@ -56,13 +57,10 @@ public class MotionCell extends Cell {
     }
 
     public void motionProcess(Mat mat) {
-        
-        //Imgproc.blur(m2, m2, new Size(5,5));
         if (timeCount == dt) {
             timeCount = 0;
             addDelay(mat.clone());
-            mat1st=Functions.motionProcess(matT, this.dx, (double)((Math.PI/Config.gaborOrientations)*id));
-            //this.mat=Functions.motionProcess(matT, this.dx, (double)((Math.PI/Config.gaborOrientations)*id));
+            mat1st = Functions.motionProcess(matT, this.dx, (double) ((Math.PI / Config.gaborOrientations) * id));
         }
         timeCount++;
     }

@@ -28,63 +28,65 @@ import utils.filters.GaborFilter;
 public class V1Bank {
 
     //[extra][for different frequencies or scales][eye]
-    public static SimpleCells[][][] SC;
-    public static ComplexCells[][][] CC;
-    public static HypercomplexCells[][][] HCC;
-    public static DoubleOpponentCells[][][] DOC;
-    public static MotionCellsV1[][][] MC;
+    public static SimpleCells[][] SC;
+    public static ComplexCells[][] CC;
+    public static HypercomplexCells[][] HCC;
+    public static DoubleOpponentCells[][] DOC;
+    public static MotionCellsV1[][] MC;
     static String fileName = "RFV1//Gabor//filters.txt";
     static String HCfiles = "RFV1HC//";
 
     /**
      * Initialize all cells from V1
-     * @param dimensions 
+     *
+     * @param dimensions
      */
-    public static void initializeCells(int... dimensions) {
+    public static void initializeCells() {
         File file = new File(fileName);
         String fileContent = FileUtils.readFile(file);
         String gaborLines[] = fileContent.split("\\n");
-        SC = new SimpleCells[dimensions[0]][gaborLines.length][dimensions[2]];
+        
         Config.gaborBanks = gaborLines.length;
         File hcfolder = new File(HCfiles);
         File hcfiles[] = hcfolder.listFiles();
         Config.HCfilters = hcfiles.length;
+        
+        SC = new SimpleCells[gaborLines.length][2];
+        CC = new ComplexCells[gaborLines.length][2];
+        HCC = new HypercomplexCells[gaborLines.length][2];
+        DOC = new DoubleOpponentCells[1][2];
+        MC = new MotionCellsV1[gaborLines.length][2];
 
-        CC = new ComplexCells[dimensions[0]][gaborLines.length][dimensions[2]];
-        HCC = new HypercomplexCells[dimensions[0]][gaborLines.length][dimensions[2]];
-        DOC = new DoubleOpponentCells[dimensions[0]][dimensions[1]][dimensions[2]];
-        MC= new MotionCellsV1[dimensions[0]][gaborLines.length][dimensions[2]];
-
-        for (int i1 = 0; i1 < dimensions[0]; i1++) {
-            for (int i2 = 0; i2 < dimensions[1]; i2++) {
-                for (int i3 = 0; i3 < dimensions[2]; i3++) {
-                    DOC[i1][i2][i3] = new DoubleOpponentCells(Config.gaborOrientations);
-                }
+        for (int i2 = 0; i2 < 1; i2++) {
+            for (int i3 = 0; i3 < 2; i3++) {
+                DOC[i2][i3] = new DoubleOpponentCells(Config.gaborOrientations);
             }
         }
-        for (int i1 = 0; i1 < dimensions[0]; i1++) {
-            for (int i2 = 0; i2 < gaborLines.length; i2++) {
-                for (int i3 = 0; i3 < dimensions[2]; i3++) {
-                    SC[i1][i2][i3] = new SimpleCells(Config.gaborOrientations);
-                    CC[i1][i2][i3] = new ComplexCells(Config.gaborOrientations);
-                    HCC[i1][i2][i3] = new HypercomplexCells(Config.HCfilters, Config.gaborOrientations);
-                    MC[i1][i2][i3] = new MotionCellsV1("speeds.txt");
-                    CC[i1][i2][i3].setSimpleCells(SC[i1][i2][i3]);
-                    MC[i1][i2][i3].setPrevious(CC[i1][i2][i3].Cells);
-                }
+
+        for (int i2 = 0; i2 < gaborLines.length; i2++) {
+            for (int i3 = 0; i3 < 2; i3++) {
+                SC[i2][i3] = new SimpleCells(Config.gaborOrientations);
+                CC[i2][i3] = new ComplexCells(Config.gaborOrientations);
+                HCC[i2][i3] = new HypercomplexCells(Config.HCfilters, Config.gaborOrientations);
+                MC[i2][i3] = new MotionCellsV1("speeds.txt");
+                CC[i2][i3].setSimpleCells(SC[i2][i3]);
+                MC[i2][i3].setPrevious(CC[i2][i3].Cells);
             }
         }
-        loadGaborFilters(gaborLines, 2, 0);
+
+        loadGaborFilters(gaborLines, 2);
         loadHCFilters(hcfiles);
     }
 
     /**
-     * Load Gabor Filters from a file, the system can have several types of gabor filters
+     * Load Gabor Filters from a file, the system can have several types of
+     * gabor filters
+     *
      * @param gaborLines
      * @param eyes
-     * @param index1 
+     * @param index1
      */
-    public static void loadGaborFilters(String gaborLines[], int eyes, int index1) {
+    public static void loadGaborFilters(String gaborLines[], int eyes) {
         int i = 0;
         for (String st : gaborLines) {
             String values[] = st.split(" ");
@@ -104,10 +106,10 @@ public class V1Bank {
                     Double.parseDouble(values[5]));
             for (int j = 0; j < eyes; j++) {
                 for (int k = 0; k < Config.gaborOrientations; k++) {
-                    SC[index1][i][j].evenFilter[k] = SpecialKernels.rotateKernelRadians(evenFilter.makeFilter(), k * SpecialKernels.inc);
-                    SC[index1][i][j].oddFilter[k] = SpecialKernels.rotateKernelRadians(oddFilter.makeFilter(), k * SpecialKernels.inc);
-                    SC[index1][i][j].geven = evenFilter;
-                    SC[index1][i][j].godd = oddFilter;
+                    SC[i][j].evenFilter[k] = SpecialKernels.rotateKernelRadians(evenFilter.makeFilter(), k * SpecialKernels.inc);
+                    SC[i][j].oddFilter[k] = SpecialKernels.rotateKernelRadians(oddFilter.makeFilter(), k * SpecialKernels.inc);
+                    SC[i][j].geven = evenFilter;
+                    SC[i][j].godd = oddFilter;
 
                 }
             }
@@ -117,29 +119,27 @@ public class V1Bank {
     }
 
     /**
-     * Load the Gauss filters that emulates the end stop-filters from the hypercomplex cells
-     * and load into the HCC class
-     * @param files 
+     * Load the Gauss filters that emulates the end stop-filters from the
+     * hypercomplex cells and load into the HCC class
+     *
+     * @param files
      */
     public static void loadHCFilters(File[] files) {
         int i = 0;
-        int i0 = HCC.length;
-        int i1 = HCC[0].length;
-        int i2 = HCC[0][0].length;
+        int i1 = HCC.length;
+        int i2 = HCC[0].length;
         for (File fi : files) {
             Mat filter = getRF(fi.getPath());
-            for (int x0 = 0; x0 < i0; x0++) {
-                for (int x1 = 0; x1 < i1; x1++) {
-                    for (int x2 = 0; x2 < i2; x2++) {
-                        HCC[x0][x1][x2].setFilter(i, filter);
-                    }
+
+            for (int x1 = 0; x1 < i1; x1++) {
+                for (int x2 = 0; x2 < i2; x2++) {
+                    HCC[x1][x2].setFilter(i, filter);
                 }
             }
-            
+
             i++;
         }
     }
-    
 
     /**
      * Obtain the composite filter from a file
@@ -173,6 +173,5 @@ public class V1Bank {
         }
         return compKernel;
     }
-    
 
 }

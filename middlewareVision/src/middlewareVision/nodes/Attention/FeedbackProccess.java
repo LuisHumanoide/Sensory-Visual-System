@@ -54,16 +54,16 @@ public class FeedbackProccess extends Activity {
     int numEyes = 1;
 
     public void addToV1SimpleCells(Mat filter, double value, double c, Mat addFilter) {
-        for (int n1 = 0; n1 < V1Bank.SC.length; n1++) {
-            for (int n2 = 0; n2 < numEyes; n2++) {
-                for (int f = 0; f < Config.freqs; f++) {
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        feedbackFunction(filter, V1Bank.SC[n1][f][n2].Odd[i].mat, V1Bank.SC[n1][f][n2].Odd[i].mat, value, c, addFilter);
-                        feedbackFunction(filter, V1Bank.SC[n1][f][n2].Even[i].mat, V1Bank.SC[n1][f][n2].Even[i].mat, value, c, addFilter);
-                    }
+
+        for (int n2 = 0; n2 < numEyes; n2++) {
+            for (int f = 0; f < Config.freqs; f++) {
+                for (int i = 0; i < Config.gaborOrientations; i++) {
+                    feedbackFunction(filter, V1Bank.SC[f][n2].Odd[i].mat, V1Bank.SC[f][n2].Odd[i].mat, value, c, addFilter);
+                    feedbackFunction(filter, V1Bank.SC[f][n2].Even[i].mat, V1Bank.SC[f][n2].Even[i].mat, value, c, addFilter);
                 }
             }
         }
+
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(-1), 0, 0);
         try {
             send(AreaNames.V1SimpleCellsFilter, sendSpike1.getByteArray());
@@ -73,14 +73,14 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV1SimpleCellsOrientation(Mat filter, double value, double c, Mat addFilter, int i) {
-        for (int n1 = 0; n1 < V1Bank.SC.length; n1++) {
-            for (int f = 0; f < Config.freqs; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
-                    feedbackFunction(filter, V1Bank.SC[n1][f][n2].Odd[i].mat, V1Bank.SC[n1][f][n2].Odd[i].mat, value, c, addFilter);
-                    feedbackFunction(filter, V1Bank.SC[n1][f][n2].Even[i].mat, V1Bank.SC[n1][f][n2].Even[i].mat, value, c, addFilter);
-                }
+
+        for (int f = 0; f < Config.freqs; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
+                feedbackFunction(filter, V1Bank.SC[f][n2].Odd[i].mat, V1Bank.SC[f][n2].Odd[i].mat, value, c, addFilter);
+                feedbackFunction(filter, V1Bank.SC[f][n2].Even[i].mat, V1Bank.SC[f][n2].Even[i].mat, value, c, addFilter);
             }
         }
+
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(-1), 0, 0);
         try {
             send(AreaNames.V1SimpleCellsFilter, sendSpike1.getByteArray());
@@ -90,16 +90,16 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV1ComplexCells(Mat filter, double value, double c, Mat addFilter) {
-        for (int n1 = 0; n1 < V1Bank.CC.length; n1++) {
-            for (int f = 0; f < Config.freqs; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        Cell dst = V1Bank.CC[n1][f][n2].Cells[i];
-                        rFeedback(filter, dst, dst.mat, value, c, addFilter);
-                    }
+
+        for (int f = 0; f < Config.freqs; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
+                for (int i = 0; i < Config.gaborOrientations; i++) {
+                    Cell dst = V1Bank.CC[f][n2].Cells[i];
+                    rFeedback(filter, dst, dst.mat, value, c, addFilter);
                 }
             }
         }
+
         Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
@@ -110,14 +110,14 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV1ComplexCellsOrientation(Mat filter, double value, double c, Mat addFilter, int i) {
-        for (int n1 = 0; n1 < V1Bank.CC.length; n1++) {
-            for (int f = 0; f < Config.freqs; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
-                    Cell dst = V1Bank.CC[n1][f][n2].Cells[i];
-                    rFeedback(filter, dst, dst.mat, value, c, addFilter);
-                }
+
+        for (int f = 0; f < Config.freqs; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
+                Cell dst = V1Bank.CC[f][n2].Cells[i];
+                rFeedback(filter, dst, dst.mat, value, c, addFilter);
             }
         }
+
         Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
@@ -128,19 +128,19 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV1HyperComplexCells(Mat filter, double value, double c, Mat addFilter) {
-        for (int n1 = 0; n1 < V1Bank.HCC.length; n1++) {
-            for (int f = 0; f < Config.freqs; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        for (int z = 0; z < V1Bank.HCC[n1][f][n2].Cells.length; z++) {
-                            Cell dst = V1Bank.HCC[n1][f][n2].Cells[z][i];
-                            rFeedback(filter, dst, dst.mat, value, c, addFilter);
 
-                        }
+        for (int f = 0; f < Config.freqs; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
+                for (int i = 0; i < Config.gaborOrientations; i++) {
+                    for (int z = 0; z < V1Bank.HCC[f][n2].Cells.length; z++) {
+                        Cell dst = V1Bank.HCC[f][n2].Cells[z][i];
+                        rFeedback(filter, dst, dst.mat, value, c, addFilter);
+
                     }
                 }
             }
         }
+
         Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
@@ -151,18 +151,18 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV1HyperComplexCellsOrientation(Mat filter, double value, double c, Mat addFilter, int i) {
-        for (int n1 = 0; n1 < V1Bank.HCC.length; n1++) {
-            for (int f = 0; f < Config.freqs; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
 
-                    for (int z = 0; z < V1Bank.HCC[n1][f][n2].Cells.length; z++) {
-                        Cell dst = V1Bank.HCC[n1][f][n2].Cells[z][i];
-                        rFeedback(filter, dst, dst.mat, value, c, addFilter);
-                    }
+        for (int f = 0; f < Config.freqs; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
 
+                for (int z = 0; z < V1Bank.HCC[f][n2].Cells.length; z++) {
+                    Cell dst = V1Bank.HCC[f][n2].Cells[z][i];
+                    rFeedback(filter, dst, dst.mat, value, c, addFilter);
                 }
+
             }
         }
+
         Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
@@ -173,18 +173,18 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV2(Mat filter, double value, double c, Mat addFilter) {
-        for (int n1 = 0; n1 < V2Bank.AC.length; n1++) {
-            for (int f = 0; f < Config.freqsV2; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
-                    for (int i = 0; i < V2Bank.AC[0][0][0].Cells.length; i++) {
-                        for (int z = 0; z < V2Bank.AC[0][0][0].Cells[0].length; z++) {
-                            Cell dst = V2Bank.AC[n1][f][n2].Cells[i][z];
-                            rFeedback(filter, dst, dst.mat, value, c, addFilter);
-                        }
+
+        for (int f = 0; f < Config.freqsV2; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
+                for (int i = 0; i < V2Bank.AC[0][0].Cells.length; i++) {
+                    for (int z = 0; z < V2Bank.AC[0][0].Cells[0].length; z++) {
+                        Cell dst = V2Bank.AC[f][n2].Cells[i][z];
+                        rFeedback(filter, dst, dst.mat, value, c, addFilter);
                     }
                 }
             }
         }
+
         Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
@@ -195,19 +195,19 @@ public class FeedbackProccess extends Activity {
     }
 
     public void addToV2Angle(Mat filter, double value, double c, Mat addFilter, int i) {
-        for (int n1 = 0; n1 < V2Bank.AC.length; n1++) {
-            for (int f = 0; f < Config.freqsV2; f++) {
-                for (int n2 = 0; n2 < numEyes; n2++) {
-                    //for (int i = 0; i < V2Bank.V2CellsBank[0][0].angleCells.length; i++) {
-                    for (int z = 0; z < V2Bank.AC[0][0][0].Cells[0].length; z++) {
-                        Cell dst = V2Bank.AC[n1][f][n2].Cells[i][z];
-                        rFeedback(filter, dst, dst.mat, value, c, addFilter);
 
-                    }
-                    //}
+        for (int f = 0; f < Config.freqsV2; f++) {
+            for (int n2 = 0; n2 < numEyes; n2++) {
+                //for (int i = 0; i < V2Bank.V2CellsBank[0][0].angleCells.length; i++) {
+                for (int z = 0; z < V2Bank.AC[0][0].Cells[0].length; z++) {
+                    Cell dst = V2Bank.AC[f][n2].Cells[i][z];
+                    rFeedback(filter, dst, dst.mat, value, c, addFilter);
+
                 }
+                //}
             }
         }
+
         Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {

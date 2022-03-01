@@ -17,9 +17,9 @@ public class InitCellMemory {
     
     public static void initCellMemory(){
         //extra,frequencies,eyes
-        LGNBank.initializeCells(1,1,2);
-        V1Bank.initializeCells(1,2,2);
-        V2Bank.initializeCells(1,1,2);
+        LGNBank.initializeCells(1);
+        V1Bank.initializeCells();
+        V2Bank.initializeCells();
     }
     
 }
