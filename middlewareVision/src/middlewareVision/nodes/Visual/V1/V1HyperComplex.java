@@ -86,7 +86,6 @@ public class V1HyperComplex extends Activity {
                 HCC[x1][x2].convolve(CC[x1][x2].Cells);
             }
         }
-
     }
 
     /*

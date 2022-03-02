@@ -19,7 +19,7 @@ import org.opencv.core.Scalar;
 public class MatrixUtils {
 
     /**
-     * create a matrix with the maximun value of an array of matrixes
+     * create a matrix with the maximum value of an array of matrixes
      *
      * @param mat
      * @return a mat of doubles
@@ -41,7 +41,20 @@ public class MatrixUtils {
         }
         return result;
     }
-    
+
+    /**
+     * Create a matrix with the maximum value from an ArrayList of OpenCV Mar
+     * @param mat is the ArrayList of OpenCV Mats
+     * @return an OpenCV Mat with the maximum values of each Mat
+     */
+    public static Mat maxSum(ArrayList<Mat> matL) {
+        Mat[] matArray = new Mat[matL.size()];
+        for(int i=0;i<matL.size();i++){
+            matArray[i]=matL.get(i);
+        }       
+        return maxSum(matArray);
+    }
+
     public static Mat maxSum(Cell... mat) {
 
         Mat result = Mat.zeros(mat[0].mat.height(), mat[0].mat.width(), CvType.CV_32FC1);
@@ -75,12 +88,12 @@ public class MatrixUtils {
         }
         return max;
     }
-    
-    public static Mat multiply(Mat [] mat){
-        Mat mul=Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
+
+    public static Mat multiply(Mat[] mat) {
+        Mat mul = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         Core.add(mul, new Scalar(1), mul);
         Core.multiply(mul, mat[0], mul);
-        for(int i=1;i<mat.length;i++){
+        for (int i = 1; i < mat.length; i++) {
             Core.multiply(mul, mat[i], mul);
         }
         return mul;

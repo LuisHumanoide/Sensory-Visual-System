@@ -14,6 +14,7 @@ import middlewareVision.nodes.Visual.LGN.LGN;
 import middlewareVision.nodes.Visual.V4.V4Memory;
 import utils.SpecialKernels;
 import middlewareVision.nodes.Attention.TestAttention;
+import middlewareVision.nodes.Visual.MT.MT;
 //@import
 
 
@@ -34,7 +35,8 @@ public class Init extends Igniter {
             V1.class.getName(),
             V2.class.getName(), //V4.class.getName(),
         //TestAttention.class.getName(),
-        //@addNodes
+        MT.class.getName(),
+		//@addNodes
         };
 
         //SimpleLogger.setDebug(DEBUG);

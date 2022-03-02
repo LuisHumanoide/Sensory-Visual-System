@@ -71,19 +71,5 @@ public class MotionCellsV1 {
         }
     }
 
-    /**
-     * Performs the motion detection, based on Reitchard motion 
-     */
-    public void motionProcess() {
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < Config.gaborOrientations * 2; j++) {
-                cells[i][j].motionProcess(cells[i][j % Config.gaborOrientations].previous[0].mat);
-                //performs the substraction 
-                Core.subtract(cells[i][j % (Config.gaborOrientations * 2)].mat1st, cells[i][(j + Config.gaborOrientations ) % (Config.gaborOrientations * 2)].mat1st,
-                        cells[i][j % (Config.gaborOrientations * 2)].mat);               
-            }
-        }
-        createComposedCells();
-    }
 
 }

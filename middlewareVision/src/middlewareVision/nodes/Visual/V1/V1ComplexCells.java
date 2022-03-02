@@ -83,14 +83,20 @@ public class V1ComplexCells extends Activity {
 
             }*/
             if (spike.getModality() == Modalities.VISUAL) {
-                energyProcessCC();
+                
+                energyProcessAll();
+                
                 for (int k = 0; k < Config.gaborBanks; k++) {
                     for (int i = 0; i < Config.gaborOrientations; i++) {
+                        
                         Visualizer.setImage(V1Bank.CC[k][0].Cells[i].mat, "Complex L" + k + " " + i, Visualizer.getRow("SCsup") + 2 * k, i);
                         Visualizer.setImage(V1Bank.CC[k][1].Cells[i].mat, "Complex R" + k + " " + i, Visualizer.getRow("SCsup") + 2 * k + 1, i);
+                        
                         if (i == Config.gaborOrientations - 1) {
+                            
                             V1Bank.CC[k][0].sumCell.mat = Functions.maxSum(V1Bank.CC[k][0].Cells);
                             V1Bank.CC[k][1].sumCell.mat = Functions.maxSum(V1Bank.CC[k][1].Cells);
+                            
                             Visualizer.setImage(V1Bank.CC[k][0].sumCell.mat, "Combined Complex L" + k + " ", Visualizer.getRow("SCsup") + 2 * k, i + 2);
                             Visualizer.setImage(V1Bank.CC[k][1].sumCell.mat, "Combined Complex R" + k + " ", Visualizer.getRow("SCsup") + 2 * k + 1, i + 2);
                         }
@@ -98,9 +104,11 @@ public class V1ComplexCells extends Activity {
                     }
 
                 }
+                
                 Visualizer.addLimit("CC", Visualizer.getRow("SCsup") + 2 * (Config.gaborBanks - 1) + 1);
 
                 LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                
                 send(AreaNames.V1HyperComplex, sendSpike.getByteArray());
                 send(AreaNames.V1MotionCellsNew, sendSpike.getByteArray());
 
@@ -118,16 +126,33 @@ public class V1ComplexCells extends Activity {
         }
     }
 
-    void energyProcessCC() {
+    /**
+     * Performs the energy process for all cells with different filters
+     */
+    void energyProcessAll() {
         int i1 = CC.length;
         int i2 = CC[0].length;
 
         for (int x1 = 0; x1 < i1; x1++) {
             for (int x2 = 0; x2 < i2; x2++) {
-                CC[x1][x2].energyProcess();
+                energyProcess(x1, x2);
             }
         }
 
+    }
+
+    /**
+     * Performs the energy process for one class of complex cell <br>
+     * each class of complex cells is determined by the filter settled<br>
+     * in the list of Gabor Filters
+     * @param x1 Gabor filter type
+     * @param x2 eye
+     */
+    public void energyProcess(int x1, int x2) {
+        int x = CC[x1][x2].Cells.length;
+        for (int i = 0; i < x; i++) {
+            CC[x1][x2].Cells[i].mat = Functions.energyProcess(CC[x1][x2].simpleCells.Even[i].mat, CC[x1][x2].simpleCells.Odd[i].mat);
+        }
     }
 
 }

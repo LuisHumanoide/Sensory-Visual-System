@@ -166,7 +166,7 @@ public class Functions {
      * @param angle
      * @return 
      */
-    public static Mat motionProcess(Mat[] T, int dx, double angle) {
+    public static Mat stage1MotionProcess(Mat[] T, int dx, double angle) {
         Mat result = new Mat();
         for(int i=1;i<T.length;i++){
             T[i]=SpecialKernels.displaceKernel(T[i], -angle, dx);

@@ -50,12 +50,6 @@ public class ComplexCells {
         }
     }
 
-    public void energyProcess() {
-        int x = Cells.length;
-        for (int i = 0; i < x; i++) {
-            Cells[i].mat = Functions.energyProcess(simpleCells.Even[i].mat, simpleCells.Odd[i].mat);
-        }
-    }
 
     public ComplexCells(int scale, int number, int n2, int nf) {
         this.scale = scale;

@@ -10,6 +10,7 @@ import VisualMemory.V1Cells.HypercomplexCells;
 import VisualMemory.V1Cells.DoubleOpponentCells;
 import VisualMemory.V1Cells.ComplexCells;
 import MiniPrograms.RF;
+import VisualMemory.MTCells.MTBank;
 import java.io.File;
 import java.util.ArrayList;
 import org.opencv.core.Core;
@@ -73,6 +74,8 @@ public class V1Bank {
                 MC[i2][i3].setPrevious(CC[i2][i3].Cells);
             }
         }
+        
+        MTBank.initializeComponentCells(MC[0][0].cells.length, MC[0][0].cells[0].length, Config.heigth/4);
 
         loadGaborFilters(gaborLines, 2);
         loadHCFilters(hcfiles);
