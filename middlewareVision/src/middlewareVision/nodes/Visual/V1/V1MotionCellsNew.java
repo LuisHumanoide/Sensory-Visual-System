@@ -50,6 +50,8 @@ public class V1MotionCellsNew extends Activity {
                         visualize(j, k);
                     }
                 }
+                
+                Visualizer.lockLimit("v1Motion");
 
                 LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                 send(AreaNames.MTComponentCells, sendSpike1.getByteArray());
@@ -74,14 +76,14 @@ public class V1MotionCellsNew extends Activity {
         for (int i = 0; i < i3; i++) {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                 if (j < Config.gaborOrientations) {
-                    Visualizer.setImage(MC[x1][x2].cells[i][j].mat, "motion", (i1 * i2 * x1) + (i * i2 * 2) + x2, 6 + j);
+                    Visualizer.setImage(MC[x1][x2].cells[i][j].mat, "motion V1", (i1 * i2 * x1) + (i * i2 * 2) + x2, Config.gaborOrientations + 2 + j, "v1motion");
                 } else {
-                    Visualizer.setImage(MC[x1][x2].cells[i][j].mat, "motion", (i1 * i2 * x1) + (1 + i * i2 * 2) + x2, 6 + (j - Config.gaborOrientations));
+                    Visualizer.setImage(MC[x1][x2].cells[i][j].mat, "opposite motion V1", (i1 * i2 * x1) + (1 + i * i2 * 2) + x2,
+                            Config.gaborOrientations + 2 + (j - Config.gaborOrientations), "v1motion");
                 }
             }
         }
     }
-
 
     /**
      * Performs the motion detection, based on <b> Reichardt Detectors</b>

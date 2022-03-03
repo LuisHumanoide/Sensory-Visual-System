@@ -17,6 +17,8 @@ import utils.Config;
 public class Cell {
 
     public Mat mat;
+    //Extra Matrix
+    public Mat eMat;
     public Cell[] previous;
     public Cell[] next;
     public int id;
@@ -79,6 +81,7 @@ public class Cell {
      */
     public Cell(int size){
         mat = Mat.zeros(new Size(size,size), CvType.CV_32FC1);
+        eMat = Mat.zeros(new Size(size,size), CvType.CV_32FC1);
     }
     
     /**

@@ -75,7 +75,7 @@ public class V1Bank {
             }
         }
         
-        MTBank.initializeComponentCells(MC[0][0].cells.length, MC[0][0].cells[0].length, Config.heigth/4);
+        MTBank.initializeComponentCells(MC[0][0].cells.length, MC[0][0].cells[0].length, Config.motionWidth);
 
         loadGaborFilters(gaborLines, 2);
         loadHCFilters(hcfiles);

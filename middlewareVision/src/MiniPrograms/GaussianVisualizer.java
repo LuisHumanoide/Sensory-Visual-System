@@ -232,7 +232,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 zoomSliderMouseDragged(evt);
             }
         });
-        jPanel2.add(zoomSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
+        jPanel2.add(zoomSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 300, -1));
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Zoom");
