@@ -35,16 +35,6 @@ public class SimpleCells {
         oddFilter = new Mat[Config.gaborOrientations];
     }
 
-    /**
-     * Perform the process of filtering with Gabor Filters
-     * @param src 
-     */
-    public void convolve(Mat src) {
-        for (int i = 0; i < Config.gaborOrientations; i++) {
-            Even[i].mat = Functions.filter(src, evenFilter[i]);
-            Odd[i].mat = Functions.filter(src, oddFilter[i]);
-        }
-    }
 
     public SimpleCells(int scale, int number) {
         this.scale = scale;

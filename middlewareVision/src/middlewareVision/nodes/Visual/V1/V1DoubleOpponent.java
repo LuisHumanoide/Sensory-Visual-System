@@ -30,7 +30,7 @@ public class V1DoubleOpponent extends Activity {
 
     /*
     ****************************************************************************
-    Constantes
+    Constants
     ****************************************************************************
      */
     private final int KERNEL_SIZE = 5;
@@ -49,18 +49,7 @@ public class V1DoubleOpponent extends Activity {
     private final String IMAGE_EXTENSION = ".jpg";
     private final String TEXT_EXTENSION = ".txt";
 
-    /*
-    ****************************************************************************
-    Variables
-    ****************************************************************************
-     */
- /*
-    MATRICES DEL LGN
-     */
- /*
-    MATRICES PROCESADAS DOBLE OPONENTES
-     */
-    //Mat DKL2[];
+
     int indexFrame = 8;
 
     /*
@@ -114,13 +103,9 @@ public class V1DoubleOpponent extends Activity {
         }
     }
 
-    /*
-    ****************************************************************************
-    METODOS
-    ****************************************************************************
-     */
+
     /**
-     * transduction
+     * Perform the transduction process 
      *
      * @param DKL
      */
@@ -131,7 +116,7 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     *
+     * 
      * @param DKL
      * @param path
      */
@@ -147,7 +132,7 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     *
+     * Perform the LMM Process
      * @param DKL
      * @return
      */
@@ -171,7 +156,8 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     *
+     * Perform SMPPM Process
+     * Read Madrigal Thesis for further details
      * @param DKL
      * @return
      */

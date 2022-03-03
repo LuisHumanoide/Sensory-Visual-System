@@ -70,13 +70,5 @@ public class HypercomplexCells {
         filters[index]=filter.clone();
     }
     
-    public void convolve(Cell[] cell){
-        for(int i=0;i<Cells.length;i++){
-            for(int j=0;j<Config.gaborOrientations;j++){
-                float angle = j * inc;
-                Cells[i][j].mat=Functions.filter(cell[j].mat, SpecialKernels.rotateKernelRadians(filters[i], angle));
-            }
-        }
-    }
     
 }

@@ -18,7 +18,6 @@ public class V2 extends Area{
         this.ID = AreaNames.V2;
         this.namer = AreaNames.class;
         addProcess(V2AngularCells.class);
-        addProcess(V2IlusoryCells.class);
 	
 	addProcess(V2CurvatureCells.class);
 	

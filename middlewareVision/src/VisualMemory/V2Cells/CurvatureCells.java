@@ -26,6 +26,14 @@ public class CurvatureCells {
     int nCurvatures;
     float inc;
 
+    /**
+     * Curvature Cells constructor
+     * @param cells 
+     * @param composedCells
+     * @param filters
+     * @param nAngleDivisions
+     * @param nCurvatures 
+     */
     public CurvatureCells(Cell[][] cells, Cell[] composedCells, CurvatureFilter[][] filters, int nAngleDivisions, int nCurvatures) {
         this.cells = cells;
         this.composedCells = composedCells;
@@ -34,6 +42,12 @@ public class CurvatureCells {
         this.nCurvatures = nCurvatures;
     }
 
+    /**
+     * Curvature Cells constructor, useful when the number of curvatures and<br>
+     * number of angle divisions is provided
+     * @param nCurvatures number of curvatures provided by the user
+     * @param nAngleDivisions number of angle divisions
+     */
     public CurvatureCells(int nCurvatures, int nAngleDivisions) {
         this.nAngleDivisions = nAngleDivisions;
         this.nCurvatures = nCurvatures;
@@ -44,12 +58,21 @@ public class CurvatureCells {
         loadCells();
     }
 
+    /**
+     * Generate the curvature filters by loading the files in the curvature folder<br>
+     * for adding or modifying the filters it is necessary to open the curvature edit sub-program
+     * @param fileContent 
+     * @param cIndex 
+     */
     private void generateCurvatureFiltersByFile(String fileContent, int cIndex) {
         for (int i = 0; i < nAngleDivisions; i++) {
             filters[cIndex][i] = new CurvatureFilter(fileContent, inc * i);
         }
     }
     
+    /**
+     * It creates the curvature cells
+     */
     private void loadCells(){
         for(int i=0;i<nCurvatures;i++){
             for(int j=0;j<nAngleDivisions;j++){
@@ -59,6 +82,11 @@ public class CurvatureCells {
         }
     }
 
+    /**
+     * It generates all the filters from all the files in the<br>
+     * curvature folder
+     * @param folder 
+     */
     public void generateFiltersByFolder(String folder) {
         String fileNames[] = FileUtils.getFiles(folder);
         for (int i = 0; i < fileNames.length; i++) {
@@ -67,14 +95,6 @@ public class CurvatureCells {
         }
     }
     
-    public void filterCurvatureCells(Mat src){
-        for(int i=0;i<nCurvatures;i++){
-            for(int j=0;j<nAngleDivisions;j++){
-                cells[i][j].mat=Functions.curvatureFiltering(src, filters[i][j], true);
-            }
-            composedCells[i].mat=Functions.maxSum(cells[i]);
-        }
-    }
 
     public Cell[][] getCells() {
         return cells;

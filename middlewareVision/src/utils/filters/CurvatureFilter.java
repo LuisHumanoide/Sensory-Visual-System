@@ -56,6 +56,9 @@ public class CurvatureFilter {
         generateFilters();
     }
 
+    /**
+     * Generate the curvature filters 
+     */
     public void generateFilters() {
         concaveFilters = new Mat[n];
         convexFilters = new Mat[n];

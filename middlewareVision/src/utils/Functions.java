@@ -76,7 +76,7 @@ public class Functions {
     }
 
     /**
-     *
+     * 
      * @param src1
      * @param src2
      * @param l3
@@ -118,11 +118,18 @@ public class Functions {
     }
 
     /**
-     * Perform the curvature filtering
+     * Perform the curvature filtering <br>
+     * the model can be seen in the paper <br>
+     * <i>10.3389/fncom.2013.00067 </i><br><br>
+     * 
+     * It consist in Gabor Filters arranged in a curvature trajectory<br>
+     * there is a convex and concave trajectory<br>
+     * the activations of the filters are multiplied and <br>
+     * there is a difference between the concave and convex results
      *
      * @param src the original image to filter
      * @param cFilter the curvature filter class
-     * @param convex if it's neccesary to substract the convex result
+     * @param convex if it's necessary to subtract the convex result
      * @return the activation matrix corresponding to an specific curvature in
      * an specific orientation
      */
