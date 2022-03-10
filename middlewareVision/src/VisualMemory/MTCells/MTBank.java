@@ -20,6 +20,7 @@ public class MTBank {
 
     //[eye]
     public static ComponentCells[] MTCC;
+    public static PatternCells[] MTPC;
 
     /**
      * Initialize <b>MT Component Cells</b><br>
@@ -33,6 +34,14 @@ public class MTBank {
         for (int i = 0; i < 2; i++) {
             MTCC[i] = new ComponentCells(d1, d2, size);
         }
+        initializePatternCells(d1 * d2, size);
     }
-    
+
+    public static void initializePatternCells(int n, int size) {
+        MTPC = new PatternCells[2];
+        for (int i = 0; i < 2; i++) {
+            MTPC[i] = new PatternCells(n, size);
+        }
+    }
+
 }

@@ -42,15 +42,12 @@ public class MTComponentCells extends Activity {
         try {
             LongSpike spike = new LongSpike(data);
             if (spike.getModality() == Modalities.VISUAL) {
-                mergeV1MotionCells(0);
+                mergeV1MotionCells(0);              
                 opponentProcess(0);
-                //eyes = MTBank.MTCC.length;
-
+                
                 visualize(0);
-
+                
                 Visualizer.lockLimit("mtComp");
-
-                //Visualizer.setImageFull(MTBank.MTCC[0].CCells[1][0].mat, "test", Visualizer.getRow("v1motion") + 1, 6);
             }
 
         } catch (Exception ex) {
@@ -113,6 +110,11 @@ public class MTComponentCells extends Activity {
         mergeV1MotionCells(1);
     }
 
+    /**
+     * Performs the speed opponent process where the cells with the same magnitude<br>
+     * of speed but different directions are subtracted.<br>
+     * @param eye 
+     */
     public void opponentProcess(int eye) {
         for (int i = 0; i < MTCC[0].CCells.length; i++) {
             for (int j = 0; j < MTCC[0].CCells[0].length; j++) {
@@ -125,6 +127,9 @@ public class MTComponentCells extends Activity {
         }
     }
     
+    /**
+     * Performs the speed opponent process for both eyes
+     */
     public void opponentProcess(){
         opponentProcess(0);
         opponentProcess(1);

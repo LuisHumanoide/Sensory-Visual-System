@@ -49,6 +49,8 @@ public class AreaNames {
 	public static int MT = IDHelper.generateID("MT", 0, 0);
 	public static int MTComponentCells = IDHelper.generateID("MT", 1 , 0);
 	
+	public static int MTPatternCells = IDHelper.generateID("MT", 2 , 0);
+	
 	//@addNodes
         //no quitar el comentario de add Nodes
 }

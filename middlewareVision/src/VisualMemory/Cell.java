@@ -23,6 +23,8 @@ public class Cell {
     public Cell[] next;
     public int id;
     public Mat filter;
+    
+    public int ids[];
 
     /**
      * Return the OpenCV Mat
@@ -54,6 +56,10 @@ public class Cell {
      */
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setIds(int ... ids){
+        ids=ids;
     }
     
     /**

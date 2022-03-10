@@ -14,7 +14,9 @@ public class MT extends Area {
         this.namer = AreaNames.class;
         addProcess(MTComponentCells.class);
 
-//@AddProcess
+addProcess(MTPatternCells.class);
+	
+	//@AddProcess
     }
 
     @Override
@@ -26,7 +28,9 @@ public class MT extends Area {
     public void receive(int nodeID, byte[] data) {
         send(AreaNames.MTComponentCells, data);
 
-//@SendProcess
+send(AreaNames.MTPatternCells,data);
+	
+	//@SendProcess
     }
 
 }

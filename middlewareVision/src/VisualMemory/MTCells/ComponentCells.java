@@ -28,6 +28,7 @@ public class ComponentCells {
         for (int i = 0; i < d1; i++) {
             for (int j = 0; j < d2; j++) {
                 CCells[i][j] = new Cell(sizeComponent);
+                CCells[i][j].setIds(i,j);
             }
         }
     }
