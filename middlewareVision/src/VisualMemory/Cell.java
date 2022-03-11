@@ -23,6 +23,33 @@ public class Cell {
     public Cell[] next;
     public int id;
     public Mat filter;
+
+    public Mat geteMat() {
+        return eMat;
+    }
+
+    public void seteMat(Mat eMat) {
+        this.eMat = eMat;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+    
+    double speed;
+    double angle;
     
     public int ids[];
 

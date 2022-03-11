@@ -42,12 +42,17 @@ public class MTComponentCells extends Activity {
         try {
             LongSpike spike = new LongSpike(data);
             if (spike.getModality() == Modalities.VISUAL) {
-                mergeV1MotionCells(0);              
+                
+                mergeV1MotionCells(0);  
+                
                 opponentProcess(0);
                 
                 visualize(0);
                 
                 Visualizer.lockLimit("mtComp");
+                
+                LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                send(AreaNames.MTPatternCells, sendSpike1.getByteArray());
             }
 
         } catch (Exception ex) {

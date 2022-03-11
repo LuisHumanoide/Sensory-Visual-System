@@ -5,24 +5,31 @@
  */
 package VisualMemory.MTCells;
 
-import VisualMemory.PatternCell;
+import VisualMemory.Cell;
 
 /**
  *
  * @author HumanoideFilms
  */
 public class PatternCells {
-    
-    
-    PatternCell Cells [];
-    
-    public PatternCells(int n, int size){
-        Cells=new PatternCell[n];
-        for(int i=0;i<n;i++){
-            Cells[i]=new PatternCell(size);
+
+    public Cell Cells[];
+
+    public PatternCells(int n, int size) {
+        Cells = new Cell[n];
+        for (int i = 0; i < n; i++) {
+            Cells[i] = new Cell(size);
         }
     }
     
-    
-    
+   /* public void setPrevious(int d1, int d2){
+        for(int i=0;i<d1;i++){
+            for(int j=0;j<d2;j++){
+                utils.Msg.print(j+i*d2+"  es "+i+"   "+j);
+                Cells[j+i*d2].setPrevious(MTBank.);
+            }
+        }
+    }*/
+
+
 }

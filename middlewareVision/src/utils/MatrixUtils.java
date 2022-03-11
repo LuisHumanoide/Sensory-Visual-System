@@ -98,5 +98,15 @@ public class MatrixUtils {
         }
         return mul;
     }
+    
+    public static Mat multiply(Cell[] mat) {
+        Mat mul = Mat.zeros(mat[0].mat.width(), mat[0].mat.height(), CvType.CV_32FC1);
+        Core.add(mul, new Scalar(1), mul);
+        Core.multiply(mul, mat[0].mat, mul);
+        for (int i = 1; i < mat.length; i++) {
+            Core.multiply(mul, mat[i].mat, mul);
+        }
+        return mul;
+    }
 
 }
