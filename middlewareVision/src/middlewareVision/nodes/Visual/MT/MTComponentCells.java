@@ -96,6 +96,7 @@ public class MTComponentCells extends Activity {
                 }
 
                 Imgproc.resize(MatrixUtils.maxSum(arrayMat), MTCC[eye].CCells[j][k].eMat, MTCC[eye].CCells[j][k].eMat.size());
+                
                 arrayMat.clear();
             }
         }

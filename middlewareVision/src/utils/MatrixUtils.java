@@ -10,7 +10,12 @@ import java.util.ArrayList;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import static org.opencv.imgproc.Imgproc.MORPH_RECT;
+import static org.opencv.imgproc.Imgproc.getStructuringElement;
 
 /**
  *
@@ -98,7 +103,7 @@ public class MatrixUtils {
         }
         return mul;
     }
-    
+
     public static Mat multiply(Cell[] mat) {
         Mat mul = Mat.zeros(mat[0].mat.width(), mat[0].mat.height(), CvType.CV_32FC1);
         Core.add(mul, new Scalar(1), mul);
@@ -107,6 +112,20 @@ public class MatrixUtils {
             Core.multiply(mul, mat[i].mat, mul);
         }
         return mul;
+    }
+    
+    public static Mat [] basicDilate(Cell[] mats, int blurSize, int kernelSize){
+        Mat blur[]=new Mat[mats.length];
+        Mat element = getStructuringElement( MORPH_RECT,
+                       new Size( 2*blurSize + 1, 2*blurSize+1 ),
+                       new Point( blurSize, blurSize ) );
+        for(int i=0;i<mats.length;i++){
+            blur[i]=mats[i].mat.clone();
+            Imgproc.dilate(blur[i], blur[i],element);
+            //Imgproc.dil
+            //Imgproc.GaussianBlur(blur[i], blur[i], new Size(kernelSize, kernelSize), blurSize);
+        }
+        return blur;       
     }
 
 }

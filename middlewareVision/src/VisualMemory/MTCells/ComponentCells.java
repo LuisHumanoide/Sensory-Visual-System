@@ -6,6 +6,7 @@
 package VisualMemory.MTCells;
 
 import VisualMemory.Cell;
+import VisualMemory.V1Cells.V1Bank;
 
 /**
  *
@@ -29,6 +30,12 @@ public class ComponentCells {
             for (int j = 0; j < d2; j++) {
                 CCells[i][j] = new Cell(sizeComponent);
                 CCells[i][j].setIds(i,j);
+                
+                CCells[i][j].setSpeed(V1Bank.MC[0][0].cells[i][j].getSpeed());
+                CCells[i][j].setAngle(V1Bank.MC[0][0].cells[i][j].getAngle());
+                
+                utils.Msg.print("speed "+CCells[i][j].getSpeed()+"  angle "+CCells[i][j].getAngle());
+                
             }
         }
     }

@@ -10,6 +10,7 @@ import VisualMemory.V1Cells.V1Bank;
 import java.util.ArrayList;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import utils.Functions;
 import utils.MatrixUtils;
 
 /**
@@ -71,6 +72,11 @@ public class MTBank {
             for(int j=i+1;j<n;j++){
                 //utils.Msg.print(c+"     "+i/CCd2+"  "+i%CCd2+"-------"+j/CCd2+"  "+j%CCd2);
                 MTPC[eye].Cells[c].setPrevious(MTCC[eye].CCells[i/CCd2][i%CCd2],MTCC[eye].CCells[j/CCd2][j%CCd2]);
+                double velocity[]=Functions.IoCProcess(MTCC[eye].CCells[i/CCd2][i%CCd2].getSpeed(), MTCC[eye].CCells[i/CCd2][i%CCd2].getAngle(), 
+                        MTCC[eye].CCells[j/CCd2][j%CCd2].getSpeed(), MTCC[eye].CCells[j/CCd2][j%CCd2].getAngle());
+                MTPC[eye].Cells[c].setSpeed(velocity[0]);
+                MTPC[eye].Cells[c].setAngle(velocity[1]);
+                utils.Msg.print("speed  MT "+MTPC[eye].Cells[c].getSpeed()+"  angle "+MTPC[eye].Cells[c].getAngle());
                 c++;
             }
         }

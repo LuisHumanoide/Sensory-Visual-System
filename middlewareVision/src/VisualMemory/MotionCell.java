@@ -30,11 +30,9 @@ public class MotionCell extends Cell {
     int dt;
     //distance displacement
     int dx;
-    double angle;
 
     int timeCount = 0;
 
-    double speed;
 
     /**
      * Void constructor

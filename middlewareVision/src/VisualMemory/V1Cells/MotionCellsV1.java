@@ -45,8 +45,12 @@ public class MotionCellsV1 {
                 composedCells[i] = new Cell();
                 for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                     cells[i][j] = new MotionCell();
+                    /*
+                    Set dx/dt and angles
+                    */
                     cells[i][j].setDxDt(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
                     cells[i][j].setId(j);
+                    cells[i][j].setAngle((double)(Math.PI/2)*j);
                 }
             }
         } else {

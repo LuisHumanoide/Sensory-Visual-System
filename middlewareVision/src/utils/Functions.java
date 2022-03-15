@@ -14,7 +14,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import static org.opencv.imgproc.Imgproc.getGaborKernel;
 import utils.filters.CurvatureFilter;
 
 /**
@@ -113,6 +112,12 @@ public class Functions {
         return dst;
     }
 
+    /**
+     * Performs the max summation with Cells <br>
+     * the result is loaded on the Mat parameter from the Cell class
+     * @param cells array of cells
+     * @return an opencv matrix
+     */
     public static Mat maxSum(Cell... cells) {
         return MatrixUtils.maxSum(cells);
     }
@@ -182,6 +187,27 @@ public class Functions {
         result=SpecialKernels.displaceKernel(result,-angle,(int)(-dx*(T.length/2)));
         return result;
     }
+
+    /**
+     * Implementation of the Intersection of Constrains based on the model <br>
+     * developed in Desmos app: <br>
+     * https://www.desmos.com/calculator/vdh8bzudes
+     * @param i1 is the intensity of the first vector
+     * @param a1 angle of the first vector
+     * @param i2 intensity of the second vector
+     * @param a2 angle of the second vector
+     * @return an array of doubles [intensity, angle]
+     */
+    public static double[] IoCProcess(double r1, double a1, double r2, double a2){
+        
+        double x=(double)( (r1*Math.sin(a2)-r2*Math.sin(a1)) / Math.sin(a2-a1) );
+        double y=(double)( (r2*Math.cos(a1)-r1*Math.cos(a2)) / Math.sin(a2-a1) );
+        
+        double[] IoC={Math.sqrt(x*x+y*y),Math.atan(y/x)};
+        return IoC;
+    }
+
+    
 
 
 }

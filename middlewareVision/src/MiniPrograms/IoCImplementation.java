@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 /**
  * https://www.desmos.com/calculator/fmhmpnyd9g
+ *
  * @author Laptop
  */
 public class IoCImplementation extends javax.swing.JFrame {
@@ -35,8 +36,8 @@ public class IoCImplementation extends javax.swing.JFrame {
         jPanel1.add(gpanel);
         vlist = new ArrayList();
         vlist2 = new ArrayList();
-        average=new vector(0,0);
-        average2=new vector(0,0);
+        average = new vector(0, 0);
+        average2 = new vector(0, 0);
         repaint();
     }
 
@@ -169,62 +170,43 @@ public class IoCImplementation extends javax.swing.JFrame {
     }
 
     public void IoCVector(vector v1, vector v2) {
-        double q1 = v1.intensity * Math.cos(v1.angle);
-        double q2 = v1.intensity * Math.sin(v1.angle);
-        double q3 = v1.intensity * Math.cos(v1.angle + Math.PI *0.5);
-        double q4 = v1.intensity * Math.sin(v1.angle + Math.PI *0.5);
-        
-        System.out.println("q1:"+q1+" q2"+q2+" q3:"+q3+" q4:"+q4);
-
-        double w1 = v2.intensity * Math.cos(v2.angle);
-        double w2 = v2.intensity * Math.sin(v2.angle);
-        double w3 = v2.intensity * Math.cos(v2.angle + Math.PI *0.5);
-        double w4 = v2.intensity * Math.sin(v2.angle + Math.PI *0.5);
-        
-        double t0 = (-q4 * (w1 - q1) + q3 * (w2 - q2)) / (q4 * w3 - q3 * w4);
-        double t1 = (w1 - q1 + w3 * t0) / q3;
-        System.out.println("w1:"+w1+" w2"+w2+" w3:"+w3+" w4:"+w4+" t0"+t0+" t1"+t1);
-        double px = q1 + q3 * t1;
-        double py = q2 + q4 * t1;
-
-        double in = Math.sqrt(px * px + py * py);
-        System.out.println("intensity is "+in+" px "+px+" py "+py);
-        double ang = Math.atan2(py, px);
-
-        vector vec = new vector(in, ang);
+        double x=(double)( (v1.intensity*Math.sin(v2.angle)-v2.intensity*Math.sin(v1.angle)) / Math.sin(v2.angle-v1.angle) );
+        double y=(double)( (v2.intensity*Math.cos(v1.angle)-v1.intensity*Math.cos(v2.angle)) / Math.sin(v2.angle-v1.angle) );
+        System.out.println(" x es "+x+"   y es "+y);
+        vector vec = new vector(Math.sqrt(x*x+y*y),Math.atan(y/x));
         vlist2.add(vec);
     }
-    
-    public void vectorAverage(){
-        double sx=0;
-        double sy=0;
-        for(vector v:vlist2){
-            double px=v.intensity*Math.cos(v.angle);
-            double py=v.intensity*Math.sin(v.angle);
-            sx=sx+px;
-            sy=sy+py;
+
+    public void vectorAverage() {
+        double sx = 0;
+        double sy = 0;
+        for (vector v : vlist2) {
+            double px = v.intensity * Math.cos(v.angle);
+            double py = v.intensity * Math.sin(v.angle);
+            sx = sx + px;
+            sy = sy + py;
         }
-        double tx=sx/vlist2.size();
-        double ty=sy/vlist2.size();
+        double tx = sx / vlist2.size();
+        double ty = sy / vlist2.size();
         double in = Math.sqrt(tx * tx + ty * ty);
         double ang = Math.atan2(ty, tx);
-        average=new vector(in,ang);
+        average = new vector(in, ang);
     }
-    
-    public void vectorAverage2(){
-        double sx=0;
-        double sy=0;
-        for(vector v:vlist){
-            double px=v.intensity*Math.cos(v.angle);
-            double py=v.intensity*Math.sin(v.angle);
-            sx=sx+px;
-            sy=sy+py;
+
+    public void vectorAverage2() {
+        double sx = 0;
+        double sy = 0;
+        for (vector v : vlist) {
+            double px = v.intensity * Math.cos(v.angle);
+            double py = v.intensity * Math.sin(v.angle);
+            sx = sx + px;
+            sy = sy + py;
         }
-        double tx=sx/vlist.size();
-        double ty=sy/vlist.size();
+        double tx = sx / vlist.size();
+        double ty = sy / vlist.size();
         double in = Math.sqrt(tx * tx + ty * ty);
         double ang = Math.atan2(ty, tx);
-        average2=new vector(in,ang);
+        average2 = new vector(in, ang);
     }
 
     /**
@@ -318,7 +300,7 @@ class GPanel extends javax.swing.JPanel {
 
         if (iocframe.vlist.size() > 0) {
             for (vector v : iocframe.vlist) {
-                Line(g, v.intensity, v.angle, false,2);
+                Line(g, v.intensity, v.angle, false, 2);
             }
         }
 
@@ -326,15 +308,14 @@ class GPanel extends javax.swing.JPanel {
 
         if (iocframe.vlist2.size() > 0) {
             for (vector v : iocframe.vlist2) {
-                Line(g, v.intensity, v.angle, false,1);
+                Line(g, v.intensity, v.angle, false, 1);
             }
         }
-        
-        /*g.setColor(Color.red);
-        Line(g,iocframe.average.intensity,iocframe.average.angle,false,4);*/
-        
-        g.setColor(Color.green);
-        Line(g,iocframe.average2.intensity,iocframe.average2.angle,false,4);
+
+        g.setColor(Color.red);
+        Line(g, iocframe.average.intensity, iocframe.average.angle, false, 4);
+        /*g.setColor(Color.green);
+        Line(g, iocframe.average2.intensity, iocframe.average2.angle, false, 4);*/
     }
 
     @SuppressWarnings("unchecked")
