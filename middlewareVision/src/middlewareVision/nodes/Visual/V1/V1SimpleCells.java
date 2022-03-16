@@ -2,6 +2,7 @@ package middlewareVision.nodes.Visual.V1;
 
 import VisualMemory.V1Cells.V1Bank;
 import static VisualMemory.V1Cells.V1Bank.SC;
+import generator.ProcessList;
 import spike.Location;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ public class V1SimpleCells extends Activity {
     public V1SimpleCells() {
         this.ID = AreaNames.V1SimpleCells;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     @Override
@@ -52,40 +54,41 @@ public class V1SimpleCells extends Activity {
     @Override
     public void receive(int nodeID, byte[] data) {
         try {
-            /*
+            if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+                /*
             receive spike
-             */
-            LongSpike spike = new LongSpike(data);
-            /*
+                 */
+                LongSpike spike = new LongSpike(data);
+                /*
             extract the variable needed for the sync
-             */
-            Location l = (Location) spike.getLocation();
-            int index = l.getValues()[0];
+                 */
+                Location l = (Location) spike.getLocation();
+                int index = l.getValues()[0];
 
-            if (spike.getModality() == Modalities.VISUAL) {
-                //assign information from LGN to the DKL array matrix
-                //add the index to the sync
-                sync.addReceived(index);
-            }
+                if (spike.getModality() == Modalities.VISUAL) {
+                    //assign information from LGN to the DKL array matrix
+                    //add the index to the sync
+                    sync.addReceived(index);
+                }
 
-            if (sync.isComplete()) {
-                //edge border detection is performed, with phi angle = 0
-                convolveSimpleCells(V1Bank.DOC[0][0].Cells[2].mat, V1Bank.DOC[0][1].Cells[2].mat);
-                
-                visualize();
+                if (sync.isComplete()) {
+                    //edge border detection is performed, with phi angle = 0
+                    convolveSimpleCells(V1Bank.DOC[0][0].Cells[2].mat, V1Bank.DOC[0][1].Cells[2].mat);
 
-                LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
-            }
-
-            if (spike.getModality() == Modalities.ATTENTION) {
-                for (int i = 0; i < Config.gaborOrientations; i++) {
-                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
-                    send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
                     visualize();
+
+                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
+                }
+
+                if (spike.getModality() == Modalities.ATTENTION) {
+                    for (int i = 0; i < Config.gaborOrientations; i++) {
+                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
+                        send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
+                        visualize();
+                    }
                 }
             }
-
         } catch (Exception ex) {
             //Logger.getLogger(V1SimpleCells.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,7 +106,7 @@ public class V1SimpleCells extends Activity {
 
                 Visualizer.setImage(Convertor.Mat2Img(V1Bank.SC[k][1].Even[i].mat), "even R bank" + k + " " + i, 4 * k + 7, i);
                 Visualizer.setImage(Convertor.Mat2Img(V1Bank.SC[k][1].Odd[i].mat), "odd R bank" + k + " " + i, 4 * k + 9, i);
-                
+
                 //Combined or merged simple cells
                 if (i == Config.gaborOrientations - 1) {
                     Visualizer.setImage(Convertor.Mat2Img(Functions.maxSum(V1Bank.SC[k][0].Even)), "Combined even L bank" + k + " " + i, 4 * k + 6, Config.gaborOrientations + 1);

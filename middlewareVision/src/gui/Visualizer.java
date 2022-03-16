@@ -92,6 +92,10 @@ public class Visualizer {
     public static void setImageFull(Mat src, String title, int col, int row, String group) {
         setImage(Scalr.resize(Convertor.Mat2Img(src), Config.heigth), title, col, row, group);
     }
+    
+    public static void setImageFull(BufferedImage image, String title, int col, int row, String group) {
+        setImage(Scalr.resize(image, Config.heigth), title, col, row, group);
+    }
 
     public static void next() {
         vis.next();

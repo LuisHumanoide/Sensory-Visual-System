@@ -2,6 +2,7 @@ package middlewareVision.nodes.Visual.V1;
 
 import VisualMemory.V1Cells.V1Bank;
 import static VisualMemory.V1Cells.V1Bank.MC;
+import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
@@ -26,6 +27,7 @@ public class V1MotionCellsNew extends Activity {
     public V1MotionCellsNew() {
         this.ID = AreaNames.V1MotionCellsNew;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     @Override
@@ -35,31 +37,33 @@ public class V1MotionCellsNew extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-            if (spike.getModality() == Modalities.VISUAL) {
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                if (spike.getModality() == Modalities.VISUAL) {
 
-                for (int j = 0; j < i1; j++) {
-                    for (int k = 0; k < i2; k++) {
-                        motionProcess(j, k);
+                    for (int j = 0; j < i1; j++) {
+                        for (int k = 0; k < i2; k++) {
+                            motionProcess(j, k);
+                        }
                     }
+
+                    for (int j = 0; j < i1; j++) {
+                        for (int k = 0; k < i2; k++) {
+                            visualize(j, k);
+                        }
+                    }
+
+                    Visualizer.lockLimit("v1Motion");
+
+                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    send(AreaNames.MTComponentCells, sendSpike1.getByteArray());
+
                 }
 
-                for (int j = 0; j < i1; j++) {
-                    for (int k = 0; k < i2; k++) {
-                        visualize(j, k);
-                    }
-                }
-                
-                Visualizer.lockLimit("v1Motion");
-
-                LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                send(AreaNames.MTComponentCells, sendSpike1.getByteArray());
-
+            } catch (Exception ex) {
+                Logger.getLogger(V1MotionCellsNew.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (Exception ex) {
-            Logger.getLogger(V1MotionCellsNew.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

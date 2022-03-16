@@ -1,6 +1,7 @@
 @package
 
 import spike.Location;
+import generator.ProcessList;
 import kmiddle2.nodes.activities.Activity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ public class @Process extends Activity {
     public @Process() {
         this.ID = AreaNames.@Process;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
 
@@ -28,11 +30,13 @@ public class @Process extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
 
-        } catch (Exception ex) {
-            Logger.getLogger(@Process.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(@Process.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }  
 

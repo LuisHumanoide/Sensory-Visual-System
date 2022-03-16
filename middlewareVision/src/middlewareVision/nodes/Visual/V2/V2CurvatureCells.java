@@ -2,6 +2,7 @@ package middlewareVision.nodes.Visual.V2;
 
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
@@ -22,6 +23,7 @@ public class V2CurvatureCells extends Activity {
     public V2CurvatureCells() {
         this.ID = AreaNames.V2CurvatureCells;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     int x0, x1, x2;
@@ -32,16 +34,17 @@ public class V2CurvatureCells extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-            if (spike.getModality() == Modalities.VISUAL) {
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                if (spike.getModality() == Modalities.VISUAL) {
 
-                //curvatureProcess();
-
-                //visualize();
+                    //curvatureProcess();
+                    //visualize();
+                }
+            } catch (Exception ex) {
+                //Logger.getLogger(V2CurvatureCells.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception ex) {
-            //Logger.getLogger(V2CurvatureCells.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -75,7 +78,9 @@ public class V2CurvatureCells extends Activity {
     }
 
     /**
-     * Perform the <b>curvature process</b> for an specific index of Gabor filter and eye
+     * Perform the <b>curvature process</b> for an specific index of Gabor
+     * filter and eye
+     *
      * @param x1 correspond to the index of Gabor filter
      * @param x2 correspond to the eye
      * @param src is the source matrix in witch the process will perform

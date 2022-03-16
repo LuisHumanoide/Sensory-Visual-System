@@ -15,6 +15,7 @@ import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
 import utils.LongSpike;
+import utils.Msg;
 import utils.numSync;
 
 /**
@@ -46,6 +47,7 @@ public class V4Color extends Activity {
     public void receive(int nodeID, byte[] data) {
         try {
 
+           
             LongSpike spike = new LongSpike(data);
             Location l = (Location) spike.getLocation();
             int i1 = l.getValues()[0];

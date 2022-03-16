@@ -2,6 +2,7 @@ package middlewareVision.nodes.Visual.V1;
 
 import VisualMemory.LGNCells.LGNBank;
 import VisualMemory.V1Cells.V1Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import imgio.RetinalImageIO;
 import imgio.RetinalTextIO;
@@ -49,7 +50,6 @@ public class V1DoubleOpponent extends Activity {
     private final String IMAGE_EXTENSION = ".jpg";
     private final String TEXT_EXTENSION = ".txt";
 
-
     int indexFrame = 8;
 
     /*
@@ -60,6 +60,7 @@ public class V1DoubleOpponent extends Activity {
     public V1DoubleOpponent() {
         this.ID = AreaNames.V1DoubleOpponent;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     @Override
@@ -70,42 +71,43 @@ public class V1DoubleOpponent extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-            Location l = (Location) spike.getLocation();
-            int i1 = l.getValues()[0];
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                Location l = (Location) spike.getLocation();
+                int i1 = l.getValues()[0];
 
-            if (spike.getModality() == Modalities.VISUAL) {
-                sync.addReceived(i1);
-            }
-            if (sync.isComplete()) {
-                Mat DKL_L[] = {LGNBank.SOC[0][0].Cells[0].mat,
-                    LGNBank.SOC[0][0].Cells[1].mat,
-                    LGNBank.SOC[0][0].Cells[2].mat
-                };
-                Mat DKL_R[] = {LGNBank.SOC[0][1].Cells[0].mat,
-                    LGNBank.SOC[0][1].Cells[1].mat,
-                    LGNBank.SOC[0][1].Cells[2].mat
-                };
-                transduction(DKL_L, 0);
-                transduction(DKL_R, 1);
-                for (int i = 0; i < 3; i++) {
-                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, 1), 0, 0);
-                    send(AreaNames.V4Color, sendSpike.getByteArray());
-                    send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
-                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
-                    Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
+                if (spike.getModality() == Modalities.VISUAL) {
+                    sync.addReceived(i1);
                 }
-            }
+                if (sync.isComplete()) {
+                    Mat DKL_L[] = {LGNBank.SOC[0][0].Cells[0].mat,
+                        LGNBank.SOC[0][0].Cells[1].mat,
+                        LGNBank.SOC[0][0].Cells[2].mat
+                    };
+                    Mat DKL_R[] = {LGNBank.SOC[0][1].Cells[0].mat,
+                        LGNBank.SOC[0][1].Cells[1].mat,
+                        LGNBank.SOC[0][1].Cells[2].mat
+                    };
+                    transduction(DKL_L, 0);
+                    transduction(DKL_R, 1);
+                    for (int i = 0; i < 3; i++) {
+                        LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, 1), 0, 0);
+                        send(AreaNames.V4Color, sendSpike.getByteArray());
+                        send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
+                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
+                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
+                    }
+                }
 
-        } catch (Exception ex) {
-            //Logger.getLogger(V1DoubleOpponent.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                //Logger.getLogger(V1DoubleOpponent.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-
     /**
-     * Perform the transduction process 
+     * Perform the transduction process
      *
      * @param DKL
      */
@@ -116,7 +118,7 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     * 
+     *
      * @param DKL
      * @param path
      */
@@ -133,6 +135,7 @@ public class V1DoubleOpponent extends Activity {
 
     /**
      * Perform the LMM Process
+     *
      * @param DKL
      * @return
      */
@@ -156,8 +159,8 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     * Perform SMPPM Process
-     * Read Madrigal Thesis for further details
+     * Perform SMPPM Process Read Madrigal Thesis for further details
+     *
      * @param DKL
      * @return
      */

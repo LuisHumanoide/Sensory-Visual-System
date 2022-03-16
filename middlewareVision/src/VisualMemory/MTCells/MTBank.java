@@ -24,6 +24,7 @@ public class MTBank {
     public static PatternCells[] MTPC;
     static int CCd1;
     static int CCd2;
+    public static double maxSpeed=0;
 
     /**
      * Initialize <b>MT Component Cells</b><br>
@@ -76,7 +77,10 @@ public class MTBank {
                         MTCC[eye].CCells[j/CCd2][j%CCd2].getSpeed(), MTCC[eye].CCells[j/CCd2][j%CCd2].getAngle());
                 MTPC[eye].Cells[c].setSpeed(velocity[0]);
                 MTPC[eye].Cells[c].setAngle(velocity[1]);
-                utils.Msg.print("speed  MT "+MTPC[eye].Cells[c].getSpeed()+"  angle "+MTPC[eye].Cells[c].getAngle());
+                utils.Msg.print("speed  MT "+MTPC[eye].Cells[c].getSpeed()+"  angle "+(int)Math.toDegrees(MTPC[eye].Cells[c].getAngle()));
+                if(MTPC[eye].Cells[c].getSpeed()>maxSpeed){
+                    maxSpeed=MTPC[eye].Cells[c].getSpeed();
+                }
                 c++;
             }
         }

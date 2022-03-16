@@ -50,7 +50,7 @@ public class MotionCellsV1 {
                     */
                     cells[i][j].setDxDt(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
                     cells[i][j].setId(j);
-                    cells[i][j].setAngle((double)(Math.PI/2)*j);
+                    cells[i][j].setAngle((double)((Math.PI/Config.gaborOrientations)*j)%(2*Math.PI));
                 }
             }
         } else {

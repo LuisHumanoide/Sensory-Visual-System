@@ -5,6 +5,7 @@ import static VisualMemory.V1Cells.HypercomplexCells.inc;
 import VisualMemory.V1Cells.V1Bank;
 import static VisualMemory.V1Cells.V1Bank.CC;
 import static VisualMemory.V1Cells.V1Bank.HCC;
+import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
@@ -29,6 +30,7 @@ public class V1HyperComplex extends Activity {
     public V1HyperComplex() {
         this.ID = AreaNames.V1HyperComplex;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     @Override
@@ -37,26 +39,28 @@ public class V1HyperComplex extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-            if (spike.getModality() == Modalities.VISUAL) {
-                convolveHCC();
-                visualize();
-
-                LongSpike sendSpike = new LongSpike(Modalities.VISUAL, 0, 0, 0);
-                send(AreaNames.V2CurvatureCells, sendSpike.getByteArray());
-            }
-            if (spike.getModality() == Modalities.ATTENTION) {
-                for (int index = 0; index < Config.gaborOrientations; index++) {
-                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(index), 0, 0);
-                    send(AreaNames.V2AngularCells, sendSpike1.getByteArray());
-                    send(AreaNames.V4Contour, sendSpike1.getByteArray());
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                if (spike.getModality() == Modalities.VISUAL) {
+                    convolveHCC();
                     visualize();
+
+                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, 0, 0, 0);
+                    send(AreaNames.V2CurvatureCells, sendSpike.getByteArray());
                 }
+                if (spike.getModality() == Modalities.ATTENTION) {
+                    for (int index = 0; index < Config.gaborOrientations; index++) {
+                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(index), 0, 0);
+                        send(AreaNames.V2AngularCells, sendSpike1.getByteArray());
+                        send(AreaNames.V4Contour, sendSpike1.getByteArray());
+                        visualize();
+                    }
+                }
+
+            } catch (Exception ex) {
+
             }
-
-        } catch (Exception ex) {
-
         }
     }
 
@@ -94,22 +98,23 @@ public class V1HyperComplex extends Activity {
 
         for (int x1 = 0; x1 < i1; x1++) {
             for (int x2 = 0; x2 < i2; x2++) {
-                convolve(x1,x2,CC[x1][x2].Cells);
+                convolve(x1, x2, CC[x1][x2].Cells);
             }
         }
     }
-    
+
     /**
-     * Perform the filtering process for the Hyper Complex cells 
+     * Perform the filtering process for the Hyper Complex cells
+     *
      * @param x1 is the index of the Gabor Bank
      * @param x2 is the eye
      * @param cell correspond to the simple or complex cell array
      */
-    void convolve(int x1, int x2, Cell[] cell){
-        for(int i=0;i<V1Bank.HCC[x1][x2].Cells.length;i++){
-            for(int j=0;j<Config.gaborOrientations;j++){
+    void convolve(int x1, int x2, Cell[] cell) {
+        for (int i = 0; i < V1Bank.HCC[x1][x2].Cells.length; i++) {
+            for (int j = 0; j < Config.gaborOrientations; j++) {
                 float angle = j * inc;
-                V1Bank.HCC[x1][x2].Cells[i][j].mat=Functions.filter(cell[j].mat, SpecialKernels.rotateKernelRadians(V1Bank.HCC[x1][x2].filters[i], angle));
+                V1Bank.HCC[x1][x2].Cells[i][j].mat = Functions.filter(cell[j].mat, SpecialKernels.rotateKernelRadians(V1Bank.HCC[x1][x2].filters[i], angle));
             }
         }
     }

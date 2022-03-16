@@ -1,6 +1,7 @@
 package middlewareVision.nodes.Visual.Retina;
 
 import VisualMemory.V1Cells.V1Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
@@ -30,6 +31,8 @@ public class BasicMotion extends Activity {
     public BasicMotion() {
         this.ID = AreaNames.BasicMotion;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
+
         LMSCones = new Mat[3];
         M1 = Mat.zeros(Config.width, Config.heigth, CvType.CV_32FC1);
         M2 = Mat.zeros(Config.width, Config.heigth, CvType.CV_32FC1);
@@ -37,7 +40,7 @@ public class BasicMotion extends Activity {
         d2 = Mat.zeros(Config.width, Config.heigth, CvType.CV_32FC1);
         d3 = Mat.zeros(Config.width, Config.heigth, CvType.CV_32FC1);
         d4 = Mat.zeros(Config.width, Config.heigth, CvType.CV_32FC1);
-        
+
     }
 
     Mat LMSCones[];
@@ -56,20 +59,21 @@ public class BasicMotion extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-            //si es de la modalidad visual entonces acepta
-            if (spike.getModality() == Modalities.VISUAL) {
-                //obtiene el indice de la locación
-                Location l = (Location) spike.getLocation();
-                //obtiene el primer valor del arreglo
-                int index = l.getValues()[0];
-                //convierte el objeto matrix serializable en una matriz de opencv y la asigna al arreglo LMNCones
-                LMSCones[index] = Convertor.matrixToMat((matrix) spike.getIntensity());
-                //los indices recibidos se agregan al sincronizador
-                sync.addReceived(index);
-            }
-            if (sync.isComplete()) {
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                //si es de la modalidad visual entonces acepta
+                if (spike.getModality() == Modalities.VISUAL) {
+                    //obtiene el indice de la locación
+                    Location l = (Location) spike.getLocation();
+                    //obtiene el primer valor del arreglo
+                    int index = l.getValues()[0];
+                    //convierte el objeto matrix serializable en una matriz de opencv y la asigna al arreglo LMNCones
+                    LMSCones[index] = Convertor.matrixToMat((matrix) spike.getIntensity());
+                    //los indices recibidos se agregan al sincronizador
+                    sync.addReceived(index);
+                }
+                if (sync.isComplete()) {
                     M2 = M1;
                     M1 = LMSCones[2];
                     Mat diff = new Mat();
@@ -77,14 +81,14 @@ public class BasicMotion extends Activity {
                     Core.pow(diff, 2, diff);
                     //Imgproc.threshold(diff, diff, 0.1, 1, Imgproc.THRESH_BINARY);
                     //Imgproc.blur(diff, diff, new Size(10,10));
-                    Visualizer.setImage(Convertor.Mat2Img(diff), "basic motion", 0,3);
+                    Visualizer.setImage(Convertor.Mat2Img(diff), "basic motion", 0, 3);
                     //Visualizer.setImage(Convertor.Mat2Img(SpecialKernels.displaceKernel(LMSCones[2], 60 , 50)), "displace", 7);
 
-                
-            }
+                }
 
-        } catch (Exception ex) {
-            Logger.getLogger(BasicMotion.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(BasicMotion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

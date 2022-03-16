@@ -5,6 +5,7 @@
  */
 package middlewareVision.nodes.Visual.Retina;
 
+import generator.ProcessList;
 import gui.Controls;
 import gui.Frame;
 import gui.GUI;
@@ -24,6 +25,7 @@ import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_8U;
 import static org.opencv.core.CvType.CV_8UC1;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -35,6 +37,7 @@ import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
 import utils.LongSpike;
+import utils.Msg;
 
 /**
  *
@@ -117,6 +120,7 @@ public class RetinaProccess extends Activity {
 
         this.ID = AreaNames.RetinaProccess;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
 
         //frame.setSize(Config.width, Config.heigth+50);
         initFrames(3, 1);
@@ -167,12 +171,17 @@ public class RetinaProccess extends Activity {
      * @throws IOException
      */
     public void setImage(BufferedImage img, BufferedImage img2) {
-
         Mat transMat[] = transduction(img);
         Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "LMM L", 0,0);
         Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "SMLPM L", 0,1);
         Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "LPM L", 0,2);
-
+        
+        Mat logm=Mat.zeros(transMat[2].size(), transMat[2].type());
+        Imgproc.warpPolar(transMat[2], logm, transMat[2].size(), new Point(Config.heigth/2, Config.heigth/2), Config.heigth/2, 0);
+        
+        Visualizer.setImage(Convertor.Mat2Img(logm), "logpolar", 0,4);
+        
+        
         Mat transMat2[] = transduction(img2);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "LMM R", 1,0);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[1]), "SMLPM R", 1,1);

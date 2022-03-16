@@ -7,6 +7,7 @@ package middlewareVision.nodes.Visual.V2;
 
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
+import generator.ProcessList;
 import spike.Location;
 import gui.FrameActivity;
 import gui.Visualizer;
@@ -47,6 +48,8 @@ public class V2AngularCells extends FrameActivity {
     public V2AngularCells() {
         this.ID = AreaNames.V2AngularCells;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
+        
         ors = new Mat[Config.gaborOrientations];
         //set 4 frames to show with index +28
         initFrames(4, 20 + 8);

@@ -1,6 +1,7 @@
 package middlewareVision.config;
 
 import VisualMemory.InitCellMemory;
+import generator.ProcessList;
 import gui.Controls;
 import gui.Visualizer;
 import kmiddle2.nodes.service.Igniter;
@@ -34,23 +35,24 @@ public class Init extends Igniter {
             LGN.class.getName(),
             V1.class.getName(),
             V2.class.getName(), //V4.class.getName(),
-        //TestAttention.class.getName(),
-        MT.class.getName(),
-		//@addNodes
+            //TestAttention.class.getName(),
+            MT.class.getName(), 
+            //@addNodes
         };
 
-        //SimpleLogger.setDebug(DEBUG);
         configuration.setLocal(true);
         configuration.setDebug(!DEBUG);
         configuration.setTCP();
         configuration.setEntityID(ENTITY_ID);
         Init.restart();
-        setAreas(areaNames);
+        setAreas(areaNames);       
         run();
-        
+        ProcessList.saveProcessList();
+
     }
 
     public static void restart() {
+        ProcessList.openList();
         InitCellMemory.initCellMemory();
         V4Memory.initV1Map();
         //Controls cc=new Controls();

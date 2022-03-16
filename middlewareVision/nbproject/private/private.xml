@@ -3,16 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/MotionCell.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/utils/Functions.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/MTCells/ComponentCells.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/Retina/RetinaProccess.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/gui/Visualizer.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/utils/MatrixUtils.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V4/V4Color.java</file>
+            <file>jar:file:/F:/HumanoideFilms/Documents/github/middlewareVision/lib/opencv-410.jar!/org/opencv/imgproc/Imgproc.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/MT/MTComponentCells.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/V1Cells/V1Bank.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/utils/IntersectionOfConstrains.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V1/V1SimpleCells.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/MTCells/PatternCells.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/utils/Config.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/Cell.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/MiniPrograms/IoCImplementation.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/MTCells/MTBank.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/VisualMemory/V1Cells/MotionCellsV1.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/MT/MTPatternCells.java</file>

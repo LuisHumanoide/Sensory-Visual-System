@@ -9,6 +9,7 @@ import MiniPrograms.CurvatureRF;
 import MiniPrograms.GaborList;
 import MiniPrograms.MotionV1Speeds;
 import MiniPrograms.RFGeneratorNew;
+import generator.SmallNodeList;
 import javax.swing.JFrame;
 import middlewareVision.config.Init;
 
@@ -23,6 +24,7 @@ public class ToolsJPanel extends javax.swing.JPanel {
     RFGeneratorNew p3;
     CurvatureRF p4;
     RetinaPanel ret;
+    SmallNodeList p5;
     /**
      * Creates new form ToolsJPanel
      */
@@ -33,11 +35,13 @@ public class ToolsJPanel extends javax.swing.JPanel {
         p2 = new MotionV1Speeds();
         p3 = new RFGeneratorNew();
         p4 = new CurvatureRF();
+        p5 = new SmallNodeList();
 
         p1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p3.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p4.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        p5.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
     /**
@@ -53,6 +57,7 @@ public class ToolsJPanel extends javax.swing.JPanel {
         b2 = new javax.swing.JButton();
         b3 = new javax.swing.JButton();
         b4 = new javax.swing.JButton();
+        b6 = new javax.swing.JButton();
         b5 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(57, 57, 57));
@@ -94,6 +99,15 @@ public class ToolsJPanel extends javax.swing.JPanel {
         });
         add(b4);
 
+        b6.setBackground(new java.awt.Color(100, 114, 123));
+        b6.setText("Small Nodes Startup");
+        b6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b6ActionPerformed(evt);
+            }
+        });
+        add(b6);
+
         b5.setBackground(new java.awt.Color(100, 114, 123));
         b5.setText("Restart Banks");
         b5.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +146,11 @@ public class ToolsJPanel extends javax.swing.JPanel {
         ret.createImage(0);
     }//GEN-LAST:event_b5ActionPerformed
 
+    private void b6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b6ActionPerformed
+        // TODO add your handling code here:
+        p5.setVisible(true);
+    }//GEN-LAST:event_b6ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b1;
@@ -139,5 +158,6 @@ public class ToolsJPanel extends javax.swing.JPanel {
     private javax.swing.JButton b3;
     private javax.swing.JButton b4;
     private javax.swing.JButton b5;
+    private javax.swing.JButton b6;
     // End of variables declaration//GEN-END:variables
 }

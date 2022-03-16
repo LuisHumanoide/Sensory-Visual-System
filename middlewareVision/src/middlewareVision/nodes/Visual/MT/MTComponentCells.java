@@ -3,6 +3,7 @@ package middlewareVision.nodes.Visual.MT;
 import VisualMemory.MTCells.MTBank;
 import static VisualMemory.MTCells.MTBank.MTCC;
 import VisualMemory.V1Cells.V1Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import java.util.ArrayList;
 import spike.Location;
@@ -28,6 +29,7 @@ public class MTComponentCells extends Activity {
     public MTComponentCells() {
         this.ID = AreaNames.MTComponentCells;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     int eyes = 1;
@@ -39,24 +41,26 @@ public class MTComponentCells extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-            if (spike.getModality() == Modalities.VISUAL) {
-                
-                mergeV1MotionCells(0);  
-                
-                opponentProcess(0);
-                
-                visualize(0);
-                
-                Visualizer.lockLimit("mtComp");
-                
-                LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                send(AreaNames.MTPatternCells, sendSpike1.getByteArray());
-            }
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                if (spike.getModality() == Modalities.VISUAL) {
 
-        } catch (Exception ex) {
-            Logger.getLogger(MTComponentCells.class.getName()).log(Level.SEVERE, null, ex);
+                    mergeV1MotionCells(0);
+
+                    opponentProcess(0);
+
+                    visualize(0);
+
+                    Visualizer.lockLimit("mtComp");
+
+                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    send(AreaNames.MTPatternCells, sendSpike1.getByteArray());
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(MTComponentCells.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -96,7 +100,7 @@ public class MTComponentCells extends Activity {
                 }
 
                 Imgproc.resize(MatrixUtils.maxSum(arrayMat), MTCC[eye].CCells[j][k].eMat, MTCC[eye].CCells[j][k].eMat.size());
-                
+
                 arrayMat.clear();
             }
         }
@@ -117,9 +121,11 @@ public class MTComponentCells extends Activity {
     }
 
     /**
-     * Performs the speed opponent process where the cells with the same magnitude<br>
+     * Performs the speed opponent process where the cells with the same
+     * magnitude<br>
      * of speed but different directions are subtracted.<br>
-     * @param eye 
+     *
+     * @param eye
      */
     public void opponentProcess(int eye) {
         for (int i = 0; i < MTCC[0].CCells.length; i++) {
@@ -132,11 +138,11 @@ public class MTComponentCells extends Activity {
             }
         }
     }
-    
+
     /**
      * Performs the speed opponent process for both eyes
      */
-    public void opponentProcess(){
+    public void opponentProcess() {
         opponentProcess(0);
         opponentProcess(1);
     }

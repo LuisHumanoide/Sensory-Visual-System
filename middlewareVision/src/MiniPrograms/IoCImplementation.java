@@ -170,10 +170,10 @@ public class IoCImplementation extends javax.swing.JFrame {
     }
 
     public void IoCVector(vector v1, vector v2) {
-        double x=(double)( (v1.intensity*Math.sin(v2.angle)-v2.intensity*Math.sin(v1.angle)) / Math.sin(v2.angle-v1.angle) );
-        double y=(double)( (v2.intensity*Math.cos(v1.angle)-v1.intensity*Math.cos(v2.angle)) / Math.sin(v2.angle-v1.angle) );
-        System.out.println(" x es "+x+"   y es "+y);
-        vector vec = new vector(Math.sqrt(x*x+y*y),Math.atan(y/x));
+        double x=(double)( (v1.intensity*Math.sin(v2.angle)-v2.intensity*Math.sin(v1.angle)) / (double)Math.sin(v2.angle-v1.angle) );
+        double y=(double)( (v2.intensity*Math.cos(v1.angle)-v1.intensity*Math.cos(v2.angle)) / (double)Math.sin(v2.angle-v1.angle) );
+        System.out.println(" x es "+x+"   y es "+y+" angle is "+Math.atan2(y,x));
+        vector vec = new vector(Math.sqrt(x*x+y*y),Math.atan2(y,x));
         vlist2.add(vec);
     }
 

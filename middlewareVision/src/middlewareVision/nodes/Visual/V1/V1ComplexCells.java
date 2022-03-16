@@ -2,6 +2,7 @@ package middlewareVision.nodes.Visual.V1;
 
 import VisualMemory.V1Cells.V1Bank;
 import static VisualMemory.V1Cells.V1Bank.CC;
+import generator.ProcessList;
 import spike.Location;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,7 @@ public class V1ComplexCells extends Activity {
     public V1ComplexCells() {
         this.ID = AreaNames.V1ComplexCells;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     @Override
@@ -32,33 +34,35 @@ public class V1ComplexCells extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
 
-            if (spike.getModality() == Modalities.VISUAL) {
+                if (spike.getModality() == Modalities.VISUAL) {
 
-                energyProcessAll();
+                    energyProcessAll();
 
-                visualize();
-
-                Visualizer.addLimit("CC", Visualizer.getRow("SCsup") + 2 * (Config.gaborBanks - 1) + 1);
-
-                LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-
-                send(AreaNames.V1HyperComplex, sendSpike.getByteArray());
-                send(AreaNames.V1MotionCellsNew, sendSpike.getByteArray());
-
-            }
-            if (spike.getModality() == Modalities.ATTENTION) {
-                for (int i = 0; i < Config.gaborOrientations; i++) {
-                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
-                    send(AreaNames.V1HyperComplex, sendSpike1.getByteArray());
                     visualize();
-                }
-            }
 
-        } catch (Exception ex) {
-            //Logger.getLogger(V1ComplexCells.class.getName()).log(Level.SEVERE, null, ex);
+                    Visualizer.addLimit("CC", Visualizer.getRow("SCsup") + 2 * (Config.gaborBanks - 1) + 1);
+
+                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+
+                    send(AreaNames.V1HyperComplex, sendSpike.getByteArray());
+                    send(AreaNames.V1MotionCellsNew, sendSpike.getByteArray());
+
+                }
+                if (spike.getModality() == Modalities.ATTENTION) {
+                    for (int i = 0; i < Config.gaborOrientations; i++) {
+                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
+                        send(AreaNames.V1HyperComplex, sendSpike1.getByteArray());
+                        visualize();
+                    }
+                }
+
+            } catch (Exception ex) {
+                //Logger.getLogger(V1ComplexCells.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

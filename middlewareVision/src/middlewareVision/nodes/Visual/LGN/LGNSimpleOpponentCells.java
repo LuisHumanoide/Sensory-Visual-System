@@ -1,6 +1,7 @@
 package middlewareVision.nodes.Visual.LGN;
 
 import VisualMemory.LGNCells.LGNBank;
+import generator.ProcessList;
 import imgio.RetinalImageIO;
 import imgio.RetinalTextIO;
 import spike.Location;
@@ -81,6 +82,7 @@ public class LGNSimpleOpponentCells extends Activity {
     public LGNSimpleOpponentCells() {
         this.ID = AreaNames.LGNProcess;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
         LMSConesL = new Mat[3];
         LMSConesR = new Mat[3];
         DKL_L = new Mat[3];
@@ -105,53 +107,55 @@ public class LGNSimpleOpponentCells extends Activity {
      */
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            //spike que recibe
-            LongSpike spike = new LongSpike(data);
-            //si es de la modalidad visual entonces acepta
-            if (spike.getModality() == Modalities.VISUAL) {
-                //obtiene el indice de la locación
-                Location l = (Location) spike.getLocation();
-                //obtiene el primer valor del arreglo
-                int index = l.getValues()[0];
-                //convierte el objeto matrix serializable en una matriz de opencv y la asigna al arreglo LMNCones
-                if (index < 3) {
-                    LMSConesL[index] = Convertor.matrixToMat((matrix) spike.getIntensity());
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                //spike que recibe
+                LongSpike spike = new LongSpike(data);
+                //si es de la modalidad visual entonces acepta
+                if (spike.getModality() == Modalities.VISUAL) {
+                    //obtiene el indice de la locación
+                    Location l = (Location) spike.getLocation();
+                    //obtiene el primer valor del arreglo
+                    int index = l.getValues()[0];
+                    //convierte el objeto matrix serializable en una matriz de opencv y la asigna al arreglo LMNCones
+                    if (index < 3) {
+                        LMSConesL[index] = Convertor.matrixToMat((matrix) spike.getIntensity());
+                    }
+                    if (index >= 3) {
+                        LMSConesR[index - 3] = Convertor.matrixToMat((matrix) spike.getIntensity());
+                    }
+                    //los indices recibidos se agregan al sincronizador
+                    sync.addReceived(index);
                 }
-                if (index >= 3) {
-                    LMSConesR[index - 3] = Convertor.matrixToMat((matrix) spike.getIntensity());
-                }
-                //los indices recibidos se agregan al sincronizador
-                sync.addReceived(index);
-            }
-            //Si se completa el sincronizador
-            if (sync.isComplete()) {
-                //mandar a hacer la transduccion
-                Mat DKL_L[] = transduction(LMSConesL, 0, 0);
-                LGNBank.SOC[0][0].Cells[0].mat = DKL_L[0];
-                LGNBank.SOC[0][0].Cells[1].mat = DKL_L[1];
-                LGNBank.SOC[0][0].Cells[2].mat = DKL_L[2];
-                
-                Mat DKL_R[] = transduction(LMSConesR, 0, 0);
-                LGNBank.SOC[0][1].Cells[0].mat = DKL_R[0];
-                LGNBank.SOC[0][1].Cells[1].mat = DKL_R[1];
-                LGNBank.SOC[0][1].Cells[2].mat = DKL_R[2];
-                /*
+                //Si se completa el sincronizador
+                if (sync.isComplete()) {
+                    //mandar a hacer la transduccion
+                    Mat DKL_L[] = transduction(LMSConesL, 0, 0);
+                    LGNBank.SOC[0][0].Cells[0].mat = DKL_L[0];
+                    LGNBank.SOC[0][0].Cells[1].mat = DKL_L[1];
+                    LGNBank.SOC[0][0].Cells[2].mat = DKL_L[2];
+
+                    Mat DKL_R[] = transduction(LMSConesR, 0, 0);
+                    LGNBank.SOC[0][1].Cells[0].mat = DKL_R[0];
+                    LGNBank.SOC[0][1].Cells[1].mat = DKL_R[1];
+                    LGNBank.SOC[0][1].Cells[2].mat = DKL_R[2];
+                    /*
                 mostrar las imagenes procesadas
-                 */
-                for (int i = 0; i < LMSConesL.length; i++) {
-                    Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "dkl L" + i, 2, i);
-                    Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "dkl R" + i, 3, i);
-                    //mandar los spikes de salida a las celulas simples y doble oponentes de V1
-                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, -1), 0, 0);
-                    //send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
-                    send(AreaNames.V1DoubleOpponent, sendSpike.getByteArray());
+                     */
+                    for (int i = 0; i < LMSConesL.length; i++) {
+                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "dkl L" + i, 2, i);
+                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "dkl R" + i, 3, i);
+                        //mandar los spikes de salida a las celulas simples y doble oponentes de V1
+                        LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, -1), 0, 0);
+                        //send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
+                        send(AreaNames.V1DoubleOpponent, sendSpike.getByteArray());
+                    }
+
                 }
 
+            } catch (Exception ex) {
+                // Logger.getLogger(LGNSimpleOpponentCells.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (Exception ex) {
-           // Logger.getLogger(LGNSimpleOpponentCells.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

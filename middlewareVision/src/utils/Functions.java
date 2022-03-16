@@ -75,7 +75,7 @@ public class Functions {
     }
 
     /**
-     * 
+     *
      * @param src1
      * @param src2
      * @param l3
@@ -115,6 +115,7 @@ public class Functions {
     /**
      * Performs the max summation with Cells <br>
      * the result is loaded on the Mat parameter from the Cell class
+     *
      * @param cells array of cells
      * @return an opencv matrix
      */
@@ -126,7 +127,7 @@ public class Functions {
      * Perform the curvature filtering <br>
      * the model can be seen in the paper <br>
      * <i>10.3389/fncom.2013.00067 </i><br><br>
-     * 
+     *
      * It consist in Gabor Filters arranged in a curvature trajectory<br>
      * there is a convex and concave trajectory<br>
      * the activations of the filters are multiplied and <br>
@@ -171,20 +172,22 @@ public class Functions {
     }
 
     /**
-     * Simple motion process function, the receives an array of matrixes, displaces the kernel and
-     * perform a multiplication, resulting in the activation of motion detection
+     * Simple motion process function, the receives an array of matrixes,
+     * displaces the kernel and perform a multiplication, resulting in the
+     * activation of motion detection
+     *
      * @param T
      * @param dx
      * @param angle
-     * @return 
+     * @return
      */
     public static Mat stage1MotionProcess(Mat[] T, int dx, double angle) {
         Mat result = new Mat();
-        for(int i=1;i<T.length;i++){
-            T[i]=SpecialKernels.displaceKernel(T[i], -angle, dx);
+        for (int i = 1; i < T.length; i++) {
+            T[i] = SpecialKernels.displaceKernel(T[i], -angle, dx);
         }
-        result=MatrixUtils.multiply(T);
-        result=SpecialKernels.displaceKernel(result,-angle,(int)(-dx*(T.length/2)));
+        result = MatrixUtils.multiply(T);
+        result = SpecialKernels.displaceKernel(result, -angle, (int) (-dx * (T.length / 2)));
         return result;
     }
 
@@ -192,22 +195,46 @@ public class Functions {
      * Implementation of the Intersection of Constrains based on the model <br>
      * developed in Desmos app: <br>
      * https://www.desmos.com/calculator/vdh8bzudes
+     *
      * @param i1 is the intensity of the first vector
      * @param a1 angle of the first vector
      * @param i2 intensity of the second vector
      * @param a2 angle of the second vector
      * @return an array of doubles [intensity, angle]
      */
-    public static double[] IoCProcess(double r1, double a1, double r2, double a2){
-        
-        double x=(double)( (r1*Math.sin(a2)-r2*Math.sin(a1)) / Math.sin(a2-a1) );
-        double y=(double)( (r2*Math.cos(a1)-r1*Math.cos(a2)) / Math.sin(a2-a1) );
-        
-        double[] IoC={Math.sqrt(x*x+y*y),Math.atan(y/x)};
+    public static double[] IoCProcess(double r1, double a1, double r2, double a2) {
+        double[] IoC = new double[2];
+        int d1 = (int) Math.toDegrees(a1);
+        int d2 = (int) Math.toDegrees(a2);
+
+        /*
+        condition to prevent the angles from being collinear, for example 0 and 180,
+        if this happens, there may be indeterminacy
+        */
+        if (d1 != (d2 - 180) % 360) {
+            
+            double x = (double) ((r1 * Math.sin(a2) - r2 * Math.sin(a1)) / Math.sin(a2 - a1));
+            double y = (double) ((r2 * Math.cos(a1) - r1 * Math.cos(a2)) / Math.sin(a2 - a1));
+            
+            double speed=Math.sqrt(x * x + y * y);
+            
+            /**
+             * extra condition to avoid infinite speeds
+             */
+            if(speed>1000){
+                speed=0;
+            }
+            
+            IoC[0] = speed;
+            IoC[1] = Math.atan2(y, x);
+            
+        } else {
+            
+            IoC[0] = 0;
+            IoC[1] = 0;
+            
+        }
         return IoC;
     }
-
-    
-
 
 }
