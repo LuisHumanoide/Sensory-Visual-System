@@ -174,13 +174,7 @@ public class RetinaProccess extends Activity {
         Mat transMat[] = transduction(img);
         Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "LMM L", 0,0);
         Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "SMLPM L", 0,1);
-        Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "LPM L", 0,2);
-        
-        Mat logm=Mat.zeros(transMat[2].size(), transMat[2].type());
-        Imgproc.warpPolar(transMat[2], logm, transMat[2].size(), new Point(Config.heigth/2, Config.heigth/2), Config.heigth/2, 0);
-        
-        Visualizer.setImage(Convertor.Mat2Img(logm), "logpolar", 0,4);
-        
+        Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "LPM L", 0,2);                
         
         Mat transMat2[] = transduction(img2);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "LMM R", 1,0);

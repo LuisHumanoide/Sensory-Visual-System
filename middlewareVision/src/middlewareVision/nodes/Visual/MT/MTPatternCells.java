@@ -25,13 +25,17 @@ import utils.LongSpike;
 import utils.MatrixUtils;
 
 /**
- *
- *
+ * Class that makes the process of the MT Pattern Cells <br>
+ * MT Pattern Cells combines the signals from MT Component Cells<br>
+ * the velocity is obtained with a geometric method named <b> Intersection of Constrains</b>
  */
 public class MTPatternCells extends Activity {
 
     Mat mul, blur, sum, m;
 
+    /**
+     * Constructor
+     */
     public MTPatternCells() {
         this.ID = AreaNames.MTPatternCells;
         this.namer = AreaNames.class;
@@ -41,6 +45,7 @@ public class MTPatternCells extends Activity {
         blur = new Mat();
         sum = new Mat();
         m = new Mat();
+        
     }
 
     @Override
@@ -54,27 +59,27 @@ public class MTPatternCells extends Activity {
             try {
                 LongSpike spike = new LongSpike(data);
                 if (spike.getModality() == Modalities.VISUAL) {
-
+                    
                     MTPatternProcess(0);
 
-                    //colorMTPCells(0);
                     visualize();
 
-                    Visualizer.lockLimit("mtComp");
+                    Visualizer.lockLimit("MTP");
                 }
 
             } catch (Exception ex) {
                 Logger.getLogger(MTPatternCells.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
     }
 
+    /**
+     * Visualize the MT Pattern Cells activation in a color matrix
+     */
     void visualize() {
-        //Visualizer.setImageFull(Convertor.Mat2Img2(coloredMTPattern(MTBank.MTPC[0].Cells[12].mat,12,MTBank.MTPC[0].Cells.length)),
-        // "mt pattern 1", Visualizer.getRow("mtComp") + 2, Config.gaborOrientations + 2, "MTP");
         Visualizer.setImageFull(Convertor.Mat2Img2(colorMTPCells(0)),
                 "mt pattern 1", Visualizer.getRow("mtComp") + 2, Config.gaborOrientations + 2, "MTP");
-        //Visualizer.setImageFull(MTBank.MTPC[0].Cells[8].mat, "mt pattern 2", Visualizer.getRow("mtComp") + 2, Config.gaborOrientations + 3, "MTP");
     }
 
     /**
@@ -138,7 +143,7 @@ public class MTPatternCells extends Activity {
      * @return a colored matrix
      */
     Mat coloredMTPattern(Mat mat, double angle, double speed) {
-        double hue = angle + Math.PI;
+        double hue = (double)((angle + Math.PI)/(2*Math.PI));
         double saturation = 1f;
         double brightness = (double) (speed / MTBank.maxSpeed);
 

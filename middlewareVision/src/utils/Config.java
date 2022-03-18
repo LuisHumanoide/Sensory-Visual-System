@@ -25,8 +25,8 @@ public class Config {
     public static int HCfilters=1;
     public static int width=150;
     public static int heigth=150;
-    public static int motionWidth=80;
-    public static int motionHeight=80;
+    public static int motionWidth=100;
+    public static int motionHeight=100;
     public static boolean ilusoryEnabled = true;
     public static int diagonalSize=3;
     public static double bright=0;

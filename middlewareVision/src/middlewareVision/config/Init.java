@@ -16,6 +16,7 @@ import middlewareVision.nodes.Visual.V4.V4Memory;
 import utils.SpecialKernels;
 import middlewareVision.nodes.Attention.TestAttention;
 import middlewareVision.nodes.Visual.MT.MT;
+import middlewareVision.nodes.Visual.MST.MST;
 //@import
 
 
@@ -37,7 +38,8 @@ public class Init extends Igniter {
             V2.class.getName(), //V4.class.getName(),
             //TestAttention.class.getName(),
             MT.class.getName(), 
-            //@addNodes
+		MST.class.getName(),
+		//@addNodes
         };
 
         configuration.setLocal(true);
@@ -58,6 +60,7 @@ public class Init extends Igniter {
         //Controls cc=new Controls();
         //cc.setVisible(true);
         Visualizer.initVisualizer(1000);
+        Visualizer.addLimit("zero", 0);
         SpecialKernels.loadKernels();
     }
 

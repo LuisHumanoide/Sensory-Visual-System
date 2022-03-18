@@ -6,6 +6,7 @@
 package VisualMemory;
 
 import VisualMemory.LGNCells.LGNBank;
+import VisualMemory.MSTCells.MSTPolar;
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
 
@@ -19,7 +20,9 @@ public class InitCellMemory {
         //extra,frequencies,eyes
         LGNBank.initializeCells(1);
         V1Bank.initializeCells();
+        //MT starts automatically with V1
         V2Bank.initializeCells();
+        MSTPolar.initializeCells();
     }
     
 }

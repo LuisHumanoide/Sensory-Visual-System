@@ -150,6 +150,8 @@ public class LGNSimpleOpponentCells extends Activity {
                         //send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
                         send(AreaNames.V1DoubleOpponent, sendSpike.getByteArray());
                     }
+                    LongSpike sendSpike2 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    send(AreaNames.MSTPolarCells,sendSpike2.getByteArray());
 
                 }
 

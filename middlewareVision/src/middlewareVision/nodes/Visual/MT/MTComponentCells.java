@@ -21,7 +21,8 @@ import utils.MatrixUtils;
 import static utils.Msg.print;
 
 /**
- *
+ * MT Component Cells, the V1 Motion Cells are merged into the component cells
+ * of motion
  *
  */
 public class MTComponentCells extends Activity {
@@ -61,7 +62,7 @@ public class MTComponentCells extends Activity {
             } catch (Exception ex) {
                 Logger.getLogger(MTComponentCells.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        } 
     }
 
     void visualize(int x0) {

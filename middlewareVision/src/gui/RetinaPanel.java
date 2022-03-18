@@ -63,6 +63,7 @@ public class RetinaPanel extends javax.swing.JPanel {
     BufferedImage blackImage;
     int rate = 3;
     int c = 0;
+    int d = 1;
     boolean stereo = false;
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
@@ -73,7 +74,7 @@ public class RetinaPanel extends javax.swing.JPanel {
             if (play) {
                 c++;
                 if (c >= rate) {
-                    createImage(1);
+                    createImage(d);
                     c = 0;
                 }
             }
@@ -87,9 +88,9 @@ public class RetinaPanel extends javax.swing.JPanel {
     String filename = "";
 
     public RetinaPanel(RetinaProccess rp2) {
-        blackImage=blackImage();
+        blackImage = blackImage();
         rp = rp2;
-        
+
         initComponents();
         folder = "images";
         timer.start();
@@ -354,6 +355,7 @@ public class RetinaPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         playButton = new javax.swing.JButton();
+        playButtonBack = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSlider1 = new javax.swing.JSlider();
@@ -372,6 +374,13 @@ public class RetinaPanel extends javax.swing.JPanel {
         playButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playButtonActionPerformed(evt);
+            }
+        });
+
+        playButtonBack.setText("◄");
+        playButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonBackActionPerformed(evt);
             }
         });
 
@@ -430,6 +439,7 @@ public class RetinaPanel extends javax.swing.JPanel {
         jButton2.setBackground(new Color(102, 153, 153));
         jButton3.setBackground(jButton2.getBackground());
         playButton.setBackground(new Color(153, 204, 255));
+        playButtonBack.setBackground(new Color(153, 204, 255));
 
         BoxLayout layout1 = new BoxLayout(this, BoxLayout.Y_AXIS);
 
@@ -450,6 +460,8 @@ public class RetinaPanel extends javax.swing.JPanel {
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         bPanel.add(jButton3);
+        bPanel.add(Box.createRigidArea(new Dimension(30, 0)));
+        bPanel.add(playButtonBack);
         bPanel.add(Box.createRigidArea(new Dimension(30, 0)));
         bPanel.add(playButton);
         bPanel.add(Box.createRigidArea(new Dimension(30, 0)));
@@ -486,11 +498,11 @@ public class RetinaPanel extends javax.swing.JPanel {
         JScrollPane scroll = new JScrollPane(jTree1);
         pTree.setBackground(jTree1.getBackground());
         controls = new ControlsPanel();
-        tools=new ToolsJPanel(this);
+        tools = new ToolsJPanel(this);
         tabbed = new JTabbedPane();
         tabbed.add("Folders", scroll);
         tabbed.add("Controls", controls);
-        tabbed.add("Tools",tools);
+        tabbed.add("Tools", tools);
         this.add(tabbed);
         this.add(Box.createRigidArea(new Dimension(15, 50)));
 
@@ -513,8 +525,25 @@ public class RetinaPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (play) {
             playButton.setText("▶");
+            playButtonBack.setText("◄");
             play = false;
         } else {
+            d = 1;
+            playButton.setText("⏸");
+            playButtonBack.setText("⏸");
+            play = true;
+        }
+    }
+
+    private void playButtonBackActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        if (play) {
+            playButtonBack.setText("◄");
+            playButton.setText("▶");
+            play = false;
+        } else {
+            d = -1;
+            playButtonBack.setText("⏸");
             playButton.setText("⏸");
             play = true;
         }
@@ -566,6 +595,7 @@ public class RetinaPanel extends javax.swing.JPanel {
     private javax.swing.JSlider jSlider1;
     private javax.swing.JTree jTree1;
     private javax.swing.JButton playButton;
+    private javax.swing.JButton playButtonBack;
     private javax.swing.JSlider timeline;
     JTabbedPane tabbed;
 

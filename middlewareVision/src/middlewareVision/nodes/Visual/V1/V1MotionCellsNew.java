@@ -54,7 +54,7 @@ public class V1MotionCellsNew extends Activity {
                         }
                     }
 
-                    Visualizer.lockLimit("v1Motion");
+                    Visualizer.lockLimit("v1motion");
 
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     send(AreaNames.MTComponentCells, sendSpike1.getByteArray());
@@ -65,6 +65,7 @@ public class V1MotionCellsNew extends Activity {
                 Logger.getLogger(V1MotionCellsNew.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
     }
 
     /**

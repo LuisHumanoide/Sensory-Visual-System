@@ -23,7 +23,7 @@ import utils.Functions;
 public class MotionCell extends Cell {
 
     Mat matT[];
-    int stages = 3;
+    int stages;
     public Mat mat1st;
 
     //time displacement
@@ -37,8 +37,9 @@ public class MotionCell extends Cell {
     /**
      * Void constructor
      */
-    public MotionCell() {
+    public MotionCell(int stages) {
         super();
+        this.stages=stages;
         matT = new Mat[stages];
         for (int i = 0; i < stages; i++) {
             matT[i] = Mat.zeros(new Size(Config.width, Config.heigth), CvType.CV_32FC1);
@@ -79,6 +80,20 @@ public class MotionCell extends Cell {
             timeCount = 0;
             addDelay(mat.clone());
             mat1st = Functions.stage1MotionProcess(matT, this.dx, (double) ((Math.PI / Config.gaborOrientations) * id));
+        }
+        timeCount++;
+    }
+    
+    /**
+     * Method for performing the basic stage of MotionProcessing <br>
+     * without a speed opponent process
+     * @param mat 
+     */
+    public void cellMotionProcess(Mat mat, double angle) {
+        if (timeCount == dt) {
+            timeCount = 0;
+            addDelay(mat.clone());
+            mat1st = Functions.stage1MotionProcess(matT, dx, angle);
         }
         timeCount++;
     }

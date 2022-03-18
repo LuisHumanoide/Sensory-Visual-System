@@ -44,7 +44,7 @@ public class MotionCellsV1 {
                 String values[] = lines[i].split(" ");
                 composedCells[i] = new Cell();
                 for (int j = 0; j < Config.gaborOrientations * 2; j++) {
-                    cells[i][j] = new MotionCell();
+                    cells[i][j] = new MotionCell(3);
                     /*
                     Set dx/dt and angles
                     */

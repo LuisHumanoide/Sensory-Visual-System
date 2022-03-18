@@ -42,7 +42,11 @@ public class Visualizer {
     }
 
     public static int getRow(String name) {
-        return limits.get(name);
+        if (limits.containsKey(name)) {
+            return limits.get(name);
+        } else {
+            return -1;
+        }
     }
 
     public static void setImage(BufferedImage image, String title, int index) {
@@ -92,7 +96,7 @@ public class Visualizer {
     public static void setImageFull(Mat src, String title, int col, int row, String group) {
         setImage(Scalr.resize(Convertor.Mat2Img(src), Config.heigth), title, col, row, group);
     }
-    
+
     public static void setImageFull(BufferedImage image, String title, int col, int row, String group) {
         setImage(Scalr.resize(image, Config.heigth), title, col, row, group);
     }
