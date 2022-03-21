@@ -5,6 +5,7 @@
  */
 package MiniPrograms;
 
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -14,11 +15,14 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 import mapOpener.Convertor;
 import org.opencv.core.Core;
 import static org.opencv.core.CvType.CV_32F;
@@ -49,17 +53,22 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     double norm1 = 0;
     double sum1 = 0;
     double sum2 = 0;
+    int w = 250;
+    int h = 250;
 
     public GaussianVisualizer() {
         initComponents();
+        modifyLabel();
         File file = new File(fileName);
         String fileContent = FileUtils.readFile(file);
         String values[] = fileContent.split(" ");
-        originalImage.setIcon(new ImageIcon(originalImageFile));
-        originalImage.setText("");
         convolvedImage.setText("");
         try {
-            imageFile = ImageIO.read(new File(originalImageFile));
+            BufferedImage bi = ImageIO.read(new File(originalImageFile));
+            imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, w, h);
+            imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+            originalImage.setIcon(new ImageIcon(imageFile));
+            originalImage.setText("");
         } catch (IOException ex) {
             Logger.getLogger(GaborFilterVisualizer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,6 +76,44 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         loadFileValues(values);
         visualize();
         convolution();
+    }
+
+    public void modifyLabel() {
+        TransferHandler th = new TransferHandler() {
+
+            @Override
+            public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+                return true;
+            }
+
+            @Override
+            public boolean importData(JComponent comp, Transferable t) {
+                try {
+                    List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                    if (files.size() == 1) {
+                        File f = files.get(0);
+                        originalImageFile = f.toString();
+                        BufferedImage bi = ImageIO.read(new File(originalImageFile));
+                        imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, w, h);
+                        imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+                        originalImage.setIcon(new ImageIcon(imageFile));
+                        convolution();
+                    }
+                } catch (Exception e) {
+                }
+                return true;
+            }
+
+        };
+        originalImage.setTransferHandler(th);
+    }
+
+    private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
+        BufferedImage bi = new BufferedImage(eleScreenshot.getWidth(), eleScreenshot.getHeight(), type);
+        Graphics g = bi.getGraphics();
+        g.drawImage(eleScreenshot, 0, 0, null);
+        g.dispose();
+        return bi;
     }
 
     void convolution() {
@@ -777,7 +824,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         paste1();
     }//GEN-LAST:event_paste1ActionPerformed
 
-    public void paste1(){
+    public void paste1() {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
 
@@ -789,7 +836,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 if (texto.contains("♦")) {
                     String values[] = texto.split(" ");
                     for (int i = 0; i < 7; i++) {
-                        fields[i].setText(values[i+1]);
+                        fields[i].setText(values[i + 1]);
                     }
                 }
             }
@@ -802,7 +849,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     private void copy1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copy1ActionPerformed
         // TODO add your handling code here:
         try {
-            String cString =  "♦♣♠ ";
+            String cString = "♦♣♠ ";
             for (int i = 0; i < 7; i++) {
                 cString = cString + fields[i].getText();
                 if (i < 6) {
@@ -829,7 +876,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 if (texto.contains("♦")) {
                     String values[] = texto.split(" ");
                     for (int i = 0; i < 7; i++) {
-                        fields[i+7].setText(values[i+1]);
+                        fields[i + 7].setText(values[i + 1]);
                     }
                 }
             }
@@ -843,9 +890,9 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     private void copy2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copy2ActionPerformed
         // TODO add your handling code here:
         try {
-            String cString =  "♦♣♠ ";
-            cString=cString+fields[0].getText()+" "+fields[7].getText()+" "+fields[8].getText()+" "+fields[9].getText()+" "+
-                    fields[10].getText()+" "+fields[11].getText()+" "+fields[12].getText();
+            String cString = "♦♣♠ ";
+            cString = cString + fields[0].getText() + " " + fields[7].getText() + " " + fields[8].getText() + " " + fields[9].getText() + " "
+                    + fields[10].getText() + " " + fields[11].getText() + " " + fields[12].getText();
             StringSelection stringSelection = new StringSelection(cString);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);

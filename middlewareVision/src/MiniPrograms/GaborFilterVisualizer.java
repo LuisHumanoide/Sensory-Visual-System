@@ -5,6 +5,7 @@
  */
 package MiniPrograms;
 
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -15,11 +16,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 import mapOpener.Convertor;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -46,9 +50,12 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
     String originalImageFile = "Paris.JPG";
     BufferedImage imageFile;
     BufferedImage filteredImage;
+    int w=250;
+    int h=250;
 
     public GaborFilterVisualizer() {
         initComponents();
+        modifyLabel();
         File file = new File(fileName);
         String fileContent = FileUtils.readFile(file);
         String values[] = fileContent.split(" ");
@@ -60,16 +67,56 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         thetaField.setText(values[5]);
         angleField.setText(values[6]);
         visualize();
-        originalImage.setIcon(new ImageIcon(originalImageFile));
-        originalImage.setText("");
         convolvedImage.setText("");
         try {
-            imageFile = ImageIO.read(new File(originalImageFile));
+            BufferedImage bi = ImageIO.read(new File(originalImageFile));
+            imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, w, h);
+            imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+            originalImage.setIcon(new ImageIcon(imageFile));
+            originalImage.setText("");
         } catch (IOException ex) {
             Logger.getLogger(GaborFilterVisualizer.class.getName()).log(Level.SEVERE, null, ex);
         }
         convolution();
 
+    }
+
+    public void modifyLabel() {
+        TransferHandler th = new TransferHandler() {
+
+            @Override
+            public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+                return true;
+            }
+
+            @Override
+            public boolean importData(JComponent comp, Transferable t) {
+                try {
+                    List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                    if (files.size() == 1) {
+                        File f = files.get(0);
+                        originalImageFile = f.toString();
+                        BufferedImage bi = ImageIO.read(new File(originalImageFile));
+                        imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, w, h);
+                        imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+                        originalImage.setIcon(new ImageIcon(imageFile));
+                        convolution();
+                    }
+                } catch (Exception e) {
+                }
+                return true;
+            }
+
+        };
+        originalImage.setTransferHandler(th);
+    }
+
+    private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
+        BufferedImage bi = new BufferedImage(eleScreenshot.getWidth(), eleScreenshot.getHeight(), type);
+        Graphics g = bi.getGraphics();
+        g.drawImage(eleScreenshot, 0, 0, null);
+        g.dispose();
+        return bi;
     }
 
     void convolution() {
@@ -489,7 +536,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        String cString="♦♣♠ "+kernelSize.getText() + " " + sigmaField.getText() + " " + lambdaField.getText() + " "
+        String cString = "♦♣♠ " + kernelSize.getText() + " " + sigmaField.getText() + " " + lambdaField.getText() + " "
                 + gammaField.getText() + " " + psiField.getText() + " " + thetaField.getText();
         StringSelection stringSelection = new StringSelection(cString);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -501,18 +548,17 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         paste();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    void paste(){
+    void paste() {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
-
 
         DataFlavor dataFlavorStringJava;
         try {
             dataFlavorStringJava = new DataFlavor("application/x-java-serialized-object; class=java.lang.String");
             if (t.isDataFlavorSupported(dataFlavorStringJava)) {
                 String texto = (String) t.getTransferData(dataFlavorStringJava);
-                if(texto.contains("♦♣♠")){
-                    String values[]=texto.split(" ");
+                if (texto.contains("♦♣♠")) {
+                    String values[] = texto.split(" ");
                     kernelSize.setText(values[1]);
                     sigmaField.setText(values[2]);
                     lambdaField.setText(values[3]);
@@ -525,9 +571,10 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
                 }
             }
         } catch (Exception ex) {
-            
+
         }
     }
+
     void loadImageFilter() {
         fimg = Convertor.ConvertMat2FilterImage(gaborFilter);
         fimg = Scalr.resize(fimg, Integer.parseInt(kernelSize.getText()) * zoom);

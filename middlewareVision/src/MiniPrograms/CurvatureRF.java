@@ -6,6 +6,7 @@
 package MiniPrograms;
 
 import java.awt.Desktop;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -14,12 +15,15 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_32F;
@@ -64,14 +68,55 @@ public class CurvatureRF extends javax.swing.JFrame {
         initComponents();
         loadFields();
         loadFieldList();
+        modifyLabel();
         mainGabor = new GaborFilter();
-        originalImage.setIcon(new ImageIcon(originalImageFile));
-        originalImage.setText("");
+
         try {
-            imageFile = ImageIO.read(new File(originalImageFile));
+            BufferedImage bi = ImageIO.read(new File(originalImageFile));
+            imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 200, 200);
+            imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+            originalImage.setIcon(new ImageIcon(imageFile));
+            originalImage.setText("");
         } catch (IOException ex) {
             Logger.getLogger(GaborFilterVisualizer.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
+        BufferedImage bi = new BufferedImage(eleScreenshot.getWidth(), eleScreenshot.getHeight(), type);
+        Graphics g = bi.getGraphics();
+        g.drawImage(eleScreenshot, 0, 0, null);
+        g.dispose();
+        return bi;
+    }
+
+    public void modifyLabel() {
+        TransferHandler th = new TransferHandler() {
+
+            @Override
+            public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+                return true;
+            }
+
+            @Override
+            public boolean importData(JComponent comp, Transferable t) {
+                try {
+                    List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                    if (files.size() == 1) {
+                        File f = files.get(0);
+                        originalImageFile = f.toString();
+                        BufferedImage bi = ImageIO.read(new File(originalImageFile));
+                        imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 200, 200);
+                        imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+                        originalImage.setIcon(new ImageIcon(imageFile));
+                    }
+                } catch (Exception e) {
+                }
+                return true;
+            }
+
+        };
+        originalImage.setTransferHandler(th);
     }
 
     void loadFieldList() {
@@ -637,13 +682,13 @@ public class CurvatureRF extends javax.swing.JFrame {
     }
 
     void convolution() {
-        int n=18;
-        Mat results[]=new Mat[n];
-        float inc = (float) (2*Math.PI / n);
-        for(int i=0;i<n;i++){
-            results[i]=filterProcess(inc*i);
+        int n = 18;
+        Mat results[] = new Mat[n];
+        float inc = (float) (2 * Math.PI / n);
+        for (int i = 0; i < n; i++) {
+            results[i] = filterProcess(inc * i);
         }
-        Mat result=MatrixUtils.maxSum(results);
+        Mat result = MatrixUtils.maxSum(results);
         convolvedImage.setText("");
         convolvedImage.setIcon(new ImageIcon(Convertor.Mat2Img(result)));
     }

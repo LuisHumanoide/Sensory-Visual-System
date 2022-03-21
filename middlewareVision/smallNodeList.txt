@@ -1,8 +1,8 @@
 V2CurvatureCells false
 V2AngularCells false
 RetinaProccess true
-BasicMotion false
-V1MotionCellsNew false
+BasicMotion true
+V1MotionCellsNew true
 LGNSimpleOpponentCells true
 MSTPolarCells true
 V1SimpleCells true
