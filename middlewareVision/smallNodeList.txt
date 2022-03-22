@@ -1,13 +1,13 @@
 V2CurvatureCells false
-V2AngularCells false
+V2AngularCells true
 RetinaProccess true
 BasicMotion true
-V1MotionCellsNew true
+V1MotionCellsNew false
 LGNSimpleOpponentCells true
 MSTPolarCells true
 V1SimpleCells true
 V1ComplexCells true
 MTPatternCells false
-V1HyperComplex false
+V1HyperComplex true
 MTComponentCells false
 V1DoubleOpponent true

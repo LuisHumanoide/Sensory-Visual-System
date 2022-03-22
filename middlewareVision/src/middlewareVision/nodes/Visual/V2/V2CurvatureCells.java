@@ -39,8 +39,12 @@ public class V2CurvatureCells extends Activity {
                 LongSpike spike = new LongSpike(data);
                 if (spike.getModality() == Modalities.VISUAL) {
 
-                    //curvatureProcess();
-                    //visualize();
+                    curvatureProcess();
+                    
+                    visualize();
+                    
+                    Visualizer.lockLimit("Curv");
+                    
                 }
             } catch (Exception ex) {
                 //Logger.getLogger(V2CurvatureCells.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,12 +58,9 @@ public class V2CurvatureCells extends Activity {
     void visualize() {
         for (int k = 0; k < x1; k++) {
             for (int i = 0; i < V2Bank.CurvC[0][0].getnCurvatures(); i++) {
-                Visualizer.setImage(V2Bank.CurvC[k][0].composedCells[i].mat, "curvature L radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("HC") + k * x1 + 1, i);
-                Visualizer.setImage(V2Bank.CurvC[k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("HC") + k * x1 + 2, i);
+                Visualizer.setImage(V2Bank.CurvC[k][0].composedCells[i].mat, "curvature L radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("V2Angle") + k * x1 + 1, i, "Curv");
+                Visualizer.setImage(V2Bank.CurvC[k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("V2Angle") + k * x1 + 2, i, "Curv");
             }
-        }
-        if (!Visualizer.limits.containsKey("Curv")) {
-            Visualizer.addLimit("Curv", Visualizer.getRow("HC") + (x1 - 1) * x1 + 2);
         }
     }
 

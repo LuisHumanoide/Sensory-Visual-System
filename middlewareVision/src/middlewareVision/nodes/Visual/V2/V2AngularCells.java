@@ -5,6 +5,7 @@
  */
 package middlewareVision.nodes.Visual.V2;
 
+import VisualMemory.Cell;
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
 import generator.ProcessList;
@@ -23,6 +24,7 @@ import utils.Config;
 import utils.Convertor;
 import utils.Functions;
 import utils.LongSpike;
+import utils.MatrixUtils;
 import utils.SpecialKernels;
 import utils.numSync;
 
@@ -39,7 +41,6 @@ public class V2AngularCells extends FrameActivity {
     // public Mat[] angleMats;
     //Mat kernels[];
     public Mat filtered[];
-    int nFrame = 7 * Config.gaborOrientations;
 
     /**
      * 2D array of each angular combination
@@ -49,11 +50,7 @@ public class V2AngularCells extends FrameActivity {
         this.ID = AreaNames.V2AngularCells;
         this.namer = AreaNames.class;
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
-        
-        ors = new Mat[Config.gaborOrientations];
-        //set 4 frames to show with index +28
-        initFrames(4, 20 + 8);
-        //generateKernels();
+
     }
 
     @Override
@@ -61,82 +58,60 @@ public class V2AngularCells extends FrameActivity {
         //SimpleLogger.log(this, "SMALL NODE CortexV2");
     }
 
-    /**
-     * this is like the door to the petri net, if you get all these indexes, it
-     * opens
-     */
-    numSync sync = new numSync(Config.gaborOrientations);
-
     @Override
     public void receive(int nodeID, byte[] data) {
         LongSpike spike;
-        try {
-            spike = new LongSpike(data);
-            /*
-            if it belongs to the visual modality it is accepted 
-             */
-            if (spike.getModality() == Modalities.VISUAL) {
-                //get the location index
-                Location l = (Location) spike.getLocation();
-                int index = l.getValues()[0];
-                //the location index is assigned to the array index
-                ors[index] = V1Bank.HCC[0][0].Cells[0][index].mat;
-                //the received indexes are added to the synchronizer
-                sync.addReceived(index);
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                spike = new LongSpike(data);
+                if (spike.getModality() == Modalities.VISUAL) {
 
-                /*
-            if all the timing indexes were received, then it will do the process described
-                 */
-                if (sync.isComplete()) {
-                    //calculates the angular activation maps
                     angularProcess();
-                    //mixes activation maps with a certain aperture in a single matrix with the maximum pixel value operation
-                    V2Bank.AC[0][0].mergeCells();
-                    // mergeAngles(v2map);
-                    /*
-                the angle maps are shown in the frames of v2
-                     */
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        BufferedImage img = Convertor.Mat2Img(V2Bank.AC[0][0].mergedAC[i]);
-                        Visualizer.setImage(img, "angle " + i, i + nFrame);
-                    }
-                    /**
-                     * Send a multichannel matrix with the combinations of
-                     * angular activations
-                     */
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
-                        send(AreaNames.V4ShapeActivationNode, sendSpike.getByteArray());
-                    }
+                    
+                    visualize();
+                    
+                    Visualizer.lockLimit("AC");
 
                 }
 
+                if (spike.getModality() == Modalities.ATTENTION) {
+
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(V2AngularCells.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if (spike.getModality() == Modalities.ATTENTION) {
-                V2Bank.AC[0][0].mergeCells();
-                for (int i = 0; i < Config.gaborOrientations; i++) {
-                    BufferedImage img = Convertor.Mat2Img(V2Bank.AC[0][0].mergedAC[i]);
-                    Visualizer.setImage(img, "angle " + i, i + nFrame);
-                }
-                for (int i = 0; i < Config.gaborOrientations; i++) {
-                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
-                    send(AreaNames.V4ShapeActivationNode, sendSpike.getByteArray());
-                }
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(V2AngularCells.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void visualize() {
+        for (int x0 = 0; x0 < Config.gaborBanks; x0++) {
+            for (int i = 0; i < V2Bank.AC[0][0].mergedAC.length; i++) {
+                Visualizer.setImage(V2Bank.AC[x0][0].mergedAC[i], "Angular Cells L", Visualizer.getRow("HC")+1, i, "AC");
+                Visualizer.setImage(V2Bank.AC[x0][1].mergedAC[i], "Angular Cells R", Visualizer.getRow("HC")+2, i, "AC");
+            }
+        }
     }
 
     /**
      * do the angular process
      */
     public void angularProcess() {
-        filterMatrix(ors);
-        angularActivation();
+        for (int i = 0; i < Config.gaborBanks; i++) {
+            for (int j = 0; j < 2; j++) {
+                Mat filtered[] = filterMatrix(V1Bank.HCC[i][j].mergedCells);
+                angularActivation(i, j, filtered);
+                V2Bank.AC[i][j].mergeCells();
+                mergeCells(i, j);
+            }
+        }
+    }
+
+    public void mergeCells(int x1, int x2) {
+        for (int i = 0; i < V2Bank.AC[x1][x2].mergedAC.length; i++) {
+            V2Bank.AC[x1][x2].mergedAC[i] = MatrixUtils.maxSum(V2Bank.AC[x1][x2].Cells[i]);
+        }
     }
     /**
      * Increment value
@@ -152,16 +127,17 @@ public class V2AngularCells extends FrameActivity {
      *
      * @param ors
      */
-    public void filterMatrix(Mat[] ors) {
+    public Mat[] filterMatrix(Cell[] ors) {
         filtered = new Mat[Config.gaborOrientations * 2];
         for (int i = 0; i < Config.gaborOrientations; i++) {
-            filtered[i] = ors[i].clone();
-            filtered[i + Config.gaborOrientations] = ors[i].clone();
+            filtered[i] = ors[i].mat.clone();
+            filtered[i + Config.gaborOrientations] = ors[i].mat.clone();
         }
         for (int i = 0; i < Config.gaborOrientations * 2; i++) {
             Imgproc.filter2D(filtered[i], filtered[i], CV_32F, SpecialKernels.v2Kernels[i]);
             Imgproc.threshold(filtered[i], filtered[i], 0, 1, Imgproc.THRESH_TOZERO);
         }
+        return filtered;
     }
     /**
      * value used to adjust the filters for scooping
@@ -172,13 +148,13 @@ public class V2AngularCells extends FrameActivity {
     /**
      * multiply the matrixes for generating the activation map
      */
-    public void angularActivation() {
+    public void angularActivation(int x1, int x2, Mat[] filtered) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
-                V2Bank.AC[0][0].Cells[i][j].mat = Functions.V2Activation(filtered[j], filtered[(i + j + 1) % (Config.gaborOrientations * 2)], l3);
-                V2Bank.AC[0][0].Cells[i][j].setPrevious(
-                        V1Bank.HCC[0][0].Cells[0][j % Config.gaborOrientations],
-                        V1Bank.HCC[0][0].Cells[0][((i + j + 1) % (Config.gaborOrientations * 2)) % 4]);
+                V2Bank.AC[x1][x2].Cells[i][j].mat = Functions.V2Activation(filtered[j], filtered[(i + j + 1) % (Config.gaborOrientations * 2)], l3);
+                V2Bank.AC[x1][x2].Cells[i][j].setPrevious(
+                        V1Bank.HCC[x1][x2].mergedCells[j % Config.gaborOrientations],
+                        V1Bank.HCC[x1][x2].mergedCells[((i + j + 1) % (Config.gaborOrientations * 2)) % 4]);
             }
         }
     }
