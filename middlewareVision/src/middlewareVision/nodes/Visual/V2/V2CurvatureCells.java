@@ -58,8 +58,8 @@ public class V2CurvatureCells extends Activity {
     void visualize() {
         for (int k = 0; k < x1; k++) {
             for (int i = 0; i < V2Bank.CurvC[0][0].getnCurvatures(); i++) {
-                Visualizer.setImage(V2Bank.CurvC[k][0].composedCells[i].mat, "curvature L radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("V2Angle") + k * x1 + 1, i, "Curv");
-                Visualizer.setImage(V2Bank.CurvC[k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("V2Angle") + k * x1 + 2, i, "Curv");
+                Visualizer.setImage(V2Bank.CurvC[k][0].composedCells[i].mat, "curvature L radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("AC") + k * x1 + 1, i, "Curv");
+                Visualizer.setImage(V2Bank.CurvC[k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("AC") + k * x1 + 2, i, "Curv");
             }
         }
     }

@@ -75,6 +75,8 @@ public class V2AngularCells extends FrameActivity {
                 }
 
                 if (spike.getModality() == Modalities.ATTENTION) {
+                    
+                    visualize();
 
                 }
 
@@ -95,11 +97,12 @@ public class V2AngularCells extends FrameActivity {
     }
 
     /**
-     * do the angular process
+     * Process to perform angular activation for all V2 cells.
      */
     public void angularProcess() {
         for (int i = 0; i < Config.gaborBanks; i++) {
             for (int j = 0; j < 2; j++) {
+                //Obtain the filtered Matrixes bu an angular activation
                 Mat filtered[] = filterMatrix(V1Bank.HCC[i][j].mergedCells);
                 angularActivation(i, j, filtered);
                 V2Bank.AC[i][j].mergeCells();
@@ -108,19 +111,17 @@ public class V2AngularCells extends FrameActivity {
         }
     }
 
+    /**
+     * Merge all angular cells with the same aperture and different direction<br>
+     * in order to visualize better
+     * @param x1 gabor bank
+     * @param x2 eye
+     */
     public void mergeCells(int x1, int x2) {
         for (int i = 0; i < V2Bank.AC[x1][x2].mergedAC.length; i++) {
             V2Bank.AC[x1][x2].mergedAC[i] = MatrixUtils.maxSum(V2Bank.AC[x1][x2].Cells[i]);
         }
     }
-    /**
-     * Increment value
-     */
-    float inc = (float) (Math.PI / Config.gaborOrientations);
-    /**
-     * Value of the width of Gabor function
-     */
-    float sigma = 0.47f * 2f;
 
     /**
      * Generate the filtered matrix by applying a convolution

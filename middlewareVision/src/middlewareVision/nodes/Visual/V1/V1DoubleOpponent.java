@@ -91,13 +91,15 @@ public class V1DoubleOpponent extends Activity {
                     };
                     transduction(DKL_L, 0);
                     transduction(DKL_R, 1);
+                    
                     for (int i = 0; i < 3; i++) {
-                        LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, 1), 0, 0);
-                        send(AreaNames.V4Color, sendSpike.getByteArray());
-                        send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
                         Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
                         Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
                     }
+
+                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    send(AreaNames.V4Color, sendSpike.getByteArray());
+                    send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
                 }
 
             } catch (Exception ex) {

@@ -17,6 +17,7 @@ import utils.SpecialKernels;
 import middlewareVision.nodes.Attention.TestAttention;
 import middlewareVision.nodes.Visual.MT.MT;
 import middlewareVision.nodes.Visual.MST.MST;
+import middlewareVision.nodes.Visual.MST.MSTPolarCells;
 //@import
 
 
@@ -35,11 +36,11 @@ public class Init extends Igniter {
             Retina.class.getName(),
             LGN.class.getName(),
             V1.class.getName(),
-            V2.class.getName(), //V4.class.getName(),
+            V2.class.getName(), 
+            V4.class.getName(),
             //TestAttention.class.getName(),
-            MT.class.getName(), 
-		MST.class.getName(),
-		//@addNodes
+            MT.class.getName(),
+            MST.class.getName(), //@addNodes
         };
 
         configuration.setLocal(true);
@@ -47,7 +48,7 @@ public class Init extends Igniter {
         configuration.setTCP();
         configuration.setEntityID(ENTITY_ID);
         Init.restart();
-        setAreas(areaNames);       
+        setAreas(areaNames);
         run();
         ProcessList.saveProcessList();
 
@@ -61,6 +62,7 @@ public class Init extends Igniter {
         //cc.setVisible(true);
         Visualizer.initVisualizer(1000);
         Visualizer.addLimit("zero", 0);
+        MSTPolarCells.getVrow();
         SpecialKernels.loadKernels();
     }
 

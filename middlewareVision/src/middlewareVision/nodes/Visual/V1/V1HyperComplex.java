@@ -51,7 +51,7 @@ public class V1HyperComplex extends Activity {
                     convolveHCC();
 
                     visualize();
-                    
+
                     Visualizer.lockLimit("HC");
 
                     LongSpike sendSpike = new LongSpike(Modalities.VISUAL, 0, 0, 0);
@@ -83,9 +83,9 @@ public class V1HyperComplex extends Activity {
                 for (int i = 0; i < Config.gaborOrientations; i++) {
                     if (k < Config.HCfilters) {
                         Visualizer.setImage(V1Bank.HCC[j][0].Cells[k][i].mat,
-                                "end stopped L " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 1 + 2 * k + 2 * j * Config.gaborBanks, i,"HC");
+                                "end stopped L " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 1 + 2 * k + 2 * j * Config.gaborBanks, i, "HC");
                         Visualizer.setImage(V1Bank.HCC[j][1].Cells[k][i].mat,
-                                "end stopped R " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i,"HC");
+                                "end stopped R " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i, "HC");
 
                         if (i == Config.gaborOrientations - 1) {
                             Visualizer.setImage(Functions.maxSum(V1Bank.HCC[j][0].Cells[k]),
@@ -93,12 +93,11 @@ public class V1HyperComplex extends Activity {
                             Visualizer.setImage(Functions.maxSum(V1Bank.HCC[j][1].Cells[k]),
                                     "end stopped R " + i + " bank " + j + " HC Filter " + k, Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i + 2);
                         }
-                    }
-                    else{
+                    } else {
                         Visualizer.setImage(V1Bank.HCC[j][0].mergedCells[i].mat,
-                                "end stopped L combined " + i + " bank " + j , Visualizer.getRow("CC") + 1 + 2 * k + 2 * j * Config.gaborBanks, i,"HC");
+                                "end stopped L combined " + i + " bank " + j, Visualizer.getRow("CC") + 1 + 2 * k + 2 * j * Config.gaborBanks, i, "HC");
                         Visualizer.setImage(V1Bank.HCC[j][1].mergedCells[i].mat,
-                                "end stopped L combined " + i + " bank " + j , Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i,"HC");
+                                "end stopped L combined " + i + " bank " + j, Visualizer.getRow("CC") + 2 + 2 * k + 2 * j * Config.gaborBanks, i, "HC");
                     }
                 }
 
@@ -121,14 +120,14 @@ public class V1HyperComplex extends Activity {
         }
     }
 
+    /**
+     * Merge the hyper complex cell in one map for each orientation
+     * @param x1
+     * @param x2 
+     */
     void mergeHCC(int x1, int x2) {
-        ArrayList<Mat> arrayMat = new ArrayList();
         for (int j = 0; j < Config.gaborOrientations; j++) {
-            for (int i = 0; i < V1Bank.HCC[x1][x2].Cells.length; i++) {
-                arrayMat.add(V1Bank.HCC[x1][x2].Cells[i][j].mat);
-            }
-            V1Bank.HCC[x1][x2].mergedCells[j].mat = MatrixUtils.maxSum(arrayMat);
-            arrayMat.clear();
+            V1Bank.HCC[x1][x2].mergedCells[j].mat = MatrixUtils.maxSum(V1Bank.HCC[x1][x2].mergedCells[j].previous);
         }
     }
 

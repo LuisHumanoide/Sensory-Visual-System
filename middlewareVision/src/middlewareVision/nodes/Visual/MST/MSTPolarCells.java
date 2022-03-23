@@ -32,7 +32,7 @@ public class MSTPolarCells extends Activity {
 
     Mat logM;
     //variable used in the visualizer
-    String vrow = "zero";
+    static String vrow = "zero";
     boolean started = false;
     MotionCell MotionR, MotionL, MotionUP, MotionDOWN;
     Mat gaborV;
@@ -59,6 +59,12 @@ public class MSTPolarCells extends Activity {
         gaborV = Imgproc.getGaborKernel(new Size(17, 17), 1.6f, 0, 0.433f, 0.8f);
         gaborH = SpecialKernels.rotateKernelRadians(gaborV, 0.5*Math.PI);
 
+        getVrow();
+
+    }
+    
+    public static void getVrow(){
+        vrow="zero"; 
         if ((boolean) ProcessList.ProcessMap.get("V1MotionCellsNew")) {
             vrow = "v1motion";
             if ((boolean) ProcessList.ProcessMap.get("MTComponentCells")) {
@@ -68,7 +74,6 @@ public class MSTPolarCells extends Activity {
                 }
             }
         }
-
     }
 
     /**

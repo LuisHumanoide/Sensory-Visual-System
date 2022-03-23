@@ -6,6 +6,7 @@
 package VisualMemory.V1Cells;
 
 import VisualMemory.Cell;
+import java.util.ArrayList;
 import org.opencv.core.Mat;
 import utils.Config;
 import utils.Functions;
@@ -43,6 +44,7 @@ public class HypercomplexCells {
         for (int i = 0; i < number; i++) {
             mergedCells[i] = new Cell();
         }
+        setPreviousMergeCells(numFilters,number);
     }
 
     public HypercomplexCells(int numFilters, int number) {
@@ -58,6 +60,7 @@ public class HypercomplexCells {
         for (int i = 0; i < number; i++) {
             mergedCells[i] = new Cell();
         }
+        setPreviousMergeCells(numFilters,number);
     }
 
     public HypercomplexCells(int scale, int numFilters, int number, int n2, int nf) {
@@ -73,6 +76,18 @@ public class HypercomplexCells {
         }
         for (int i = 0; i < number; i++) {
             mergedCells[i] = new Cell();
+        }
+        setPreviousMergeCells(numFilters,number);
+    }
+
+    public void setPreviousMergeCells(int n1, int n2) {
+        ArrayList<Cell> previousCells = new ArrayList<Cell>();
+        for (int j = 0; j < n2; j++) {
+            for (int i = 0; i < n1; i++) {
+                previousCells.add(Cells[i][j]);
+            }
+            mergedCells[j].setPrevious(previousCells);
+            previousCells.clear();
         }
     }
 

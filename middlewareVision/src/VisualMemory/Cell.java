@@ -5,6 +5,7 @@
  */
 package VisualMemory;
 
+import java.util.List;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
@@ -14,7 +15,7 @@ import utils.Config;
  *
  * @author Laptop
  */
-public class Cell {
+public class Cell{
 
     public Mat mat;
     //Extra Matrix
@@ -150,6 +151,15 @@ public class Cell {
         previous = new Cell[pre.length];
         for (Cell mat : pre) {
             previous[i] = mat;
+            i++;
+        }
+    }
+    
+    public void setPrevious(List<Cell> list){
+        int i=0;
+        previous = new Cell[list.size()];
+        for(Cell cell:list){
+            previous[i] = cell;
             i++;
         }
     }

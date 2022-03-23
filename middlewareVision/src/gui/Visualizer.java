@@ -10,7 +10,6 @@ import VisualMemory.V1Cells.V1Bank;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import org.opencv.core.Mat;
 import utils.Config;
 import utils.Convertor;
@@ -36,6 +35,7 @@ public class Visualizer {
         lockedLimits = new HashSet();
         limits.put("init", 0);
     }
+    
 
     public static void addLimit(String name, int value) {
         limits.put(name, value);

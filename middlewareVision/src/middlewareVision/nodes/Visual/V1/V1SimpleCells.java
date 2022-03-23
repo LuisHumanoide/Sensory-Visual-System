@@ -59,26 +59,21 @@ public class V1SimpleCells extends Activity {
             receive spike
                  */
                 LongSpike spike = new LongSpike(data);
-                /*
-            extract the variable needed for the sync
-                 */
-                Location l = (Location) spike.getLocation();
-                int index = l.getValues()[0];
 
                 if (spike.getModality() == Modalities.VISUAL) {
-                    //assign information from LGN to the DKL array matrix
-                    //add the index to the sync
-                    sync.addReceived(index);
-                }
-
-                if (sync.isComplete()) {
-                    //edge border detection is performed, with phi angle = 0
+                    
                     convolveSimpleCells(V1Bank.DOC[0][0].Cells[2].mat, V1Bank.DOC[0][1].Cells[2].mat);
 
                     visualize();
 
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    
                     send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
+                }
+
+                if (sync.isComplete()) {
+                    //edge border detection is performed, with phi angle = 0
+
                 }
 
                 if (spike.getModality() == Modalities.ATTENTION) {

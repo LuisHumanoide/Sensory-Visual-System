@@ -1,6 +1,7 @@
 package middlewareVision.nodes.Visual.V4;
 
 import VisualMemory.V1Cells.V1Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
@@ -24,16 +25,13 @@ import utils.numSync;
  */
 public class V4Color extends Activity {
 
-
-    /*
-    ****************************************************************************
-    Constructor y metodos para recibir
-    ****************************************************************************
-     */
     public V4Color() {
         this.ID = AreaNames.V4Color;
         this.namer = AreaNames.class;
-        DKL = new matrix[3];
+        DKL_L = new matrix[3];
+        DKL_R = new matrix[3];
+        matLabel = new Mat[2];
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
 
     }
 
@@ -41,57 +39,45 @@ public class V4Color extends Activity {
     public void init() {
     }
 
-    numSync sync = new numSync(3);
-
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
 
-           
-            LongSpike spike = new LongSpike(data);
-            Location l = (Location) spike.getLocation();
-            int i1 = l.getValues()[0];
+                LongSpike spike = new LongSpike(data);
 
-            if (spike.getModality() == Modalities.VISUAL) {
+                if (spike.getModality() == Modalities.VISUAL) {
+                    for (int i = 0; i < 3; i++) {
+                        DKL_L[i] = Convertor.MatToMatrix(V1Bank.DOC[0][0].Cells[i].mat);
+                        DKL_R[i] = Convertor.MatToMatrix(V1Bank.DOC[0][1].Cells[i].mat);
+                    }
+                    generateLabelMatrix(DKL_L, 0);
+                    generateLabelMatrix(DKL_R, 1);
 
-                DKL[i1] = Convertor.MatToMatrix(V1Bank.DOC[0][0].Cells[i1].mat);
-                sync.addReceived(i1);
+                    Visualizer.setImage(Convertor.Mat2Img2(matLabel[0]), "color labels L", 4, 3);
+                    Visualizer.setImage(Convertor.Mat2Img2(matLabel[1]), "color labels R", 5, 3);
+                }
+
+            } catch (Exception ex) {
+                // Logger.getLogger(V4Color.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if (sync.isComplete()) {
-                generateLabelMatrix(DKL);
-                
-                Visualizer.setImage(Convertor.Mat2Img2(matLabel), "color labels", 2*Config.gaborOrientations+3);
-            }
-
-        } catch (Exception ex) {
-           // Logger.getLogger(V4Color.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /*
-    ****************************************************************************
-    variables y constantes
-    ****************************************************************************
-     */
-    private matrix[] DKL;
+    private matrix[] DKL_L, DKL_R;
 
-    private int NoConcentricCircles = 4;
+    private int NoConcentricCircles = 10;
 
-    private int NoRadialDivisions = 12;
-    
-    private int NoHeightDivisions = 5;
+    private int NoRadialDivisions = 24;
 
-    /*
-    ****************************************************************************
-    metodos nuevos
-    ****************************************************************************
-     */
-    
-    Mat matLabel;
-    private labelMatrix generateLabelMatrix(matrix[] mat) {
+    private int NoHeightDivisions = 10;
+
+
+    Mat matLabel[];
+
+    private labelMatrix generateLabelMatrix(matrix[] mat, int eye) {
         labelMatrix labels = new labelMatrix(mat[0].getWidth(), mat[0].getHeight());
-        matLabel=new Mat(mat[0].getHeight(), mat[0].getWidth(), CvType.CV_8UC3);
+        matLabel[eye] = new Mat(mat[0].getHeight(), mat[0].getWidth(), CvType.CV_8UC3);
         for (int i = 0; i < mat[0].getWidth(); i++) {
             for (int j = 0; j < mat[0].getHeight(); j++) {
                 double D = mat[0].getValue(i, j);
@@ -110,20 +96,14 @@ public class V4Color extends Activity {
                     K = -1;
                 }
                 int[] colorLabel = {getConcentricCircleLabel(D, K), getAngleLabel(D, K), getHeightLabel(L)};
-                matLabel.put(j, i, new byte[]{(byte)(getConcentricCircleLabel(D, K)*(255/NoConcentricCircles)),
-                    (byte)(getAngleLabel(D, K)*(255/NoRadialDivisions)),(byte)(getHeightLabel(L)*(255/NoHeightDivisions))});
+                matLabel[eye].put(j, i, new byte[]{(byte) (getConcentricCircleLabel(D, K) * (255 / NoConcentricCircles)),
+                    (byte) (getAngleLabel(D, K) * (255 / NoRadialDivisions)), (byte) (getHeightLabel(L) * (255 / NoHeightDivisions))});
                 labels.setLabel(i, j, colorLabel);
             }
         }
         return labels;
     }
 
-    /*
-    ****************************************************************************
-    metodos
-    hechos por Dani
-    ****************************************************************************
-     */
     public int getConcentricCircles() {
         return NoConcentricCircles;
     }
@@ -159,10 +139,10 @@ public class V4Color extends Activity {
 
         return colorLabel;
     }
-    
-    public int getHeightLabel(double L){
-        double div=1/(double)NoHeightDivisions;
-        return (int) (L/div);
+
+    public int getHeightLabel(double L) {
+        double div = 1 / (double) NoHeightDivisions;
+        return (int) (L / div);
     }
 
     public int getConcentricCircleLabel(double X, double Y) {
