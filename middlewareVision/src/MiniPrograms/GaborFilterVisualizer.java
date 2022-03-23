@@ -46,8 +46,8 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
      */
     int zoom = 1;
     Mat gaborFilter;
-    String fileName = "GaborValues.txt";
-    String originalImageFile = "Paris.JPG";
+    String fileName = "ConfigFiles/GaborValues.txt";
+    String originalImageFile = "ConfigFiles/Paris.JPG";
     BufferedImage imageFile;
     BufferedImage filteredImage;
     int w=250;

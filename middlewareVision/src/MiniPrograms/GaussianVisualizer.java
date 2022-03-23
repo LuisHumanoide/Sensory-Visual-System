@@ -43,8 +43,8 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     /**
      * Creates new form GaussianVisualizer
      */
-    String fileName = "DoGValues.txt";
-    String originalImageFile = "Paris.JPG";
+    String fileName = "ConfigFiles/DoGValues.txt";
+    String originalImageFile = "ConfigFiles/Paris.JPG";
     JTextField[] fields;
     Mat DoGFilter;
     BufferedImage fImage;

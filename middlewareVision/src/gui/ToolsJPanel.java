@@ -9,7 +9,11 @@ import MiniPrograms.CurvatureRF;
 import MiniPrograms.GaborList;
 import MiniPrograms.MotionV1Speeds;
 import MiniPrograms.RFGeneratorNew;
+import generator.NodeGenerator;
 import generator.SmallNodeList;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import middlewareVision.config.Init;
 
@@ -58,10 +62,11 @@ public class ToolsJPanel extends javax.swing.JPanel {
         b3 = new javax.swing.JButton();
         b4 = new javax.swing.JButton();
         b6 = new javax.swing.JButton();
+        b7 = new javax.swing.JButton();
         b5 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(57, 57, 57));
-        setLayout(new java.awt.GridLayout(3, 2));
+        setLayout(new java.awt.GridLayout(4, 2));
 
         b1.setBackground(new java.awt.Color(100, 114, 123));
         b1.setText("Gabor Bank List");
@@ -108,6 +113,15 @@ public class ToolsJPanel extends javax.swing.JPanel {
         });
         add(b6);
 
+        b7.setBackground(new java.awt.Color(100, 114, 123));
+        b7.setText("Configuration File");
+        b7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b7ActionPerformed(evt);
+            }
+        });
+        add(b7);
+
         b5.setBackground(new java.awt.Color(100, 114, 123));
         b5.setText("Restart Banks");
         b5.addActionListener(new java.awt.event.ActionListener() {
@@ -151,6 +165,18 @@ public class ToolsJPanel extends javax.swing.JPanel {
         p5.setVisible(true);
     }//GEN-LAST:event_b6ActionPerformed
 
+    Runtime run = Runtime.getRuntime();
+    private void b7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b7ActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            run.exec("cmd.exe /c "+System.getProperty("user.dir")+"\\ConfigFiles\\Configuration.xml");
+            //run.exec("TemplateBigNode.java");
+        } catch (IOException ex) {
+            Logger.getLogger(NodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_b7ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b1;
@@ -159,5 +185,6 @@ public class ToolsJPanel extends javax.swing.JPanel {
     private javax.swing.JButton b4;
     private javax.swing.JButton b5;
     private javax.swing.JButton b6;
+    private javax.swing.JButton b7;
     // End of variables declaration//GEN-END:variables
 }

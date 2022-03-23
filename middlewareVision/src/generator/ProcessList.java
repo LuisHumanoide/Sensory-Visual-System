@@ -28,7 +28,7 @@ public class ProcessList {
         for (String key : ProcessMap.keySet()) {
             ac = ac + key + " " + ProcessMap.get(key) + "\n";
         }
-        FileUtils.write("smallNodeList", ac, "txt");
+        FileUtils.write("ConfigFiles/smallNodeList", ac, "txt");
     }
     
     public static void setValue(String key, boolean bool){
@@ -37,7 +37,7 @@ public class ProcessList {
 
     public static void openList() {
         ProcessMap=new HashMap();
-        String sfile = FileUtils.readFile(new File("smallNodeList.txt"));
+        String sfile = FileUtils.readFile(new File("ConfigFiles/smallNodeList.txt"));
         if (sfile.length() > 1) {
             String fileLines[] = sfile.split("\n");
             for (String line : fileLines) {

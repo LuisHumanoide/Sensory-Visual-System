@@ -57,7 +57,7 @@ public class CurvatureRF extends javax.swing.JFrame {
     double mulFactor = 1;
     BufferedImage fimg;
     String folder = "RFV2/Curvature/";
-    String originalImageFile = "Circles.JPG";
+    String originalImageFile = "ConfigFiles/Circles.JPG";
     BufferedImage imageFile;
     BufferedImage filteredImage;
 

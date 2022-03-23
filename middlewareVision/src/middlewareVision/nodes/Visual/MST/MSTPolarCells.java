@@ -44,16 +44,16 @@ public class MSTPolarCells extends Activity {
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
 
         MotionR = new MotionCell(4);
-        MotionR.setDxDt(3, 1);
+        MotionR.setDxDt(Config.dxExpCont, Config.dtExpCont);
 
         MotionL = new MotionCell(4);
-        MotionL.setDxDt(3, 1);
+        MotionL.setDxDt(Config.dxExpCont, Config.dtExpCont);
 
         MotionUP = new MotionCell(4);
-        MotionUP.setDxDt(2, 1);
+        MotionUP.setDxDt(Config.dxRotation, Config.dtRotation);
 
         MotionDOWN = new MotionCell(4);
-        MotionDOWN.setDxDt(2, 1);
+        MotionDOWN.setDxDt(Config.dxRotation, Config.dtRotation);
 
         //size, sigma, theta, lambda, gamma
         gaborV = Imgproc.getGaborKernel(new Size(17, 17), 1.6f, 0, 0.433f, 0.8f);

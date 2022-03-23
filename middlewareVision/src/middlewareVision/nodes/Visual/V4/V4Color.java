@@ -66,12 +66,11 @@ public class V4Color extends Activity {
 
     private matrix[] DKL_L, DKL_R;
 
-    private int NoConcentricCircles = 10;
+    //private int NoConcentricCircles = Config.NoConcentricCircles;
 
-    private int NoRadialDivisions = 24;
+    //private int NoRadialDivisions = Config.NoRadialDivisions;
 
-    private int NoHeightDivisions = 10;
-
+    //private int NoHeightDivisions = Config.NoHeightDivisions;
 
     Mat matLabel[];
 
@@ -96,28 +95,12 @@ public class V4Color extends Activity {
                     K = -1;
                 }
                 int[] colorLabel = {getConcentricCircleLabel(D, K), getAngleLabel(D, K), getHeightLabel(L)};
-                matLabel[eye].put(j, i, new byte[]{(byte) (getConcentricCircleLabel(D, K) * (255 / NoConcentricCircles)),
-                    (byte) (getAngleLabel(D, K) * (255 / NoRadialDivisions)), (byte) (getHeightLabel(L) * (255 / NoHeightDivisions))});
+                matLabel[eye].put(j, i, new byte[]{(byte) (getConcentricCircleLabel(D, K) * (255 / Config.NoConcentricCircles)),
+                    (byte) (getAngleLabel(D, K) * (255 / Config.NoRadialDivisions)), (byte) (getHeightLabel(L) * (255 / Config.NoHeightDivisions))});
                 labels.setLabel(i, j, colorLabel);
             }
         }
         return labels;
-    }
-
-    public int getConcentricCircles() {
-        return NoConcentricCircles;
-    }
-
-    public void setConcentricCircles(int noCircles) {
-        this.NoConcentricCircles = noCircles;
-    }
-
-    public int getRadialDivisions() {
-        return NoRadialDivisions;
-    }
-
-    public void setRadialDivisions(int Divisions) {
-        this.NoRadialDivisions = Divisions;
     }
 
     public String assignColorLabel(double D, double K) {
@@ -141,16 +124,16 @@ public class V4Color extends Activity {
     }
 
     public int getHeightLabel(double L) {
-        double div = 1 / (double) NoHeightDivisions;
+        double div = 1 / (double) Config.NoHeightDivisions;
         return (int) (L / div);
     }
 
     public int getConcentricCircleLabel(double X, double Y) {
         double r = Math.sqrt((X * X) + (Y * Y));
         if (r >= 1) {
-            return this.NoConcentricCircles - 1;
+            return Config.NoConcentricCircles - 1;
         } else {
-            return (int) (this.NoConcentricCircles * r);
+            return (int) (Config.NoConcentricCircles* r);
         }
 
     }
@@ -170,7 +153,7 @@ public class V4Color extends Activity {
             g = 360 - g;
         }
 
-        r = (int) ((g * this.NoRadialDivisions) / 360);
+        r = (int) ((g * Config.NoRadialDivisions) / 360);
 
         return r;
     }
@@ -186,7 +169,7 @@ public class V4Color extends Activity {
             g = 360 - g;
         }
 
-        return (int) ((g * this.NoRadialDivisions) / 360);
+        return (int) ((g * Config.NoRadialDivisions) / 360);
     }
 
 }

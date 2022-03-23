@@ -55,6 +55,7 @@ public class Init extends Igniter {
     }
 
     public static void restart() {
+        XMLReader.readXML();
         ProcessList.openList();
         InitCellMemory.initCellMemory();
         V4Memory.initV1Map();

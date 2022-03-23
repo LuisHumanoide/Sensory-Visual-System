@@ -48,8 +48,6 @@ public class SpecialKernels {
         initRFlist();
         loadGaborFilters();
         loadEndStoppedFilters();
-        getdiag45(Config.diagonalSize);
-        getdiag135(Config.diagonalSize);
         loadV2Kernels();
         V4CellStructure.loadV4Structure();
     }

@@ -1,0 +1,14 @@
+V2CurvatureCells true
+V2AngularCells true
+RetinaProccess true
+BasicMotion true
+V1MotionCellsNew false
+LGNSimpleOpponentCells true
+MSTPolarCells false
+V1SimpleCells true
+V1ComplexCells true
+MTPatternCells false
+V1HyperComplex true
+MTComponentCells false
+V4Color true
+V1DoubleOpponent true

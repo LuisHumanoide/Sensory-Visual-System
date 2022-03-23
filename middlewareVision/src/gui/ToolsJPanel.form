@@ -21,7 +21,7 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
     <Property name="columns" type="int" value="2"/>
-    <Property name="rows" type="int" value="3"/>
+    <Property name="rows" type="int" value="4"/>
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JButton" name="b1">
@@ -77,6 +77,17 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b6ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="b7">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="7b" green="72" red="64" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Configuration File"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b7ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="b5">

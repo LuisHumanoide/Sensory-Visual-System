@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<!--IP CONFIG-->
+	<port>54321</port>
+	<ip>127.0.0.1</ip>
+	<!--CAMERA-->
+	<device>0</device>
+	<!--ORIENTATIONS AND SIZE-->
+	<GaborOrientations>4</GaborOrientations>
+	<dimensions>150</dimensions>
+	<motionDimensions>100</motionDimensions>
+	<!--V4 COLOR-->
+	<NoConcentricCircles>2</NoConcentricCircles>
+	<NoRadialDivisions>2</NoRadialDivisions>
+	<NoHeightDivisions>2</NoHeightDivisions>
+	<!--MST RADIAL-->
+	<dxExpCont>2</dxExpCont>
+	<dtExpCont>1</dtExpCont>
+	<dxRotation>3</dxRotation>
+	<dtRotation>1</dtRotation>
+</Configuration>

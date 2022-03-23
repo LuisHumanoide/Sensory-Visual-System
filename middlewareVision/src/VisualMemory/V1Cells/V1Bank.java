@@ -69,7 +69,7 @@ public class V1Bank {
                 SC[i2][i3] = new SimpleCells(Config.gaborOrientations);
                 CC[i2][i3] = new ComplexCells(Config.gaborOrientations);
                 HCC[i2][i3] = new HypercomplexCells(Config.HCfilters, Config.gaborOrientations);
-                MC[i2][i3] = new MotionCellsV1("speeds.txt");
+                MC[i2][i3] = new MotionCellsV1("ConfigFiles/speeds.txt");
                 CC[i2][i3].setSimpleCells(SC[i2][i3]);
                 MC[i2][i3].setPrevious(CC[i2][i3].Cells);
             }
