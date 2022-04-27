@@ -71,6 +71,10 @@ public class V2AngularCells extends FrameActivity {
                     visualize();
                     
                     Visualizer.lockLimit("AC");
+                    
+                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    
+                    send(AreaNames.V4ShapeActivationNode, sendSpike1.getByteArray());
 
                 }
 

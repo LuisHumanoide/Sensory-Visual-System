@@ -12,17 +12,19 @@ import org.opencv.core.Size;
 import utils.Config;
 
 /**
- *
- * @author Laptop
+    Class representing a cell group
  */
 public class Cell{
 
     public Mat mat;
     //Extra Matrix
     public Mat eMat;
+    //Previous and next cells
     public Cell[] previous;
     public Cell[] next;
+    //id
     public int id;
+    //filter to make a convolution
     public Mat filter;
 
     public Mat geteMat() {

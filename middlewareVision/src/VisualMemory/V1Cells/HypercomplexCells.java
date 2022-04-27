@@ -31,6 +31,12 @@ public class HypercomplexCells {
         this.Cells = HypercomplexCells;
     }
 
+    /**
+     * Constructor for HCC
+     * @param scale index of scale or frequency
+     * @param numFilters number of HCC filters
+     * @param number number of HCC rows (for example, if there are 4 orientations, the number will be 4)
+     */
     public HypercomplexCells(int scale, int numFilters, int number) {
         Cells = new Cell[numFilters][number];
         mergedCells = new Cell[number];
@@ -47,6 +53,11 @@ public class HypercomplexCells {
         setPreviousMergeCells(numFilters,number);
     }
 
+    /**
+     * Constructor for HCC
+     * @param numFilters number of HCC filters
+     * @param number number of HCC rows (for example, if there are 4 orientations, the number will be 4)
+     */
     public HypercomplexCells(int numFilters, int number) {
         Cells = new Cell[numFilters][number];
         mergedCells = new Cell[number];
@@ -63,6 +74,14 @@ public class HypercomplexCells {
         setPreviousMergeCells(numFilters,number);
     }
 
+    /**
+     * Constructor used if it is necessary set the previous cells
+     * @param scale index of scale or frequency
+     * @param numFilters number of HCC filters
+     * @param number number of HCC rows (for example, if there are 4 orientations, the number will be 4)
+     * @param n2 index of eye
+     * @param nf index of the frequency filter
+     */
     public HypercomplexCells(int scale, int numFilters, int number, int n2, int nf) {
         Cells = new Cell[numFilters][number];
         mergedCells = new Cell[number];
@@ -80,6 +99,11 @@ public class HypercomplexCells {
         setPreviousMergeCells(numFilters,number);
     }
 
+    /**
+     * Set the previous cells when the merge process is performed
+     * @param n1 number 1
+     * @param n2 number 2
+     */
     public void setPreviousMergeCells(int n1, int n2) {
         ArrayList<Cell> previousCells = new ArrayList<Cell>();
         for (int j = 0; j < n2; j++) {
@@ -91,10 +115,19 @@ public class HypercomplexCells {
         }
     }
 
+    /**
+     * Set the HCC filters
+     * @param filters 
+     */ 
     public void setFilters(Mat[] filters) {
         this.filters = filters;
     }
 
+    /**
+     * Set the HCC filters
+     * @param index
+     * @param filter 
+     */
     public void setFilter(int index, Mat filter) {
         filters[index] = filter.clone();
     }

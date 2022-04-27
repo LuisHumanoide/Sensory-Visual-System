@@ -1,6 +1,7 @@
 package middlewareVision.nodes.Visual.V4;
 
 import VisualMemory.V2Cells.V2Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ public class V4ShapeActivationNode extends Activity {
      * *************************************************************************
      */
     RFBank rfbank;
-    int nFrame = Config.gaborOrientations * 9;
 
     /**
      * *************************************************************************
@@ -41,6 +41,7 @@ public class V4ShapeActivationNode extends Activity {
     public V4ShapeActivationNode() {
         this.ID = AreaNames.V4ShapeActivationNode;
         this.namer = AreaNames.class;
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
 
     @Override
@@ -49,33 +50,31 @@ public class V4ShapeActivationNode extends Activity {
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        try {
-            LongSpike spike = new LongSpike(data);
-
-            /*
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            try {
+                LongSpike spike = new LongSpike(data);
+                /*
             if it belongs to the visual modality it is accepted 
-             */
-            if (spike.getModality() == Modalities.VISUAL) {
-                //get the location index
-                Location l = (Location) spike.getLocation();
-                int index = l.getValues()[0];
-                rfbank = V4CellStructure.V4Bank.get(index);
-                ArrayList matsList = new ArrayList();
-                for (RFlist list : rfbank.RFCellBank) {
-                    Mat activationMat = activationShape(filterMats(list, 0, 0));
-                    matsList.add(activationMat);
+                 */
+                if (spike.getModality() == Modalities.VISUAL) {
+                    for (int i = 0; i < V4CellStructure.V4Bank.size(); i++) {
+                        rfbank = V4CellStructure.V4Bank.get(i);
+                        ArrayList matsList = new ArrayList();
+                        for (RFlist list : rfbank.RFCellBank) {
+                            Mat activationMat = activationShape(filterMats(list, 0, 0));
+                            matsList.add(activationMat);
+                        }
+                        Mat activation = sumMats(matsList);
+                        V4Memory.activationArray[i] = activation;
+                        BufferedImage img = Convertor.Mat2Img(V4Memory.activationArray[i]);
+                        Visualizer.setImage(img, "shape " + i, Visualizer.getRow("Curv") + 1, i);
+                    }
+
                 }
-                Mat activation = sumMats(matsList);
-                V4Memory.activationArray[index] = activation;
-                BufferedImage img = Convertor.Mat2Img(V4Memory.activationArray[index]);
-                Visualizer.setImage(img, "shape " + index, nFrame + index);
 
-                //hacer las convoluciones para cada matriz de v2
-                //juntar las activaciones con suma de cuadrados o multiplicacion 
+            } catch (Exception ex) {
+                //Logger.getLogger(V4ShapeActivationNode.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (Exception ex) {
-            //Logger.getLogger(V4ShapeActivationNode.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -119,11 +118,11 @@ public class V4ShapeActivationNode extends Activity {
         double p = 1 / (double) mats.size();
         //System.out.println("p es "+p+"    1-p "+(1-p));
         for (Mat mat : mats) {
-            Core.pow(mat, 1.2, mat);
+            //Core.pow(mat, 1.2, mat);
             //Core.add(activation, mat, activation);
             Core.multiply(activation, mat, activation);
         }
-        Core.multiply(activation, new Scalar(0.001), activation);
+        //Core.multiply(activation, new Scalar(0.001), activation);
         //Imgproc.threshold(activation, activation, 0, 1, Imgproc.THRESH_TOZERO);
         return activation;
     }

@@ -93,7 +93,6 @@ public class V1SimpleCells extends Activity {
      * Visualize all the Simple Cells
      */
     void visualize() {
-        convolveSimpleCells(V1Bank.DOC[0][0].Cells[2].mat, V1Bank.DOC[0][1].Cells[2].mat);
         for (int k = 0; k < Config.gaborBanks; k++) {
             for (int i = 0; i < Config.gaborOrientations; i++) {
                 Visualizer.setImage(Convertor.Mat2Img(V1Bank.SC[k][0].Even[i].mat), "even L bank" + k + " " + i, 4 * k + 6, i);

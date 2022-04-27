@@ -21,15 +21,5 @@ public class PatternCells {
             Cells[i] = new Cell(size);
         }
     }
-    
-   /* public void setPrevious(int d1, int d2){
-        for(int i=0;i<d1;i++){
-            for(int j=0;j<d2;j++){
-                utils.Msg.print(j+i*d2+"  es "+i+"   "+j);
-                Cells[j+i*d2].setPrevious(MTBank.);
-            }
-        }
-    }*/
-
 
 }

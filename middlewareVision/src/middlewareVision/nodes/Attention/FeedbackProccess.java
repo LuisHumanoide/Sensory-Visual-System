@@ -3,6 +3,7 @@ package middlewareVision.nodes.Attention;
 import VisualMemory.Cell;
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
+import generator.ProcessList;
 import gui.Visualizer;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class FeedbackProccess extends Activity {
     AttentionTrigger trigger;
 
     public FeedbackProccess() {
+        ProcessList.addProcess(this.getClass().getSimpleName(), true);
         this.ID = AreaNames.FeedbackProccess;
         this.namer = AreaNames.class;
 
@@ -36,8 +38,10 @@ public class FeedbackProccess extends Activity {
 
     @Override
     public void init() {
-        trigger = new AttentionTrigger(this);
-        trigger.setVisible(true);
+        if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
+            trigger = new AttentionTrigger(this);
+            trigger.setVisible(true);
+        }
     }
 
     @Override
@@ -58,15 +62,15 @@ public class FeedbackProccess extends Activity {
         for (int n2 = 0; n2 < numEyes; n2++) {
             for (int f = 0; f < Config.freqs; f++) {
                 for (int i = 0; i < Config.gaborOrientations; i++) {
-                    feedbackFunction(filter, V1Bank.SC[f][n2].Odd[i].mat, V1Bank.SC[f][n2].Odd[i].mat, value, c, addFilter);
-                    feedbackFunction(filter, V1Bank.SC[f][n2].Even[i].mat, V1Bank.SC[f][n2].Even[i].mat, value, c, addFilter);
+                    rFeedback(filter, V1Bank.SC[f][n2].Odd[i], V1Bank.SC[f][n2].Odd[i].mat, value, c, addFilter);
+                    rFeedback(filter, V1Bank.SC[f][n2].Even[i], V1Bank.SC[f][n2].Even[i].mat, value, c, addFilter);
                 }
             }
         }
 
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(-1), 0, 0);
         try {
-            send(AreaNames.V1SimpleCellsFilter, sendSpike1.getByteArray());
+            send(AreaNames.V1SimpleCells, sendSpike1.getByteArray());
         } catch (IOException ex) {
             Logger.getLogger(FeedbackProccess.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,14 +80,14 @@ public class FeedbackProccess extends Activity {
 
         for (int f = 0; f < Config.freqs; f++) {
             for (int n2 = 0; n2 < numEyes; n2++) {
-                feedbackFunction(filter, V1Bank.SC[f][n2].Odd[i].mat, V1Bank.SC[f][n2].Odd[i].mat, value, c, addFilter);
-                feedbackFunction(filter, V1Bank.SC[f][n2].Even[i].mat, V1Bank.SC[f][n2].Even[i].mat, value, c, addFilter);
+                rFeedback(filter, V1Bank.SC[f][n2].Odd[i], V1Bank.SC[f][n2].Odd[i].mat, value, c, addFilter);
+                rFeedback(filter, V1Bank.SC[f][n2].Even[i], V1Bank.SC[f][n2].Even[i].mat, value, c, addFilter);
             }
         }
 
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(-1), 0, 0);
         try {
-            send(AreaNames.V1SimpleCellsFilter, sendSpike1.getByteArray());
+            send(AreaNames.V1SimpleCells, sendSpike1.getByteArray());
         } catch (IOException ex) {
             Logger.getLogger(FeedbackProccess.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -100,7 +104,6 @@ public class FeedbackProccess extends Activity {
             }
         }
 
-        Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
             send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
@@ -118,7 +121,6 @@ public class FeedbackProccess extends Activity {
             }
         }
 
-        Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
             send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
@@ -140,8 +142,6 @@ public class FeedbackProccess extends Activity {
                 }
             }
         }
-
-        Visualizer.update();
         LongSpike sendSpike1 = new LongSpike(Modalities.ATTENTION, new Location(0), 0, 0);
         try {
             send(AreaNames.V1HyperComplex, sendSpike1.getByteArray());

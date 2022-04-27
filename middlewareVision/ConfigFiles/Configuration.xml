@@ -10,12 +10,12 @@
 	<dimensions>150</dimensions>
 	<motionDimensions>100</motionDimensions>
 	<!--V4 COLOR-->
-	<NoConcentricCircles>2</NoConcentricCircles>
-	<NoRadialDivisions>2</NoRadialDivisions>
-	<NoHeightDivisions>2</NoHeightDivisions>
+	<NoConcentricCircles>10</NoConcentricCircles>
+	<NoRadialDivisions>10</NoRadialDivisions>
+	<NoHeightDivisions>10</NoHeightDivisions>
 	<!--MST RADIAL-->
-	<dxExpCont>2</dxExpCont>
+	<dxExpCont>4</dxExpCont>
 	<dtExpCont>1</dtExpCont>
-	<dxRotation>3</dxRotation>
+	<dxRotation>1</dxRotation>
 	<dtRotation>1</dtRotation>
 </Configuration>

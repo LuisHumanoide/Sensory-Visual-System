@@ -23,6 +23,12 @@ public class ComponentCells {
         setComponentCells(d1, d2, size);
     }
 
+    /**
+     * Set the Component Cells
+     * @param d1 Number of speeds
+     * @param d2 Number of eyes
+     * @param size Size of the grid matrix
+     */
     public void setComponentCells(int d1, int d2, int size) {
         sizeComponent = size;
         CCells = new Cell[d1][d2];
@@ -33,8 +39,6 @@ public class ComponentCells {
                 
                 CCells[i][j].setSpeed(V1Bank.MC[0][0].cells[i][j].getSpeed());
                 CCells[i][j].setAngle(V1Bank.MC[0][0].cells[i][j].getAngle());
-                
-                utils.Msg.print("speed "+CCells[i][j].getSpeed()+"  angle "+CCells[i][j].getAngle());
                 
             }
         }

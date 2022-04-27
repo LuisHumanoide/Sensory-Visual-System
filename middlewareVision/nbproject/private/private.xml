@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/config/Init.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V1/V1DoubleOpponent.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V4/V4ShapeActivationNode.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V4/V4Memory.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/MST/MSTPolarCells.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V1/V1HyperComplex.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/gui/Visualizer.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V4/V4CellStructure.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V4/V4Color.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V4/V4.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V2/V2AngularCells.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V1/V1SimpleCells.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V2/V2CurvatureCells.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
