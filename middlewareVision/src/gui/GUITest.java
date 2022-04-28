@@ -29,7 +29,7 @@ public class GUITest extends javax.swing.JFrame {
         JPanel jp1=new JPanel();
         JPanel jp2=new JPanel();
         ret=new RetinaPanel(null);
-        controls=new ControlsPanel();
+        controls=new ControlsPanel(ret);
         ret.setVisible(true);
         controls.setVisible(true);
         TabbedPanel.setBounds(0,0,200,200);  

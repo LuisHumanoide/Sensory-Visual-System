@@ -13,11 +13,12 @@ import utils.SpecialKernels;
  * @author Laptop
  */
 public class ControlsPanel extends javax.swing.JPanel {
-
+    RetinaPanel rp;
     /**
      * Creates new form ControlsPanel
      */
-    public ControlsPanel() {
+    public ControlsPanel(RetinaPanel rp) {
+        this.rp=rp;
         initComponents();
     }
 
@@ -34,12 +35,22 @@ public class ControlsPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         contrastSlider = new javax.swing.JSlider();
-        jLabel3 = new javax.swing.JLabel();
-        endStopSlider = new javax.swing.JSlider();
-        jLabel4 = new javax.swing.JLabel();
-        velocitySlider = new javax.swing.JSlider();
 
         setBackground(new java.awt.Color(51, 51, 51));
+
+        brightSlider.setMaximum(255);
+        brightSlider.setMinimum(-255);
+        brightSlider.setValue(0);
+        brightSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                brightSliderMouseDragged(evt);
+            }
+        });
+        brightSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                brightSliderMouseReleased(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(204, 204, 204));
         jLabel1.setText("Brightness");
@@ -47,22 +58,16 @@ public class ControlsPanel extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(204, 204, 204));
         jLabel2.setText("Contrast");
 
-        contrastSlider.setValue(20);
-
-        jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("EndStop");
-
-        endStopSlider.setValue(0);
-
-        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel4.setText("Velocity");
-
-        velocitySlider.setMaximum(25);
-        velocitySlider.setMinimum(-25);
-        velocitySlider.setValue(0);
-        velocitySlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        contrastSlider.setMinimum(-100);
+        contrastSlider.setValue(0);
+        contrastSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
-                velocitySliderMouseDragged(evt);
+                contrastSliderMouseDragged(evt);
+            }
+        });
+        contrastSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                contrastSliderMouseReleased(evt);
             }
         });
 
@@ -72,16 +77,12 @@ public class ControlsPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(brightSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
             .addComponent(contrastSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(endStopSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(velocitySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,33 +95,41 @@ public class ControlsPanel extends javax.swing.JPanel {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contrastSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(endStopSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(velocitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(299, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void velocitySliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_velocitySliderMouseDragged
+    private void brightSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brightSliderMouseDragged
         // TODO add your handling code here:
-        SpecialKernels.modifyDispGabor(velocitySlider.getValue());
-        Config.displace=velocitySlider.getValue();
-    }//GEN-LAST:event_velocitySliderMouseDragged
+        float value=(float)(brightSlider.getValue());
+        Config.bright=value;
+        jLabel1.setText("Brightness: "+value);
+        rp.createImage(0, false);
+    }//GEN-LAST:event_brightSliderMouseDragged
+
+    private void contrastSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contrastSliderMouseDragged
+        // TODO add your handling code here:
+        float value=(float)(contrastSlider.getValue()*0.01)+1;
+        Config.contr=value;
+        jLabel2.setText("Contrast: "+value);
+        rp.createImage(0, false);
+    }//GEN-LAST:event_contrastSliderMouseDragged
+
+    private void contrastSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contrastSliderMouseReleased
+        // TODO add your handling code here:
+        rp.createImage(0, true);
+    }//GEN-LAST:event_contrastSliderMouseReleased
+
+    private void brightSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brightSliderMouseReleased
+        // TODO add your handling code here:
+        rp.createImage(0, true);
+    }//GEN-LAST:event_brightSliderMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider brightSlider;
     private javax.swing.JSlider contrastSlider;
-    private javax.swing.JSlider endStopSlider;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JSlider velocitySlider;
     // End of variables declaration//GEN-END:variables
 }

@@ -263,7 +263,7 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
         next1.setBackground(new java.awt.Color(31, 48, 56));
         next1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         next1.setForeground(new java.awt.Color(255, 255, 255));
-        next1.setText("Up");
+        next1.setText("↑");
         next1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.lightGray, new java.awt.Color(102, 102, 102)));
         next1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,7 +274,7 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
         next2.setBackground(new java.awt.Color(31, 48, 56));
         next2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         next2.setForeground(new java.awt.Color(255, 255, 255));
-        next2.setText("Down");
+        next2.setText("↓");
         next2.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.lightGray, new java.awt.Color(102, 102, 102)));
         next2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -287,19 +287,19 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(377, Short.MAX_VALUE)
+                .addContainerGap(413, Short.MAX_VALUE)
                 .addComponent(previous)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(next1)
+                .addComponent(next1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(next2)
+                .addComponent(next2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(next))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 271, Short.MAX_VALUE)
+                .addContainerGap(271, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(previous)
                     .addComponent(next)

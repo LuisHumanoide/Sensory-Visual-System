@@ -133,7 +133,7 @@ public class RetinaProccess extends Activity {
     Thread thread = new Thread() {
         public void run() {
             ready = true;
-            gui.ret.createImage(0);
+            gui.ret.createImage(0, true);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -186,10 +186,12 @@ public class RetinaProccess extends Activity {
         m1.convertTo(m1, CV_8UC1);
         m2.convertTo(m2, CV_8UC1);
         Mat diffMat = new Mat();
-        //Core.mul(transMat[2], transMat2[2], diffMat);
-        StereoBM stereo=StereoBM.create(16);
+
+        StereoBM stereo=StereoBM.create(16,15);
+        stereo.setTextureThreshold(15);
+        stereo.setUniquenessRatio(2);
         stereo.compute(m1, m2, diffMat);
-        //diffMat.convertTo(diffMat, Imgproc.COLOR_GRAY2BGR);
+
         Visualizer.setImage(Convertor.Mat2Img2(diffMat), "stereo diff", 1,3);
 
         if (ready) {
