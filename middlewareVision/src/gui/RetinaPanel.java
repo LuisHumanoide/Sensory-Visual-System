@@ -38,10 +38,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import mapOpener.AmapViewer;
 import middlewareVision.nodes.Visual.Retina.RetinaProccess;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import utils.Config;
@@ -49,28 +47,39 @@ import utils.Convertor;
 import utils.FileUtils;
 
 /**
- *
- * @author Laptop
+ *This class was programmed manually without a graphical editor
  */
-public class RetinaPanel extends javax.swing.JPanel {
+public class RetinaPanel extends JPanel {
 
+    //Index of the image
     int index;
+    //folder of the images
     String folder;
+    //default route of all images
     String route = "images/";
+    //keywords when there is a stereo image
     String rightKeyword = "Right";
     String leftKeyword = "Left";
+    //Image shown
     BufferedImage img;
+    //Black image used when there is only one eye
     BufferedImage blackImage;
-    //int rate = 3;
+
+    //c is used as a conter for the timer
     int c = 0;
     int d = 1;
+    //flag of stereo image, when there is only one eye, the flag is false
     boolean stereo = false;
+    
+    //variables for listing the image folders
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
 
+    /*
+    Timer used for the animation of image sequences
+    */
     Timer timer = new Timer(10, new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            // Aquí el código que queramos ejecutar.
             if (play) {
                 c++;
                 if (c >= Config.rate) {
@@ -87,6 +96,10 @@ public class RetinaPanel extends javax.swing.JPanel {
     RetinaProccess rp;
     String filename = "";
 
+    /**
+     * Constructor that receives a RetinaProcess
+     * @param rp2 RetinaProcess (smallNode)
+     */
     public RetinaPanel(RetinaProccess rp2) {
         blackImage = blackImage();
         rp = rp2;
@@ -96,15 +109,18 @@ public class RetinaPanel extends javax.swing.JPanel {
         timer.start();
         root = new DefaultMutableTreeNode("", true);
         jLabel1.setSize(Config.width, Config.heigth);
-        //jPanel1.setLayout(null);
 
         jTree1.setForeground(new java.awt.Color(204, 204, 255));
+        
         modifyLabel();
         updateTree();
         renderTree();
         createImage(1);
     }
 
+    /**
+     * Method used for drag and drop images to the program
+     */
     public void modifyLabel() {
         TransferHandler th = new TransferHandler() {
 
@@ -132,8 +148,13 @@ public class RetinaPanel extends javax.swing.JPanel {
         jLabel1.setTransferHandler(th);
     }
 
+    //Enable the timeline for animation
     boolean timelineEnabled = true;
 
+    /**
+     * Method for enabling the timeline
+     * @param flag boolean for enabling or disabling
+     */
     void enableTimeline(boolean flag) {
         timeline.setEnabled(flag);
         jButton2.setEnabled(flag);
@@ -142,6 +163,11 @@ public class RetinaPanel extends javax.swing.JPanel {
         timelineEnabled = flag;
     }
 
+    /**
+     * Get the image from a file
+     * @param f is the file path
+     * @return a buffered image that will shown in the program
+     */
     public BufferedImage getImage(File f) {
         BufferedImage img2 = null;
         try {
@@ -160,6 +186,9 @@ public class RetinaPanel extends javax.swing.JPanel {
         return img2;
     }
 
+    /**
+     * Render the file tree that showns the folder of the images
+     */
     void renderTree() {
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) jTree1.getCellRenderer();
         Icon closedIcon = new ImageIcon("icon.png");
@@ -170,6 +199,9 @@ public class RetinaPanel extends javax.swing.JPanel {
         renderer.setLeafIcon(leafIcon);
     }
 
+    /**
+     * Update the file tree
+     */
     void updateTree() {
         root.removeAllChildren();
         getList(root, new File(route));
@@ -179,14 +211,13 @@ public class RetinaPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Obtener la lista para la creación del arbol de directorios
+     * Get the list for the creation of the directory tree
      *
      * @param node
      * @param f
      */
     public void getList(DefaultMutableTreeNode node, File f) {
         if (f.isDirectory()) {
-            // We keep only JAVA source file for display in this HowTo
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(f);
             node.add(child);
             File fList[] = f.listFiles();
@@ -197,7 +228,7 @@ public class RetinaPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Expande todos los nodos del arbol
+     * Expands all tree nodes
      */
     private void expandAllNodes() {
         int j = jTree1.getRowCount();
@@ -209,10 +240,18 @@ public class RetinaPanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Set the image index
+     * @param index int value corresponding to the index
+     */
     public void setIndex(int index) {
         this.index = index;
     }
 
+    /**
+     * Generate a black image in case that there is only one channel image (non stereo)
+     * @return a black image
+     */
     BufferedImage blackImage() {
         Mat mat;
         String path = "black.jpg";
@@ -233,6 +272,13 @@ public class RetinaPanel extends javax.swing.JPanel {
         return null;
     }
 
+    /**
+     * Set two images in the retina screen<br>
+     * if the stereo is disabled, only one image will shown there<br>
+     * these images are sent to <i>RetinaProcess</i>
+     * @param image left image
+     * @param image2 right image
+     */
     public void setImage(BufferedImage image, BufferedImage image2) {
         jLabel1.setIcon(new ImageIcon(image));
         if (stereo) {
@@ -245,7 +291,10 @@ public class RetinaPanel extends javax.swing.JPanel {
     }
 
     /**
-     * put the image on the retina
+     * Generates the left and right images, changing them to the size predefined by the program 
+     * <br> and then sends them to RetinaProcess.<br>
+     * if the value is 1, it finds the next image<br>
+     * if the value is -1 is moving to the previous image
      *
      * @return
      * @throws IOException
@@ -283,6 +332,13 @@ public class RetinaPanel extends javax.swing.JPanel {
     String[] files2;
     String files[];
 
+    /**
+     * Gets the name of the previous or next image in a folder 
+     * <br> when given next or previous in the timeline.
+     * @param folder
+     * @param move
+     * @return 
+     */
     String getImageName(String folder, int move) {
         String path = folder + "/";
         String imageName = "";
@@ -314,6 +370,13 @@ public class RetinaPanel extends javax.swing.JPanel {
         return imageName;
     }
 
+    /**
+     * Determines if the folder contains stereoscopic images or not 
+     * <br> If it does, it creates a list of images on the left 
+     * <br> and then in another method to find the images on the right 
+     * @param list list of the files
+     * @return 
+     */
     String[] leftImages(String[] list) {
         String newList[];
         boolean isStereo = false;
@@ -521,6 +584,10 @@ public class RetinaPanel extends javax.swing.JPanel {
         createImage(0);
     }
 
+    /**
+     * playButton event
+     * @param evt 
+     */
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if (play) {
@@ -535,6 +602,10 @@ public class RetinaPanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * playButtonBack event
+     * @param evt 
+     */
     private void playButtonBackActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if (play) {
@@ -549,16 +620,28 @@ public class RetinaPanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * nextImage event
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         createImage(1);
     }
 
+    /**
+     * previousImage event
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:}
         createImage(-1);
     }
 
+    /**
+     * Rate slider event
+     * @param evt 
+     */
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         Config.rate = jSlider1.getValue();
@@ -572,6 +655,10 @@ public class RetinaPanel extends javax.swing.JPanel {
         enableTimeline(true);
     }
 
+    /**
+     * Drag timeline event
+     * @param evt 
+     */
     private void timelineMouseDragged(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         if (timelineEnabled) {
