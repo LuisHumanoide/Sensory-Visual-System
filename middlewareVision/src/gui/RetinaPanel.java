@@ -61,7 +61,7 @@ public class RetinaPanel extends javax.swing.JPanel {
     String leftKeyword = "Left";
     BufferedImage img;
     BufferedImage blackImage;
-    int rate = 3;
+    //int rate = 3;
     int c = 0;
     int d = 1;
     boolean stereo = false;
@@ -73,7 +73,7 @@ public class RetinaPanel extends javax.swing.JPanel {
             // Aquí el código que queramos ejecutar.
             if (play) {
                 c++;
-                if (c >= rate) {
+                if (c >= Config.rate) {
                     createImage(d);
                     c = 0;
                 }
@@ -400,7 +400,7 @@ public class RetinaPanel extends javax.swing.JPanel {
 
         jSlider1.setMaximum(50);
         jSlider1.setMinimum(1);
-        jSlider1.setValue(3);
+        jSlider1.setValue(Config.rate);
         jSlider1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jSlider1MouseDragged(evt);
@@ -561,7 +561,7 @@ public class RetinaPanel extends javax.swing.JPanel {
 
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
-        rate = jSlider1.getValue();
+        Config.rate = jSlider1.getValue();
     }
 
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {

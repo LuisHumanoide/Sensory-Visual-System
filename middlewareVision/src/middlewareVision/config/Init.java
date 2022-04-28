@@ -14,10 +14,11 @@ import utils.layoutManager;
 import middlewareVision.nodes.Visual.LGN.LGN;
 import middlewareVision.nodes.Visual.V4.V4Memory;
 import utils.SpecialKernels;
-import middlewareVision.nodes.Attention.TestAttention;
+import middlewareVision.nodes.External.TestAttention;
 import middlewareVision.nodes.Visual.MT.MT;
 import middlewareVision.nodes.Visual.MST.MST;
 import middlewareVision.nodes.Visual.MST.MSTPolarCells;
+import middlewareVision.nodes.External.Alert;
 //@import
 
 
@@ -41,7 +42,8 @@ public class Init extends Igniter {
             TestAttention.class.getName(),
             MT.class.getName(),
             MST.class.getName(), 
-            //@addNodes
+            Alert.class.getName(),
+		//@addNodes
         };
 
         configuration.setLocal(true);

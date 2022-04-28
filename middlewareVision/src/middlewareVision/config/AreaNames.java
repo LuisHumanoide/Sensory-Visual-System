@@ -55,6 +55,9 @@ public class AreaNames {
 	public static int MST = IDHelper.generateID("MST", 0, 0);
 	public static int MSTPolarCells = IDHelper.generateID("MST", 1 , 0);
 	
+	public static int Alert = IDHelper.generateID("Alert", 0, 0);
+	public static int AlertProcess = IDHelper.generateID("Alert", 1 , 0);
+	
 	//@addNodes
         //no quitar el comentario de add Nodes
 }

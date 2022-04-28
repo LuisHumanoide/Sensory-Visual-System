@@ -26,6 +26,8 @@ public class Config {
     public static int heigth = 150;
     public static int motionWidth = 100;
     public static int motionHeight = 100;
+    
+    public static int rate=3;
 
     public static double bright = 0;
     public static double contr = 1;
