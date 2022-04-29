@@ -46,30 +46,8 @@ public class SpecialKernels {
      */
     public static void loadKernels() {
         initRFlist();
-        loadGaborFilters();
-        loadEndStoppedFilters();
         loadV2Kernels();
         V4CellStructure.loadV4Structure();
-    }
-    static float a1 = 5f;
-    static float a2 = 0.5f;
-
-    public static void loadGaborFilters() {
-        GaborKernels = new Mat[3][Config.gaborOrientations];
-        for (int i = 0; i < Config.gaborOrientations; i++) {
-            float angle = i * inc;
-            GaborKernels[0][i] = getGaborKernel(new Size(20, 20), sigma, 0, a1, a2, 0, CvType.CV_32F);
-            GaborKernels[0][i] = rotateKernelRadians(GaborKernels[0][i], angle);
-            GaborKernels[1][i] = getGaborKernel(new Size(20, 20), sigma, 0, a1, a2, 1, CvType.CV_32F);
-            GaborKernels[1][i] = rotateKernelRadians(GaborKernels[1][i], angle);
-        }
-    }
-
-    public static void modifyDispGabor(int disp) {
-        for (int i = 0; i < Config.gaborOrientations; i++) {
-            float angle = i * inc;
-            GaborKernels[2][i] = displaceKernel(getGaborKernel(new Size(50, 50), sigma, angle, a1, a2, 0, CvType.CV_32F), angle, disp);
-        }
     }
 
     /**
@@ -125,61 +103,6 @@ public class SpecialKernels {
         return getAdvencedGauss(new Size(rf.getSize(), rf.getSize()), rf.getIntensity(), -rf.getPy() + rf.getSize() / 2, rf.getPx() + rf.getSize() / 2, rf.getRx(), rf.getRy(), Math.toRadians(rf.getAngle() + 90));
     }
 
-    /**
-     * V2 Ilusory filters
-     */
-    public static void loadIlusoryFilters() {
-        ilusoryFilters = new ArrayList();
-        String path = "RFV2";
-        String file = "ilusory1";
-        loadList(path + "/" + file + ".txt");
-        for (int i = 0; i < Config.gaborOrientations; i++) {
-            double angle = (180 / Config.gaborOrientations) * i;
-            double rangle = Math.toRadians(angle);
-            RF rf1 = RFs.get(0);
-            RF rf2 = RFs.get(1);
-            double amp = Math.pow(rf1.getPx(), 2) + Math.pow(rf1.getPy(), 2);
-            amp = Math.sqrt(amp);
-            rf1.setPx((int) (amp * Math.sin(rangle)));
-            rf1.setPy((int) (amp * Math.cos(rangle)));
-            rf1.setAngle(angle);
-            rf2.setPx((int) (-amp * Math.sin(rangle)));
-            rf2.setPy((int) (-amp * Math.cos(rangle)));
-            rf2.setAngle(angle);
-            PairFilter pair = new PairFilter(getFilterFromRF(rf1), getFilterFromRF(rf2));
-            ilusoryFilters.add(pair);
-        }
-
-        clearList();
-
-    }
-
-    /**
-     * Load the endStoppedFilters
-     */
-    public static void loadEndStoppedFilters() {
-        endStoppedFilters = new ArrayList();
-        String path = "RFV1";
-        String file = "endStop";
-        loadList(path + "/" + file + ".txt");
-        for (int i = 0; i < Config.gaborOrientations; i++) {
-            double angle = (180 / Config.gaborOrientations) * i;
-            double rangle = Math.toRadians(angle);
-            RF rf1 = RFs.get(0);
-            RF rf2 = RFs.get(1);
-            double amp = Math.pow(rf1.getPx(), 2) + Math.pow(rf1.getPy(), 2);
-            amp = Math.sqrt(amp);
-            rf1.setPx((int) (amp * Math.sin(rangle)));
-            rf1.setPy((int) (amp * Math.cos(rangle)));
-            rf1.setAngle(angle);
-            rf2.setPx((int) (-amp * Math.sin(rangle)));
-            rf2.setPy((int) (-amp * Math.cos(rangle)));
-            rf2.setAngle(angle);
-            PairFilter pair = new PairFilter(getFilterFromRF(rf1), getFilterFromRF(rf2));
-            endStoppedFilters.add(pair);
-        }
-        clearList();
-    }
 
     /**
      * Load the kernels that will be used in V2 for the angular activation
@@ -189,17 +112,45 @@ public class SpecialKernels {
         String path = "RFV2";
         String file = "angular";
         loadList(path + "/" + file + ".txt");
+        Mat baseKernel=getCompositeRF(path + "/" + file + ".txt");
         for (int i = 0; i < Config.gaborOrientations * 2; i++) {
             double angle = (180 / Config.gaborOrientations) * i;
             double rangle = Math.toRadians(angle);
-            RF rf1 = RFs.get(0);
-            double amp = Math.pow(rf1.getPx(), 2) + Math.pow(rf1.getPy(), 2);
-            amp = Math.sqrt(amp);
-            rf1.setPx((int) (amp * Math.sin(rangle)));
-            rf1.setPy((int) (amp * Math.cos(rangle)));
-            rf1.setAngle(angle);
-            v2Kernels[i] = getFilterFromRF(rf1);
+            v2Kernels[i] = SpecialKernels.rotateKernelRadians(baseKernel, rangle);
         }
+    }
+    
+    /**
+     * Obtain the composite filter from a file
+     *
+     * @param path
+     * @return
+     */
+    static Mat getCompositeRF(String path) {
+        String stList = FileUtils.readFile(new File(path));
+        String lines[] = stList.split("\\n");
+        ArrayList<Mat> kernelList = new ArrayList();
+        for (String st : lines) {
+            String values[] = st.split(" ");
+            RF rf = new RF(Double.parseDouble(values[0]),
+                    Double.parseDouble(values[1]),
+                    Integer.parseInt(values[2]),
+                    Integer.parseInt(values[3]),
+                    Double.parseDouble(values[4]),
+                    Double.parseDouble(values[5]),
+                    values[6],
+                    Integer.parseInt(values[7]));
+            Mat kernel = new Mat();
+            kernel = getAdvencedGauss(new Size(rf.size, rf.size), rf.intensity,
+                    -rf.py + rf.size / 2, rf.px + rf.size / 2, rf.rx, rf.ry,
+                    Math.toRadians(rf.angle + 90));
+            kernelList.add(kernel);
+        }
+        Mat compKernel = Mat.zeros(kernelList.get(0).size(), CvType.CV_32FC1);
+        for (Mat kn : kernelList) {
+            Core.add(compKernel, kn, compKernel);
+        }
+        return compKernel;
     }
 
     static void clearList() {

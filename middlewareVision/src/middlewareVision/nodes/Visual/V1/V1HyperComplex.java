@@ -147,20 +147,4 @@ public class V1HyperComplex extends Activity {
         }
     }
 
-    /*
-    public void oldcode(){
-        Mat edges = V1Bank.CC[0][0][0].Cells[index].mat;
-                Mat endStop;
-                //ilusoryEdges = elongatedGaborFilter(edges, sigma * 0.5f, 1, 5, 29, 0.05, index);
-                endStop = endStopped(edges, index);
-                Core.multiply(endStop, new Scalar(-0.02), endStop);
-                //ilusoryEdges = MatrixUtils.maxSum(ilusoryEdges, edges);
-                Core.add(edges, endStop, endStop);
-                Imgproc.threshold(endStop, endStop, 0.4, 1, Imgproc.THRESH_TOZERO);
-                double w = Config.endstop;
-                Core.addWeighted(edges, w, endStop, 1 - w, 0, endStop);
-                V1Bank.HCC[0][0].Cells[0][index].mat = endStop;
-                V4Memory.v1Map[index] = endStop;
-                LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(index, 4), 0, 0);
-    }*/
 }

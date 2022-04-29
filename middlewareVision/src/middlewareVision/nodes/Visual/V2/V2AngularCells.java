@@ -12,7 +12,6 @@ import generator.ProcessList;
 import spike.Location;
 import gui.FrameActivity;
 import gui.Visualizer;
-import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -21,12 +20,10 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
 import utils.Config;
-import utils.Convertor;
 import utils.Functions;
 import utils.LongSpike;
 import utils.MatrixUtils;
 import utils.SpecialKernels;
-import utils.numSync;
 
 /**
  *
