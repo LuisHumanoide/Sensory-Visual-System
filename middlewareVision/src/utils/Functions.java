@@ -22,23 +22,6 @@ import utils.filters.CurvatureFilter;
  */
 public class Functions {
 
-    /**
-     * Gabor filter
-     *
-     * @param img source image
-     * @param phi phase
-     * @param part part of the filter
-     * @param sigma sigma
-     * @param inc increment
-     * @return
-     */
-    public static Mat gaborFilter(Mat img, int part, int parity) {
-        Mat gab = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
-        img.convertTo(img, CV_32F);
-        Imgproc.filter2D(img, gab, CV_32F, SpecialKernels.GaborKernels[parity][part]);
-        Imgproc.threshold(gab, gab, 0, 1, Imgproc.THRESH_TOZERO);
-        return gab;
-    }
 
     public static Mat filter(Mat img, Mat filter) {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);

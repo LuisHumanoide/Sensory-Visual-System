@@ -29,14 +29,8 @@ public class SpecialKernels {
     public static float inc = (float) (Math.PI / Config.gaborOrientations);
     public static Mat diag45;
     public static Mat diag135;
-    public static Mat[][] GaborKernels;
-    //[scale index]-[frequency index]-[parity index]-[orientation index]
-    public static Mat[][][][] GaborKernels2;
     static double valueMinus = -0.15;
     static double valueMax = 0.3;
-    public static ArrayList<PairFilter> ilusoryFilters;
-    public static ArrayList<PairFilter> endStoppedFilters;
-    static ArrayList<RF> RFs;
     public static Mat v2Kernels[];
 
     /**
@@ -45,7 +39,6 @@ public class SpecialKernels {
      * *************************************************************************
      */
     public static void loadKernels() {
-        initRFlist();
         loadV2Kernels();
         V4CellStructure.loadV4Structure();
     }
@@ -87,13 +80,6 @@ public class SpecialKernels {
     }
 
     /**
-     * initialize RF list
-     */
-    public static void initRFlist() {
-        RFs = new ArrayList();
-    }
-
-    /**
      * Make a Gaussian filter from a Receptive Field class object
      *
      * @param rf
@@ -103,28 +89,27 @@ public class SpecialKernels {
         return getAdvencedGauss(new Size(rf.getSize(), rf.getSize()), rf.getIntensity(), -rf.getPy() + rf.getSize() / 2, rf.getPx() + rf.getSize() / 2, rf.getRx(), rf.getRy(), Math.toRadians(rf.getAngle() + 90));
     }
 
-
     /**
-     * Load the kernels that will be used in V2 for the angular activation
+     * Cargar los filtros de selectividad angular en V2<br>
+       The filter file is <b>angular.txt</b>.
      */
     public static void loadV2Kernels() {
         v2Kernels = new Mat[Config.gaborOrientations * 2];
         String path = "RFV2";
         String file = "angular";
-        loadList(path + "/" + file + ".txt");
-        Mat baseKernel=getCompositeRF(path + "/" + file + ".txt");
+        Mat baseKernel = getCompositeRF(path + "/" + file + ".txt");
         for (int i = 0; i < Config.gaborOrientations * 2; i++) {
             double angle = (180 / Config.gaborOrientations) * i;
             double rangle = Math.toRadians(angle);
             v2Kernels[i] = SpecialKernels.rotateKernelRadians(baseKernel, rangle);
         }
     }
-    
+
     /**
-     * Obtain the composite filter from a file
+     * Obtain the composite filter, product of the sum of Gaussians created in a file.
      *
-     * @param path
-     * @return
+     * @param path path of the file
+     * @return an OpenCV mat corresponding to the filter
      */
     static Mat getCompositeRF(String path) {
         String stList = FileUtils.readFile(new File(path));
@@ -153,40 +138,18 @@ public class SpecialKernels {
         return compKernel;
     }
 
-    static void clearList() {
-        RFs.clear();
-    }
-
-    static void loadList(String path) {
-        clearList();
-        String stList = FileUtils.readFile(new File(path));
-        String lines[] = stList.split("\\n");
-        for (String st : lines) {
-            String values[] = st.split(" ");
-            RF rf = new RF(Double.parseDouble(values[0]),
-                    Double.parseDouble(values[1]),
-                    Integer.parseInt(values[2]),
-                    Integer.parseInt(values[3]),
-                    Double.parseDouble(values[4]),
-                    Double.parseDouble(values[5]),
-                    values[6],
-                    Integer.parseInt(values[7]));
-            RFs.add(rf);
-        }
-    }
-
     /**
      * Generate double opponent Kernel for color processing
      *
-     * @param s
-     * @param sigma1
-     * @param sigma2
-     * @param height1
-     * @param height2
-     * @param gamma1
-     * @param gamma2
-     * @param dX
-     * @return
+     * @param s size of the kernel
+     * @param sigma1 sigma (size) of the first Gaussian
+     * @param sigma2 sigma of the second Gaussian
+     * @param height1 height of the first Gaussian
+     * @param height2 height of the second Gaussian
+     * @param gamma1 gamma of the first Gaussian
+     * @param gamma2 gamma of the second Gaussian
+     * @param dX displacement of the seconD Gaussian
+     * @return an OpenCV matrix with the difference of Gaussian filter
      */
     public static Mat getDoubleOpponentKernel(Size s, double sigma1, double sigma2, double height1, double height2, double gamma1, double gamma2, double dX) {
         Mat m = new Mat(s, CvType.CV_32FC1);
@@ -259,6 +222,13 @@ public class SpecialKernels {
         return m;
     }
 
+    /**
+     * Get Sine Kernel<br>
+     * Not used in this software, but was included in Daniel program
+     * @param s
+     * @param frec
+     * @return 
+     */
     public static Mat getSineKernel(Size s, double frec) {
         Mat m = new Mat(s, CvType.CV_32FC1);
         double[] kernel = new double[(int) (s.height * s.width)];
@@ -272,6 +242,12 @@ public class SpecialKernels {
         return m;
     }
 
+    /**
+     * Get Cosine kernel, not used in this software
+     * @param s
+     * @param frec
+     * @return 
+     */
     public static Mat getCosKernel(Size s, double frec) {
         Mat m = new Mat(s, CvType.CV_32FC1);
         double[] kernel = new double[(int) (s.height * s.width)];
@@ -288,11 +264,11 @@ public class SpecialKernels {
     /**
      * Get a simplified Gaussian filter
      *
-     * @param s
-     * @param sigmaX
-     * @param sigmaY
-     * @param alpha
-     * @return
+     * @param s is the size of the kernel
+     * @param sigmaX is the length in x
+     * @param sigmaY is the length in y
+     * @param alpha is the intensity or amplitude
+     * @return a OpenCV Mat of a Gaussian filter
      */
     public static Mat getGauss(Size s, double sigmaX, double sigmaY, double alpha) {
         Mat m = new Mat(s, CvType.CV_32FC1);
@@ -318,10 +294,10 @@ public class SpecialKernels {
     }
 
     /**
-     * elevates a number to the 2 pow
+     * Elevates a number to the 2 pow
      *
-     * @param n
-     * @return
+     * @param n the number
+     * @return the number elevate to square pow
      */
     public static double to2(double n) {
         return Math.pow(n, 2);
@@ -362,26 +338,21 @@ public class SpecialKernels {
         return m;
     }
 
-    public static Mat getGabor(int kernelSize, float angle) {
-        return getGaborKernel(new Size(kernelSize, kernelSize), sigma * 0.05, angle, 0.5f, 0.3f, 0, CvType.CV_32F);
-    }
-
-    public static Mat get45Gabor(int kernelSize) {
-        return getGabor(kernelSize, inc * 1);
-    }
-
-    public static Mat get135Gabor(int kernelSize) {
-        return getGabor(kernelSize, inc * 3);
-    }
-
+    /**
+     * Method for displacing an openCV matrix<br>
+     * further information here: <br>
+     * https://docs.opencv.org/3.4/d4/d61/tutorial_warp_affine.html
+     * @param kernel is the original or source Mat
+     * @param angle is angle at which the displacement is to be made
+     * @param dis is the length to be displaced
+     * @return a displaced OpenCV matrix
+     */
     public static Mat displaceKernel(Mat kernel, double angle, int dis) {
-        //https://docs.opencv.org/3.4/d4/d61/tutorial_warp_affine.html
         Point[] srcTri = new Point[3];
         srcTri[0] = new Point(0, 0);
         srcTri[1] = new Point(kernel.cols() - 1, 0);
         srcTri[2] = new Point(0, kernel.rows() - 1);
 
-        //angle=Math.toRadians(angle);
         double dx = dis * Math.cos(angle);
         double dy = dis * Math.sin(angle);
 
@@ -398,6 +369,13 @@ public class SpecialKernels {
         return warpDst;
     }
 
+    /**
+     * Rotate a OpenCV matrix in degrees<br>
+     * the displacement is made from the center
+     * @param kernel matrix to rotate
+     * @param angle angle in degrees
+     * @return a rotated OpenCV Mat
+     */
     public static Mat rotateKernel(Mat kernel, double angle) {
         Mat rotationMat = Imgproc.getRotationMatrix2D(new Point(kernel.width() / 2, kernel.height() / 2), angle, 1);
         Mat rKernel = new Mat();
@@ -405,6 +383,15 @@ public class SpecialKernels {
         return rKernel;
     }
 
+    /**
+     * Rotate a OpenCV matrix in degrees<br>
+     * the displacement is done from a user-defined point
+     * @param kernel matrix to rotate or source matrix
+     * @param rx point in x
+     * @param ry point in y
+     * @param angle angle in degrees
+     * @return  a rotated OpenCV Mat
+     */
     public static Mat rotateKernel(Mat kernel, int rx, int ry, double angle) {
         Mat rotationMat = Imgproc.getRotationMatrix2D(new Point(kernel.width() / 2 + rx, kernel.height() / 2 + ry), angle, 1);
         Mat rKernel = new Mat();
@@ -412,10 +399,27 @@ public class SpecialKernels {
         return rKernel;
     }
 
+    /**
+     * Rotate a OpenCV matrix in radians<br>
+     * the displacement is made from the center
+     * @param kernel matrix to rotate
+     * @param angle angle in degrees
+     * @return a rotated OpenCV Mat
+     */
     public static Mat rotateKernelRadians(Mat kernel, double angle) {
         return rotateKernel(kernel, Math.toDegrees(angle));
     }
 
+    /**
+     * 
+     * Rotate a OpenCV matrix in radians<br>
+     * the displacement is done from a user-defined point
+     * @param kernel matrix to rotate or source matrix
+     * @param rx point in x
+     * @param ry point in y
+     * @param angle angle in degrees
+     * @return  a rotated OpenCV Mat
+     */
     public static Mat rotateKernelRadians(Mat kernel, int rx, int ry, double angle) {
         return rotateKernel(kernel, rx, ry, Math.toDegrees(angle));
     }
