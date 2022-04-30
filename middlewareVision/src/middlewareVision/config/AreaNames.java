@@ -58,6 +58,8 @@ public class AreaNames {
 	public static int Alert = IDHelper.generateID("Alert", 0, 0);
 	public static int AlertProcess = IDHelper.generateID("Alert", 1 , 0);
 	
+	public static int V2CornerMotion = IDHelper.generateID("V2", 3 , 0);
+	
 	//@addNodes
         //no quitar el comentario de add Nodes
 }

@@ -7,6 +7,8 @@ package generator;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -35,14 +37,16 @@ public class SmallNodeList extends javax.swing.JFrame {
         });
 
         ProcessList.openList();
+        TreeMap<String, Object> tmap=new TreeMap();
+        tmap.putAll(ProcessList.ProcessMap);
 
-        boxArray = new JCheckBox[ProcessList.ProcessMap.size()];
-        setSize(300, ProcessList.ProcessMap.size() * 30);
+        boxArray = new JCheckBox[tmap.size()];
+        setSize(300, tmap.size() * 30);
         this.add(Box.createRigidArea(new Dimension(20, 20)));
 
         int i = 0;
-        for (String key : ProcessList.ProcessMap.keySet()) {
-            boxArray[i] = new JCheckBox(key, (boolean) ProcessList.ProcessMap.get(key));
+        for (String key : tmap.keySet()) {
+            boxArray[i] = new JCheckBox(key, (boolean) tmap.get(key));
             this.add(boxArray[i]);
             i++;
         }
@@ -50,6 +54,8 @@ public class SmallNodeList extends javax.swing.JFrame {
         this.add(Box.createRigidArea(new Dimension(20, 20)));
         this.add(saveButton);
     }
+    
+    
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         for(int i=0;i<boxArray.length;i++){

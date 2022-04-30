@@ -81,6 +81,7 @@ public class BasicMotion extends Activity {
                     Core.pow(diff, 2, diff);
                     //Imgproc.threshold(diff, diff, 0.1, 1, Imgproc.THRESH_BINARY);
                     //Imgproc.blur(diff, diff, new Size(10,10));
+                    V1Bank.motionDiff=diff;
                     Visualizer.setImage(Convertor.Mat2Img(diff), "basic motion", 0, 3);
                     //Visualizer.setImage(Convertor.Mat2Img(SpecialKernels.displaceKernel(LMSCones[2], 60 , 50)), "displace", 7);
 

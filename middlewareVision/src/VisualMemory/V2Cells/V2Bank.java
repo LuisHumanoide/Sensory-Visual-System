@@ -18,11 +18,13 @@ public class V2Bank {
 
     public static AngleCells[][] AC;
     public static CurvatureCells[][] CurvC;
+    public static CornerMotionCells[][] CMC;
 
     public static void initializeCells() {
 
         AC = new AngleCells[Config.gaborBanks][2];
         CurvC = new CurvatureCells[Config.gaborBanks][2];
+        CMC = new CornerMotionCells[Config.gaborBanks][2];
         String folder = "RFV2/Curvature/";
         String fileNames[] = FileUtils.getFiles(folder);
         int numCurvatures = fileNames.length;
@@ -31,6 +33,7 @@ public class V2Bank {
                 AC[i2][i3] = new AngleCells(Config.gaborOrientations, 2 * Config.gaborOrientations);
                 CurvC[i2][i3] = new CurvatureCells(numCurvatures, 10);
                 CurvC[i2][i3].generateFiltersByFolder(folder);
+                CMC[i2][i3]=new CornerMotionCells("ConfigFiles/speeds.txt");
             }
         }
 

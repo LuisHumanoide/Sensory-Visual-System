@@ -28,7 +28,8 @@ import utils.filters.GaborFilter;
  */
 public class V1Bank {
 
-    //[extra][for different frequencies or scales][eye]
+    //[for different frequencies or scales][eye]
+    public static Mat motionDiff;
     public static SimpleCells[][] SC;
     public static ComplexCells[][] CC;
     public static HypercomplexCells[][] HCC;
@@ -57,6 +58,8 @@ public class V1Bank {
         HCC = new HypercomplexCells[gaborLines.length][2];
         DOC = new DoubleOpponentCells[1][2];
         MC = new MotionCellsV1[gaborLines.length][2];
+        
+        motionDiff=new Mat();
 
         for (int i2 = 0; i2 < 1; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {

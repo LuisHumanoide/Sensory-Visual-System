@@ -1,12 +1,10 @@
 package middlewareVision.nodes.External;
 
-import spike.Location;
 import generator.ProcessList;
 import kmiddle2.nodes.activities.Activity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
-import spike.Modalities;
 import utils.Config;
 import utils.LongSpike;
 

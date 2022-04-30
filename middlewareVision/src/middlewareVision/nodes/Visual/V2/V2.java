@@ -20,6 +20,8 @@ public class V2 extends Area{
         addProcess(V2AngularCells.class);	
 	addProcess(V2CurvatureCells.class);
 	
+	addProcess(V2CornerMotion.class);
+	
 	//@AddProcess
     }
 
@@ -34,6 +36,8 @@ public class V2 extends Area{
         send(AreaNames.V2AngularCells, data);
         //send(AreaNames.V2IlusoryCells, data);	
 	send(AreaNames.V2CurvatureCells,data);
+	
+	send(AreaNames.V2CornerMotion,data);
 	
 	//@SendProcess
     }

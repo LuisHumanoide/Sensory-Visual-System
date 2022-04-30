@@ -110,7 +110,7 @@ public class V1MotionCellsNew extends Activity {
                         MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat);
             }
         }
-        MC[i1][i2].createComposedCells();
+        //MC[i1][i2].createComposedCells();
     }
 
 }

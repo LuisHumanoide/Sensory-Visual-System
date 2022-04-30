@@ -65,6 +65,7 @@ public class MSTPolarCells extends Activity {
     
     public static void getVrow(){
         vrow="zero"; 
+        
         if ((boolean) ProcessList.ProcessMap.get("V1MotionCellsNew")) {
             vrow = "v1motion";
             if ((boolean) ProcessList.ProcessMap.get("MTComponentCells")) {

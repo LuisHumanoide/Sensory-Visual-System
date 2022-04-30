@@ -72,6 +72,7 @@ public class V2AngularCells extends FrameActivity {
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     
                     send(AreaNames.V4ShapeActivationNode, sendSpike1.getByteArray());
+                    send(AreaNames.V2CornerMotion, sendSpike1.getByteArray());
 
                 }
 

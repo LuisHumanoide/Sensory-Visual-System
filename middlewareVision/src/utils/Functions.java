@@ -6,6 +6,7 @@
 package utils;
 
 import VisualMemory.Cell;
+import VisualMemory.V1Cells.V1Bank;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_32F;
@@ -171,6 +172,7 @@ public class Functions {
         }
         result = MatrixUtils.multiply(T);
         result = SpecialKernels.displaceKernel(result, -angle, (int) (-dx * (T.length / 2)));
+        Core.multiply(result, V1Bank.motionDiff, result);
         return result;
     }
 
