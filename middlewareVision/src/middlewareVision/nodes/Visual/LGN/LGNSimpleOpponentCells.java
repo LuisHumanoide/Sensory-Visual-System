@@ -80,7 +80,7 @@ public class LGNSimpleOpponentCells extends Activity {
      * Constructor
      */
     public LGNSimpleOpponentCells() {
-        this.ID = AreaNames.LGNProcess;
+        this.ID = AreaNames.LGNSimpleOpponentCells;
         this.namer = AreaNames.class;
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
         LMSConesL = new Mat[3];

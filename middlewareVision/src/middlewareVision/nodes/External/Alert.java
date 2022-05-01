@@ -14,7 +14,9 @@ public class Alert extends Area {
         this.namer = AreaNames.class;
         addProcess(AlertProcess.class);
 
-//@AddProcess
+addProcess(test2.class);
+	
+	//@AddProcess
     }
 
     @Override
@@ -26,7 +28,9 @@ public class Alert extends Area {
     public void receive(int nodeID, byte[] data) {
         send(AreaNames.AlertProcess, data);
 
-//@SendProcess
+send(AreaNames.test2,data);
+	
+	//@SendProcess
     }
 
 }

@@ -27,8 +27,6 @@ public class V2 extends Area{
 
     @Override
     public void init() {
-        //send(AreaNames.AMY_GENHNEI)
-        //SimpleLogger.log(this,"BIG NODE V2");
     }
 
     @Override

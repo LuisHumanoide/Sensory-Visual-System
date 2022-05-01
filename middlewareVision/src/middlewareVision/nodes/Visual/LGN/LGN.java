@@ -24,7 +24,7 @@ public class LGN extends Area{
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        send(AreaNames.LGNProcess,data);
+        send(AreaNames.LGNSimpleOpponentCells,data);
 	
 //@SendProcess
     }

@@ -19,6 +19,7 @@ import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import kmiddle2.nodes.activities.Activity;
+import middlewareVision.nodes.Visual.LGN.LGNSimpleOpponentCells;
 import org.opencv.calib3d.StereoBM;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -199,8 +200,8 @@ public class RetinaProccess extends Activity {
                 LongSpike spike = new LongSpike(Modalities.VISUAL, new Location(i, 1), Convertor.MatToMatrix(transMat[i]), 0);
                 LongSpike spike2 = new LongSpike(Modalities.VISUAL, new Location(i+3, 1), Convertor.MatToMatrix(transMat2[i]), 0);
                 try {
-                    send(AreaNames.LGN, spike.getByteArray());
-                    send(AreaNames.LGN, spike2.getByteArray());
+                    send(AreaNames.LGNSimpleOpponentCells, spike.getByteArray());
+                    send(AreaNames.LGNSimpleOpponentCells, spike2.getByteArray());
                     send(AreaNames.BasicMotion, spike.getByteArray());
                 } catch (IOException ex) {
                     Logger.getLogger(RetinaProccess.class.getName()).log(Level.SEVERE, null, ex);

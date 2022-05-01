@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package generator;
+package generator.graph;
+
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -12,32 +13,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import middlewareVision.nodes.Visual.V4.V4CellStructure;
-import org.opencv.core.Core;
 import utils.FileUtils;
 
 /**
+ * Graph generator for middleware
  *
  * @author HumanoideFilms
  */
-public class test {
+public class MGraph {
+    
 
-    ArrayList<GArea> areas;
-    ArrayList<smallNode> nodes;
-    HashSet<String> allSmallNodes;
-
-    public static void main(String[] args) {
-        test t = new test();
-        t.areas = new ArrayList();
-        t.nodes = new ArrayList();
-        t.allSmallNodes = new HashSet();
-        t.walkin(new File("src/middlewareVision/nodes"));
-        t.listAreas();
-        t.generateNodeGraph();
-        //t.generateProcessGraph();
+    static ArrayList<GArea> areas=new ArrayList();;
+    static ArrayList<GSmallNode> nodes=new ArrayList();;
+    static HashSet<String> allSmallNodes=new HashSet();;
+    static String path = "src/middlewareVision/nodes";
+    
+    public static void generateGraphs(){
+        areas.clear();
+        nodes.clear();
+        allSmallNodes.clear();
+        walkin(new File(path));
+        generateNodeGraph();
+        generateProcessGraph();
     }
 
-    public void walkin(File dir) {
+    public static void walkin(File dir) {
         File listFile[] = dir.listFiles();
         if (listFile != null) {
             for (int i = 0; i < listFile.length; i++) {
@@ -50,12 +50,12 @@ public class test {
         }
     }
 
-    public void readFile(String path) {
+    public static void readFile(String path) {
         String file = FileUtils.readFile(new File(path));
         analyzeFile(file);
     }
 
-    void analyzeFile(String file) {
+    static void analyzeFile(String file) {
         if (file.replaceAll(" ", "").contains("extendsArea")) {
             String[] ar = file.split("\n");
             for (String cad : ar) {
@@ -70,13 +70,13 @@ public class test {
             for (String cad : ar) {
                 if (cad.contains("public class")) {
                     String nodeName = cad.replaceAll(" ", "").replace("publicclass", "").replace("extendsActivity{", "");
-                    nodes.add(new smallNode(nodeName, addNext(file)));
+                    nodes.add(new GSmallNode(nodeName, addNext(file)));
                 }
             }
         }
     }
 
-    ArrayList<String> addSmallNodes(String file) {
+    static ArrayList<String> addSmallNodes(String file) {
         ArrayList<String> nodes = new ArrayList();
         String lines[] = file.split("\n");
         for (String line : lines) {
@@ -94,7 +94,7 @@ public class test {
         return nodes;
     }
 
-    ArrayList<String> addNext(String file) {
+    static ArrayList<String> addNext(String file) {
         ArrayList<String> nodes = new ArrayList();
         String lines[] = file.split("\n");
         for (String line : lines) {
@@ -110,19 +110,7 @@ public class test {
         return nodes;
     }
 
-    void listAreas() {
-        for (GArea ga : areas) {
-            System.out.println("area: " + ga.name);
-            ga.listNodes();
-        }
-        System.out.println("--------");
-        for (smallNode sn : nodes) {
-            System.out.println("node: " + sn.name);
-            sn.listNextNodes();
-        }
-    }
-
-    void generateNodeGraph() {
+    static void generateNodeGraph() {
         String c = "graph G{\n";
         String l1 = "[ label=\"@name\" shape=\"circle\" ]";
         String l2 = "[ label=\"@name\" shape=\"octagon\" ]";
@@ -146,26 +134,19 @@ public class test {
         
     }
     
-    public static void generateImg(String fileName, String format, String engine) {
-        try {
-            String cmd = "bin\\"+engine+".exe" + " -T" + format + " " +  fileName + ".txt "
-                    + "-o " + fileName + "." + format;
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException ioe) {
-            System.out.println(ioe);
-        }
-    }
+    
 
-    void generateProcessGraph() {
+    
+    static void generateProcessGraph() {
         String c = "digraph G{\n";
         c = c + "rankdir=\"LR\"" + "\nnewrank=\"true\" \n";
-        for (smallNode n : nodes) {
+        for (GSmallNode n : nodes) {
             if (allSmallNodes.contains(n.name)) {
                 c = c + n.name + " [ shape=\"rectangle\" ] \n";
             }
         }
         c = c + "\n\n";
-        for (smallNode n : nodes) {
+        for (GSmallNode n : nodes) {
             if (allSmallNodes.contains(n.name)) {
                 for (String next : n.next) {
                     c = c + n.name + " -> " + next + " \n";
@@ -187,60 +168,15 @@ public class test {
         generateImg("proccessDiagram","png","dot");
 
     }
-
-}
-
-class GArea {
-
-    String name;
-    ArrayList<String> smallNodes;
-
-    public GArea(String name) {
-        this.name = name;
-        smallNodes = new ArrayList();
-    }
-
-    public GArea(String name, ArrayList<String> nodes) {
-        this.name = name;
-        smallNodes = new ArrayList();
-        smallNodes.addAll(nodes);
-    }
-
-    public void addSmallNode(String name) {
-        smallNodes.add(name);
-    }
-
-    public void addSmallNodes(ArrayList<String> nodes) {
-        smallNodes.addAll(nodes);
-    }
-
-    public void listNodes() {
-        for (String node : smallNodes) {
-            System.out.println("    node: " + node);
+    
+    static void generateImg(String fileName, String format, String engine) {
+        try {
+            String cmd = "bin\\"+engine+".exe" + " -T" + format + " " +  fileName + ".txt "
+                    + "-o " + fileName + "." + format;
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException ioe) {
+            System.out.println(ioe);
         }
     }
+
 }
-
-class smallNode {
-
-    String name;
-    HashSet<String> next;
-
-    public smallNode() {
-        next = new HashSet();
-    }
-
-    public smallNode(String name, ArrayList<String> list) {
-        this.name = name;
-        next = new HashSet();
-        next.addAll(list);
-    }
-
-    public void listNextNodes() {
-        for (String node : next) {
-            System.out.println("    next node: " + node);
-        }
-    }
-}
-
-

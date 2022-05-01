@@ -1,6 +1,7 @@
 package middlewareVision.config;
 
 import kmiddle2.util.IDHelper;
+import middlewareVision.nodes.Visual.LGN.LGNSimpleOpponentCells;
 public class AreaNames {
     
     
@@ -36,7 +37,7 @@ public class AreaNames {
 	/****************************************************************************/
 	public static int LGN = IDHelper.generateID("LGN", 0, 0);
         /****************************************************************************/
-	public static int LGNProcess = IDHelper.generateID("LGN", 1, 0);
+	public static int LGNSimpleOpponentCells = IDHelper.generateID("LGN", 1, 0);
 				
 	
 	public static int TestAttention = IDHelper.generateID("TestAttention", 0, 0);
@@ -59,6 +60,8 @@ public class AreaNames {
 	public static int AlertProcess = IDHelper.generateID("Alert", 1 , 0);
 	
 	public static int V2CornerMotion = IDHelper.generateID("V2", 3 , 0);
+	
+	public static int test2 = IDHelper.generateID("Alert", 2 , 0);
 	
 	//@addNodes
         //no quitar el comentario de add Nodes

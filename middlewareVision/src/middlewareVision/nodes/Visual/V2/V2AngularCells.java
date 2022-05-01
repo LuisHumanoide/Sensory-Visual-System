@@ -14,6 +14,7 @@ import gui.FrameActivity;
 import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kmiddle2.nodes.activities.Activity;
 import middlewareVision.config.AreaNames;
 import static org.opencv.core.CvType.CV_32F;
 import org.opencv.core.Mat;
@@ -29,7 +30,7 @@ import utils.SpecialKernels;
  *
  * @author HumanoideFilms
  */
-public class V2AngularCells extends FrameActivity {
+public class V2AngularCells extends Activity {
 
     /**
      * Initial arrays
