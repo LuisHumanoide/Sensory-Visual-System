@@ -1,4 +1,4 @@
-package middlewareVision.nodes.External;
+package middlewareVision.nodes.Visual.MST;
 
 
 
@@ -15,11 +15,11 @@ import utils.LongSpike;
  *
  * 
  */
-public class test2 extends Activity {
+public class MSTTemplateCells extends Activity {
 
 
-    public test2() {
-        this.ID = AreaNames.test2;
+    public MSTTemplateCells() {
+        this.ID = AreaNames.MSTTemplateCells;
         this.namer = AreaNames.class;
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
     }
@@ -37,7 +37,7 @@ public class test2 extends Activity {
                 LongSpike spike = new LongSpike(data);
 
             } catch (Exception ex) {
-                Logger.getLogger(test2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MSTTemplateCells.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }  

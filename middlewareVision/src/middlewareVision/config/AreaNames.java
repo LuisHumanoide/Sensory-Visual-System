@@ -61,7 +61,7 @@ public class AreaNames {
 	
 	public static int V2CornerMotion = IDHelper.generateID("V2", 3 , 0);
 	
-	public static int test2 = IDHelper.generateID("Alert", 2 , 0);
+	public static int MSTTemplateCells = IDHelper.generateID("MST", 2 , 0);
 	
 	//@addNodes
         //no quitar el comentario de add Nodes

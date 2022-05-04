@@ -217,7 +217,7 @@ public class NodeGenerator extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(108, 150, 129));
         jButton4.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
-        jButton4.setText("<html>\nBig Node<br>\nTemplate\n</html>");
+        jButton4.setText("<html> Big Node<br> Template </html>");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -543,6 +543,13 @@ public class NodeGenerator extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            run.exec("cmd.exe /c "+System.getProperty("user.dir")+"\\TemplateProcess.java");
+            //run.exec("TemplateBigNode.java");
+        } catch (IOException ex) {
+            Logger.getLogger(NodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

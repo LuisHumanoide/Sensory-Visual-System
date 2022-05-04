@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/generator/visualizerTest.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/generator/test.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/config/Init.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/External/AlertProcess.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V2/V2.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/Retina/Retina.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V1/V1.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/config/AreaNames.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/External/FeedbackProccess.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/V2/V2CurvatureCells.java</file>
+            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/Visual/MT/MTPatternCells.java</file>
             <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/External/Alert.java</file>
-            <file>file:/F:/HumanoideFilms/Documents/github/middlewareVision/src/middlewareVision/nodes/External/TestAttention.java</file>
         </group>
     </open-files>
 </project-private>

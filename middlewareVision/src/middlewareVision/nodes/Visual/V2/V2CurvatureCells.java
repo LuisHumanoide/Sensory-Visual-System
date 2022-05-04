@@ -45,6 +45,8 @@ public class V2CurvatureCells extends Activity {
                     
                     Visualizer.lockLimit("Curv");
                     
+                    send(AreaNames.V4ShapeActivationNode, null);
+                    
                 }
             } catch (Exception ex) {
                 //Logger.getLogger(V2CurvatureCells.class.getName()).log(Level.SEVERE, null, ex);

@@ -43,6 +43,7 @@ public class AlertProcess extends Activity {
     }
 
     public void sendAlertState(int frameRate) {
+        send(AreaNames.RetinaProccess, null);
         Config.rate=frameRate;
     }
 

@@ -3,9 +3,9 @@ rankdir="LR"
 newrank="true" 
 AlertProcess [ shape="rectangle" ] 
 FeedbackProccess [ shape="rectangle" ] 
-test2 [ shape="rectangle" ] 
 LGNSimpleOpponentCells [ shape="rectangle" ] 
 MSTPolarCells [ shape="rectangle" ] 
+MSTTemplateCells [ shape="rectangle" ] 
 MTComponentCells [ shape="rectangle" ] 
 MTPatternCells [ shape="rectangle" ] 
 BasicMotion [ shape="rectangle" ] 
@@ -23,6 +23,7 @@ V4Contour [ shape="rectangle" ]
 V4ShapeActivationNode [ shape="rectangle" ] 
 
 
+AlertProcess -> RetinaProccess 
 FeedbackProccess -> V1ComplexCells 
 FeedbackProccess -> V1HyperComplex 
 FeedbackProccess -> V2AngularCells 
@@ -30,6 +31,7 @@ FeedbackProccess -> V1SimpleCells
 LGNSimpleOpponentCells -> V1DoubleOpponent 
 LGNSimpleOpponentCells -> MSTPolarCells 
 MTComponentCells -> MTPatternCells 
+MTPatternCells -> MSTTemplateCells 
 RetinaProccess -> BasicMotion 
 RetinaProccess -> LGNSimpleOpponentCells 
 V1ComplexCells -> V1HyperComplex 
@@ -43,12 +45,12 @@ V1MotionCellsNew -> MTComponentCells
 V1SimpleCells -> V1ComplexCells 
 V2AngularCells -> V2CornerMotion 
 V2AngularCells -> V4ShapeActivationNode 
+V2CurvatureCells -> V4ShapeActivationNode 
 
 subgraph clusterAlert {
  label="Alert"
 rank="same"
 AlertProcess
-test2
 }
 
 subgraph clusterTestAttention {
@@ -67,6 +69,7 @@ subgraph clusterMST {
  label="MST"
 rank="same"
 MSTPolarCells
+MSTTemplateCells
 }
 
 subgraph clusterMT {

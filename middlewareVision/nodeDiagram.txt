@@ -1,13 +1,13 @@
 graph G{
 Alert [ label="Alert" shape="circle" ]
 AlertProcess [ label="AlertProcess" shape="octagon" ]
-test2 [ label="test2" shape="octagon" ]
 TestAttention [ label="TestAttention" shape="circle" ]
 FeedbackProccess [ label="FeedbackProccess" shape="octagon" ]
 LGN [ label="LGN" shape="circle" ]
 LGNSimpleOpponentCells [ label="LGNSimpleOpponentCells" shape="octagon" ]
 MST [ label="MST" shape="circle" ]
 MSTPolarCells [ label="MSTPolarCells" shape="octagon" ]
+MSTTemplateCells [ label="MSTTemplateCells" shape="octagon" ]
 MT [ label="MT" shape="circle" ]
 MTComponentCells [ label="MTComponentCells" shape="octagon" ]
 MTPatternCells [ label="MTPatternCells" shape="octagon" ]
@@ -31,13 +31,13 @@ V4ShapeActivationNode [ label="V4ShapeActivationNode" shape="octagon" ]
 
 
 Alert -- AlertProcess;
-Alert -- test2;
 
 TestAttention -- FeedbackProccess;
 
 LGN -- LGNSimpleOpponentCells;
 
 MST -- MSTPolarCells;
+MST -- MSTTemplateCells;
 
 MT -- MTComponentCells;
 MT -- MTPatternCells;

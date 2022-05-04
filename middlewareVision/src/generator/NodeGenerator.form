@@ -281,7 +281,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="10" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;Big Node&lt;br&gt;&#xa;Template&#xa;&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; Big Node&lt;br&gt; Template &lt;/html&gt;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>

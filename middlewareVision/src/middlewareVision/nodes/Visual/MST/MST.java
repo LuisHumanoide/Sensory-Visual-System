@@ -16,7 +16,9 @@ public class MST extends Area{
         this.namer = AreaNames.class;
         addProcess(MSTPolarCells.class);
 	
-//@AddProcess
+addProcess(MSTTemplateCells.class);
+	
+	//@AddProcess
     }
 
     @Override
@@ -28,7 +30,9 @@ public class MST extends Area{
     public void receive(int nodeID, byte[] data) {
         send(AreaNames.MSTPolarCells,data);
 	
-//@SendProcess
+send(AreaNames.MSTTemplateCells,data);
+	
+	//@SendProcess
     }
     
 }

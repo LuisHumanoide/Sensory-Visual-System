@@ -65,6 +65,8 @@ public class MTPatternCells extends Activity {
                     visualize();
 
                     Visualizer.lockLimit("MTP");
+                    
+                    send(AreaNames.MSTTemplateCells, null);
                 }
 
             } catch (Exception ex) {
