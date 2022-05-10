@@ -11,6 +11,7 @@ V1SimpleCells true
 V1ComplexCells true
 MTPatternCells true
 V1HyperComplex true
+MSTTemplateCells true
 V2CornerMotion false
 MTComponentCells true
 V4Color true

@@ -2,3 +2,5 @@
 *.class
 *.log
 middlewareVision/log/
+*.class
+middlewareVision/build/built-jar.properties

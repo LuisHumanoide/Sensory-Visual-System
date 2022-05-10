@@ -31,7 +31,6 @@ FeedbackProccess -> V1SimpleCells
 LGNSimpleOpponentCells -> V1DoubleOpponent 
 LGNSimpleOpponentCells -> MSTPolarCells 
 MTComponentCells -> MTPatternCells 
-MTPatternCells -> MSTTemplateCells 
 RetinaProccess -> BasicMotion 
 RetinaProccess -> LGNSimpleOpponentCells 
 V1ComplexCells -> V1HyperComplex 
