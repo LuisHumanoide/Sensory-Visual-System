@@ -69,6 +69,7 @@ public class V1SimpleCells extends Activity {
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     
                     send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
+                    send(AreaNames.V1BinocularSimpleCells, sendSpike1.getByteArray());
                 }
 
                 if (sync.isComplete()) {

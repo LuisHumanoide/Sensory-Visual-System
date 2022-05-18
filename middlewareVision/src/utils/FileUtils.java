@@ -271,6 +271,24 @@ public class FileUtils {
 
         return arr_res;
     }
+    
+    /**
+     * Return the number of lines from a file
+     * @param file
+     * @return 
+     */
+    public static int numberFileLines(String file){
+        return FileUtils.readFile(new File(file)).split("\\n").length;
+    }
+    
+    /**
+     * Return a string array from a file
+     * @param file
+     * @return 
+     */
+    public static String[] fileLines(String file){
+        return FileUtils.readFile(new File(file)).split("\\n"); 
+    }
 
     /**
      * Read file object

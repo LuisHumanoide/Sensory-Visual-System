@@ -23,7 +23,6 @@ import utils.filters.CurvatureFilter;
  */
 public class Functions {
 
-
     public static Mat filter(Mat img, Mat filter) {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
         img.convertTo(img.clone(), CV_32FC1);
@@ -56,6 +55,40 @@ public class Functions {
         Imgproc.threshold(energy, energy, 0, 1, Imgproc.THRESH_TOZERO);
 
         return energy;
+    }
+    
+    
+    public static Mat squareProcess(Mat mat1, Mat mat2){
+        Mat r1, r2;
+
+        r1 = mat1.clone();
+        r2 = mat2.clone();
+
+        Core.pow(r1, 2, r1);
+        Core.pow(r2, 2, r2);
+
+        Core.add(r1, r2, r1);
+
+        Imgproc.threshold(r1, r1, 0, 1, Imgproc.THRESH_TOZERO);
+
+        return r1;
+    }
+
+    public static Mat energyDisparityProcess(Mat L, Mat R, int disparity) {
+        return energyProcess(L, SpecialKernels.displaceKernel(R, 0, disparity));
+    }
+
+    public static Mat disparitySum(Mat L, Mat R, int disparity) {
+        Mat dst = new Mat();
+        Mat L1=L.clone();
+        Mat R1=R.clone();
+        Core.multiply(L1, Scalar.all(0.5), L1);
+        Core.multiply(R1, Scalar.all(0.5), R1);
+        Core.add(L1, SpecialKernels.displaceKernel(R1, 0, disparity), dst);
+        //dst=squareProcess(L1, SpecialKernels.displaceKernel(R1, 0, disparity));
+        Core.pow(dst, 12, dst);
+        Imgproc.threshold(dst, dst, 0, 1, Imgproc.THRESH_TOZERO);
+        return dst;
     }
 
     /**
@@ -195,29 +228,29 @@ public class Functions {
         /*
         condition to prevent the angles from being collinear, for example 0 and 180,
         if this happens, there may be indeterminacy
-        */
+         */
         if (d1 != (d2 - 180) % 360) {
-            
+
             double x = (double) ((r1 * Math.sin(a2) - r2 * Math.sin(a1)) / Math.sin(a2 - a1));
             double y = (double) ((r2 * Math.cos(a1) - r1 * Math.cos(a2)) / Math.sin(a2 - a1));
-            
-            double speed=Math.sqrt(x * x + y * y);
-            
+
+            double speed = Math.sqrt(x * x + y * y);
+
             /**
              * extra condition to avoid infinite speeds
              */
-            if(speed>1000){
-                speed=0;
+            if (speed > 1000) {
+                speed = 0;
             }
-            
+
             IoC[0] = speed;
             IoC[1] = Math.atan2(y, x);
-            
+
         } else {
-            
+
             IoC[0] = 0;
             IoC[1] = 0;
-            
+
         }
         return IoC;
     }

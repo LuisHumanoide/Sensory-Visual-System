@@ -10,6 +10,8 @@ MTComponentCells [ shape="rectangle" ]
 MTPatternCells [ shape="rectangle" ] 
 BasicMotion [ shape="rectangle" ] 
 RetinaProccess [ shape="rectangle" ] 
+V1BinocularComplexCells [ shape="rectangle" ] 
+V1BinocularSimpleCells [ shape="rectangle" ] 
 V1ComplexCells [ shape="rectangle" ] 
 V1DoubleOpponent [ shape="rectangle" ] 
 V1HyperComplex [ shape="rectangle" ] 
@@ -33,6 +35,7 @@ LGNSimpleOpponentCells -> MSTPolarCells
 MTComponentCells -> MTPatternCells 
 RetinaProccess -> BasicMotion 
 RetinaProccess -> LGNSimpleOpponentCells 
+V1BinocularSimpleCells -> V1BinocularComplexCells 
 V1ComplexCells -> V1HyperComplex 
 V1ComplexCells -> V1MotionCellsNew 
 V1DoubleOpponent -> V4Color 
@@ -42,6 +45,7 @@ V1HyperComplex -> V2AngularCells
 V1HyperComplex -> V4Contour 
 V1MotionCellsNew -> MTComponentCells 
 V1SimpleCells -> V1ComplexCells 
+V1SimpleCells -> V1BinocularSimpleCells 
 V2AngularCells -> V2CornerMotion 
 V2AngularCells -> V4ShapeActivationNode 
 V2CurvatureCells -> V4ShapeActivationNode 
@@ -93,6 +97,8 @@ V1ComplexCells
 V1DoubleOpponent
 V1HyperComplex
 V1MotionCellsNew
+V1BinocularSimpleCells
+V1BinocularComplexCells
 }
 
 subgraph clusterV2 {
