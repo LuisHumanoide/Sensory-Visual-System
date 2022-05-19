@@ -20,6 +20,8 @@ V1ComplexCells [ label="V1ComplexCells" shape="octagon" ]
 V1DoubleOpponent [ label="V1DoubleOpponent" shape="octagon" ]
 V1HyperComplex [ label="V1HyperComplex" shape="octagon" ]
 V1MotionCellsNew [ label="V1MotionCellsNew" shape="octagon" ]
+V1BinocularSimpleCells [ label="V1BinocularSimpleCells" shape="octagon" ]
+V1BinocularComplexCells [ label="V1BinocularComplexCells" shape="octagon" ]
 V2 [ label="V2" shape="circle" ]
 V2AngularCells [ label="V2AngularCells" shape="octagon" ]
 V2CurvatureCells [ label="V2CurvatureCells" shape="octagon" ]
@@ -50,6 +52,8 @@ V1 -- V1ComplexCells;
 V1 -- V1DoubleOpponent;
 V1 -- V1HyperComplex;
 V1 -- V1MotionCellsNew;
+V1 -- V1BinocularSimpleCells;
+V1 -- V1BinocularComplexCells;
 
 V2 -- V2AngularCells;
 V2 -- V2CurvatureCells;

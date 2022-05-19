@@ -35,7 +35,12 @@ public class V1Bank {
     public static HypercomplexCells[][] HCC;
     public static DoubleOpponentCells[][] DOC;
     public static MotionCellsV1[][] MC;
-    static String fileName = "RFV1//Gabor//filters.txt";
+    
+    //[frequency][disparity index]
+    public static StereoscopicCells[][] SSC;
+    
+    static String GaborFile = "RFV1//Gabor//filters.txt";
+    static String DisparityFile = "Disparities.txt";
     static String HCfiles = "RFV1HC//";
 
     /**
@@ -43,21 +48,24 @@ public class V1Bank {
      *
      * @param dimensions
      */
-    public static void initializeCells() {
-        File file = new File(fileName);
-        String fileContent = FileUtils.readFile(file);
-        String gaborLines[] = fileContent.split("\\n");
-        
+    public static void initializeCells() {     
+        String gaborLines[] = FileUtils.fileLines(GaborFile);       
         Config.gaborBanks = gaborLines.length;
+        
+        String disparities[] = FileUtils.fileLines(DisparityFile);
+        
         File hcfolder = new File(HCfiles);
         File hcfiles[] = hcfolder.listFiles();
         Config.HCfilters = hcfiles.length;
+        Config.nDisparities=disparities.length;
         
         SC = new SimpleCells[gaborLines.length][2];
         CC = new ComplexCells[gaborLines.length][2];
         HCC = new HypercomplexCells[gaborLines.length][2];
         DOC = new DoubleOpponentCells[1][2];
         MC = new MotionCellsV1[gaborLines.length][2];
+        
+        SSC = new StereoscopicCells[gaborLines.length][disparities.length];
         
         motionDiff=new Mat();
 
@@ -75,6 +83,9 @@ public class V1Bank {
                 MC[i2][i3] = new MotionCellsV1("ConfigFiles/speeds.txt");
                 CC[i2][i3].setSimpleCells(SC[i2][i3]);
                 MC[i2][i3].setPrevious(CC[i2][i3].Cells);
+            }
+            for(int i=0;i<disparities.length;i++){
+                SSC[i2][i]=new StereoscopicCells(Integer.parseInt(disparities[i]),SC[i2]);
             }
         }
         

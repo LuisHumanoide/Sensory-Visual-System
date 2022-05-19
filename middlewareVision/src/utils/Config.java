@@ -34,6 +34,7 @@ public class Config {
 
     public static final int freqs = 1;
     public static final int freqsV2 = 1;
+    public static int nDisparities=1;
 
     public static int displace = 0;
     public static int gaborBanks = 0;

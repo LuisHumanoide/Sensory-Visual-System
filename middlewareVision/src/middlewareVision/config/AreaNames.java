@@ -63,6 +63,9 @@ public class AreaNames {
 	
 	public static int MSTTemplateCells = IDHelper.generateID("MST", 2 , 0);
 	
+	public static int V1BinocularSimpleCells = IDHelper.generateID("V1", 10 , 0);
+	public static int V1BinocularComplexCells = IDHelper.generateID("V1", 11 , 0);
+	
 	//@addNodes
         //no quitar el comentario de add Nodes
 }
