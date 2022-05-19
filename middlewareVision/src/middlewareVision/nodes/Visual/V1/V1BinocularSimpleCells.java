@@ -69,8 +69,8 @@ public class V1BinocularSimpleCells extends Activity {
 
     void sum(StereoscopicCells sc) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
-            sc.evenCells[i].mat = Functions.disparitySum(sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.disparity);
-            sc.oddCells[i].mat = Functions.disparitySum(sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat, sc.disparity);
+            sc.evenCells[i].mat = Functions.disparitySum(sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.disparity,2);
+            sc.oddCells[i].mat = Functions.disparitySum(sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat, sc.disparity,2);
         }
         sc.composedEvenCell.mat=Functions.maxSum(sc.evenCells);
         sc.composedOddCell.mat=Functions.maxSum(sc.oddCells);

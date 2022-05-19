@@ -114,6 +114,26 @@ public class MatrixUtils {
         return mul;
     }
     
+    public static Mat sum(Mat[] mat, int w, int bias) {
+        Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
+        for (int i = 0; i < mat.length; i++) {
+           Core.addWeighted(sum, 1, mat[i], w, 0, sum);
+        }
+        Core.add(sum, Scalar.all(bias), sum);
+        return sum;
+    }
+    
+    public static Mat sum(double w, double bias, int pow, Mat ... mat) {
+        Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
+        for (int i = 0; i < mat.length; i++) {
+           Mat powm=new Mat();
+           Core.pow(mat[i], pow, powm);
+           Core.addWeighted(sum, 1, powm, w, 0, sum);
+        }
+        Core.add(sum, Scalar.all(bias), sum);
+        return sum;
+    }
+    
     public static Mat [] basicDilate(Cell[] mats, int blurSize, int kernelSize){
         Mat blur[]=new Mat[mats.length];
         Mat element = getStructuringElement( MORPH_RECT,

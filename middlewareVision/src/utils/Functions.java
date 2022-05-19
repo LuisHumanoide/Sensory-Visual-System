@@ -27,7 +27,11 @@ public class Functions {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
         img.convertTo(img.clone(), CV_32FC1);
         Imgproc.filter2D(img, filt, CV_32FC1, filter);
-        Imgproc.threshold(filt, filt, 0, 1, Imgproc.THRESH_TOZERO);
+        double max = Core.minMaxLoc(filt).maxVal;
+        if (max > 1) {
+            Core.divide(filt, Scalar.all(max), filt);
+        }
+        Imgproc.threshold(filt, filt, 1, 0, Imgproc.THRESH_TRUNC);
         return filt;
     }
 
@@ -52,24 +56,23 @@ public class Functions {
 
         Core.sqrt(r1, energy);
 
-        Imgproc.threshold(energy, energy, 0, 1, Imgproc.THRESH_TOZERO);
+        Imgproc.threshold(energy, energy, 1, 0, Imgproc.THRESH_TRUNC);
 
         return energy;
     }
-    
-    
-    public static Mat squareProcess(Mat mat1, Mat mat2){
-        Mat r1, r2;
 
+    public static Mat sumPowProcess(Mat mat1, Mat mat2, int pow) {
+        Mat r1, r2, r3;
+        r3=new Mat();
         r1 = mat1.clone();
         r2 = mat2.clone();
 
-        Core.pow(r1, 2, r1);
-        Core.pow(r2, 2, r2);
+        Core.pow(r1, pow, r1);
+        Core.pow(r2, pow, r2);
 
-        Core.add(r1, r2, r1);
+        Core.add(r1, r2, r3);
 
-        Imgproc.threshold(r1, r1, 0, 1, Imgproc.THRESH_TOZERO);
+        Imgproc.threshold(r1, r1, 1, 0, Imgproc.THRESH_TRUNC);
 
         return r1;
     }
@@ -78,16 +81,28 @@ public class Functions {
         return energyProcess(L, SpecialKernels.displaceKernel(R, 0, disparity));
     }
 
-    public static Mat disparitySum(Mat L, Mat R, int disparity) {
+    /**
+     * https://www.researchgate.net/publication/221079016_An_Analytical_Model_of_Divisive_Normalization_in_Disparity-Tuned_Complex_Cells
+     *
+     * @param L
+     * @param R
+     * @param disparity
+     * @return
+     */
+    public static Mat disparitySum(Mat L, Mat R, int disparity, int pow) {
         Mat dst = new Mat();
-        Mat L1=L.clone();
-        Mat R1=R.clone();
-        Core.multiply(L1, Scalar.all(0.5), L1);
-        Core.multiply(R1, Scalar.all(0.5), R1);
-        Core.add(L1, SpecialKernels.displaceKernel(R1, 0, disparity), dst);
-        //dst=squareProcess(L1, SpecialKernels.displaceKernel(R1, 0, disparity));
-        Core.pow(dst, 12, dst);
-        Imgproc.threshold(dst, dst, 0, 1, Imgproc.THRESH_TOZERO);
+        Mat L1 = L.clone();
+        Mat R1 = R.clone();
+        
+        double p = 0.5;
+
+        Core.multiply(L1, Scalar.all(p), L1);
+        Core.multiply(R1, Scalar.all(p), R1);
+        
+        Core.add(SpecialKernels.displaceKernel(L1, 0, disparity / 2), SpecialKernels.displaceKernel(R1, 0, -disparity / 2), dst);
+        
+        Core.pow(dst, pow, dst);
+        
         return dst;
     }
 
@@ -124,7 +139,7 @@ public class Functions {
 
         Core.multiply(vlvr, h, dst);
 
-        Imgproc.threshold(dst, dst, 0, 1, Imgproc.THRESH_TOZERO);
+        Imgproc.threshold(dst, dst, 1, 0, Imgproc.THRESH_TRUNC);
 
         return dst;
     }

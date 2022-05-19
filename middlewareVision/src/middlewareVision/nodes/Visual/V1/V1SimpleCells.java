@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import gui.Visualizer;
 import kmiddle2.nodes.activities.Activity;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
@@ -61,13 +63,16 @@ public class V1SimpleCells extends Activity {
                 LongSpike spike = new LongSpike(data);
 
                 if (spike.getModality() == Modalities.VISUAL) {
+
+                    //normalizeInput(2);
                     
                     convolveSimpleCells(V1Bank.DOC[0][0].Cells[2].mat, V1Bank.DOC[0][1].Cells[2].mat);
+
 
                     visualize();
 
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                    
+
                     send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
                     send(AreaNames.V1BinocularSimpleCells, sendSpike1.getByteArray());
                 }
@@ -116,6 +121,24 @@ public class V1SimpleCells extends Activity {
         Visualizer.addLimit("SCsup", 4 * (Config.gaborBanks - 1) + 10);
     }
 
+    void normalizeInput(int index) {
+        double maxx = 0;
+        double maxL;
+        double maxR;
+        maxL=Core.minMaxLoc(V1Bank.DOC[0][0].Cells[index].mat).maxVal;
+        maxR=Core.minMaxLoc(V1Bank.DOC[0][1].Cells[index].mat).maxVal;
+        if(maxL>maxR){
+            maxx=maxL;
+        }
+        else{
+            maxx=maxR;
+        }
+        if(maxx>1){
+            Core.divide(V1Bank.DOC[0][0].Cells[index].mat, Scalar.all(maxx), V1Bank.DOC[0][0].Cells[index].mat);
+            Core.divide(V1Bank.DOC[0][1].Cells[index].mat, Scalar.all(maxx), V1Bank.DOC[0][1].Cells[index].mat);
+        }
+    }
+
     /**
      * Convolve all simple cells with the designed gabor filter
      *
@@ -123,6 +146,7 @@ public class V1SimpleCells extends Activity {
      */
     void convolveSimpleCells(Mat inputL, Mat inputR) {
         int i1 = SC.length;
+        max = 0;
         for (int x1 = 0; x1 < i1; x1++) {
             convolve(x1, 0, inputL);
             convolve(x1, 1, inputR);
@@ -137,6 +161,8 @@ public class V1SimpleCells extends Activity {
      * @param x2 correspond to the eye
      * @param src source matrix to convolve
      */
+    double max = 0;
+
     void convolve(int x1, int x2, Mat src) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
             V1Bank.SC[x1][x2].Even[i].mat = Functions.filter(src, V1Bank.SC[x1][x2].evenFilter[i]);

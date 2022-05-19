@@ -21,10 +21,12 @@ public class StereoscopicCells {
     public Cell[] evenCells;
     public Cell[] oddCells;
     public Cell[] complexCells;
+    public Cell[] normalizedCells;
 
     public Cell composedEvenCell;
     public Cell composedOddCell;
     public Cell composedComplexCell;
+    public Cell composedNormalizedCell;
 
     /**
      * Constructor for the stereoscopic cells
@@ -39,10 +41,12 @@ public class StereoscopicCells {
         evenCells = new Cell[Config.gaborOrientations];
         oddCells = new Cell[Config.gaborOrientations];
         complexCells = new Cell[Config.gaborOrientations];
+        normalizedCells = new Cell[Config.gaborOrientations];
 
         composedEvenCell = new Cell();
         composedOddCell = new Cell();
         composedComplexCell = new Cell();
+        composedNormalizedCell = new Cell();
 
         for (int i = 0; i < Config.gaborOrientations; i++) {
 
@@ -54,6 +58,9 @@ public class StereoscopicCells {
 
             complexCells[i] = new Cell();
             complexCells[i].setPrevious(evenCells[i], oddCells[i]);
+            
+            normalizedCells[i] = new Cell();
+            normalizedCells[i].setPrevious(complexCells[i],simpleCells[0].Even[i], simpleCells[1].Even[i],simpleCells[0].Odd[i], simpleCells[1].Odd[i]);
 
         }
     }
