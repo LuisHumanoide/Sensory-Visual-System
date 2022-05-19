@@ -53,7 +53,6 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
         next.setLocation(this.getWidth() - next.getWidth(), this.getHeight() - next.getWidth());
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize((int) (screenSize.width * 0.75), screenSize.height - 30);
-        //this.setSize(Config.width * 8, Config.heigth * 4 + 70);
         this.setLocation((int) (screenSize.width * 0.24), 0);
         jPanel1.setPreferredSize(new Dimension(this.getSize()));
         labels = new JLabel[nFields];

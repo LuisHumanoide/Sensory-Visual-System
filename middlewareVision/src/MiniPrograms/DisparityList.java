@@ -32,6 +32,7 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel1 = new gui.components.ListPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Disparity List");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

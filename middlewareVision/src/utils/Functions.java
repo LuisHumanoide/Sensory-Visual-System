@@ -22,6 +22,9 @@ import utils.filters.CurvatureFilter;
  * @author Laptop
  */
 public class Functions {
+    
+    public static final int DISP_OP_SUM = 1;
+    public static final int DISP_OP_MUL = 2;
 
     public static Mat filter(Mat img, Mat filter) {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
@@ -103,6 +106,29 @@ public class Functions {
         
         Core.pow(dst, pow, dst);
         
+        return dst;
+    }
+    
+    public static Mat disparityMul(Mat L, Mat R, int disparity){
+        Mat dst = new Mat();
+        Mat L1 = L.clone();
+        Mat R1 = R.clone();
+        
+        Core.multiply(SpecialKernels.displaceKernel(L1, 0, disparity / 2), SpecialKernels.displaceKernel(R1, 0, -disparity / 2), dst);
+        
+        return dst;      
+    }
+    
+    public static Mat disparityOperation(Mat L, Mat R, int disparity, int pow, int operation){
+        Mat dst=new Mat();
+        if(operation==DISP_OP_SUM){
+            dst=disparitySum(L, R, disparity, pow);
+        }
+        if(operation==DISP_OP_MUL){
+            dst=disparityMul(L, R, disparity);
+            Core.sqrt(dst, dst);
+            Imgproc.threshold(dst, dst, 0, 1, Imgproc.THRESH_TOZERO);
+        }
         return dst;
     }
 

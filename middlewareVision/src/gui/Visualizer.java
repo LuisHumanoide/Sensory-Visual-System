@@ -109,16 +109,9 @@ public class Visualizer {
         vis.previous();
     }
 
-    public static void update() {
-        for (int i = 0; i < 4; i++) {
-            if (i < 3) {
-                vis.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "dkl", 4 + i);
-            }
-            vis.setImage(Convertor.Mat2Img(V1Bank.SC[0][0].Even[i].mat), "even", 12 + i);
-            vis.setImage(Convertor.Mat2Img(V1Bank.SC[0][0].Odd[i].mat), "odd", 12 + 4 + i);
-            vis.setImage(Convertor.Mat2Img(V1Bank.CC[0][0].Cells[i].mat), "complex", 12 + 4 + 4 + i);
-            vis.setImage(Convertor.Mat2Img(V1Bank.HCC[0][0].Cells[0][i].mat), "hyper", 12 + 4 + 4 + 4 + i);
-        }
+    public static void setImage(Mat mat, String even_Cell, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 
 }

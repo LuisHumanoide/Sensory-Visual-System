@@ -59,18 +59,12 @@ public class V1BinocularComplexCells extends Activity {
         }
     }  
     
+    int bankIndex=0;
     void visualize() {
-        Visualizer.setImage(V1Bank.SSC[0][0].composedComplexCell.mat, "disp test complex", 3, 7);
-        Visualizer.setImage(V1Bank.SSC[0][1].composedComplexCell.mat, "disp test complex", 4, 7);
-        Visualizer.setImage(V1Bank.SSC[0][2].composedComplexCell.mat, "disp test complex", 5, 7);
-        Visualizer.setImage(V1Bank.SSC[0][3].composedComplexCell.mat, "disp test complex", 6, 7);
-        Visualizer.setImage(V1Bank.SSC[0][4].composedComplexCell.mat, "disp test complex", 7, 7);
-        
-        Visualizer.setImage(V1Bank.SSC[0][0].composedNormalizedCell.mat, "disp test complex", 3, 8);
-        Visualizer.setImage(V1Bank.SSC[0][1].composedNormalizedCell.mat, "disp test complex", 4, 8);
-        Visualizer.setImage(V1Bank.SSC[0][2].composedNormalizedCell.mat, "disp test complex", 5, 8);
-        Visualizer.setImage(V1Bank.SSC[0][3].composedNormalizedCell.mat, "disp test complex", 6, 8);
-        Visualizer.setImage(V1Bank.SSC[0][4].composedNormalizedCell.mat, "disp test complex", 7, 8);
+       for(int i=0;i<Config.nDisparities;i++){
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedComplexCell.mat, "complex Cell", i, 12);
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedNormalizedCell.mat, "Odd Even Cell", i, 13);
+        }
     }
     
     void energyProcessAll(){
@@ -103,7 +97,6 @@ public class V1BinocularComplexCells extends Activity {
                     sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat);
             Core.divide(sc.complexCells[i].mat, den, sc.normalizedCells[i].mat);
            // Core.pow(sc.normalizedCells[i].mat, 2, sc.normalizedCells[i].mat);
-            //sc.normalizedCells[i].mat=den;
         }
         sc.composedNormalizedCell.mat=Functions.maxSum(sc.normalizedCells);
     }

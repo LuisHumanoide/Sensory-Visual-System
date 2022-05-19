@@ -36,6 +36,7 @@ public class V1BinocularSimpleCells extends Activity {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);
+                
                 if (spike.getModality() == Modalities.VISUAL) {
 
                     sumAll();
@@ -51,12 +52,12 @@ public class V1BinocularSimpleCells extends Activity {
             }
         }
     }
-
+    int bankIndex=0;
     void visualize() {
-        Visualizer.setImage(V1Bank.SSC[0][0].composedEvenCell.mat, "disp test", 3, 5);
-        Visualizer.setImage(V1Bank.SSC[0][4].composedEvenCell.mat, "disp test", 4, 5);
-        Visualizer.setImage(V1Bank.SSC[0][0].composedOddCell.mat, "disp test", 3, 6);
-        Visualizer.setImage(V1Bank.SSC[0][4].composedOddCell.mat, "disp test", 4, 6);
+        for(int i=0;i<Config.nDisparities;i++){
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedEvenCell.mat, "Simple Even Cell", i, 10);
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedEvenCell.mat, "Odd Even Cell", i, 11);
+        }
     }
 
     void sumAll() {
@@ -66,11 +67,11 @@ public class V1BinocularSimpleCells extends Activity {
             }
         }
     }
-
+    
     void sum(StereoscopicCells sc) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
-            sc.evenCells[i].mat = Functions.disparitySum(sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.disparity,2);
-            sc.oddCells[i].mat = Functions.disparitySum(sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat, sc.disparity,2);
+            sc.evenCells[i].mat = Functions.disparityOperation(sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.disparity, Config.sccn, Functions.DISP_OP_MUL);
+            sc.oddCells[i].mat = Functions.disparityOperation(sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat, sc.disparity, Config.sccn, Functions.DISP_OP_MUL);
         }
         sc.composedEvenCell.mat=Functions.maxSum(sc.evenCells);
         sc.composedOddCell.mat=Functions.maxSum(sc.oddCells);

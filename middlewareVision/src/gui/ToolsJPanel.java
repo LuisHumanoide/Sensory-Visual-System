@@ -6,6 +6,7 @@
 package gui;
 
 import MiniPrograms.CurvatureRF;
+import MiniPrograms.DisparityList;
 import MiniPrograms.GaborList;
 import MiniPrograms.MotionV1Speeds;
 import MiniPrograms.RFGeneratorNew;
@@ -29,6 +30,7 @@ public class ToolsJPanel extends javax.swing.JPanel {
     CurvatureRF p4;
     RetinaPanel ret;
     SmallNodeList p5;
+    DisparityList p6;
     /**
      * Creates new form ToolsJPanel
      */
@@ -40,12 +42,14 @@ public class ToolsJPanel extends javax.swing.JPanel {
         p3 = new RFGeneratorNew();
         p4 = new CurvatureRF();
         p5 = new SmallNodeList();
+        p6 = new DisparityList();
 
         p1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p3.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p4.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         p5.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        p6.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
     /**
@@ -59,6 +63,7 @@ public class ToolsJPanel extends javax.swing.JPanel {
 
         b1 = new javax.swing.JButton();
         b2 = new javax.swing.JButton();
+        b8 = new javax.swing.JButton();
         b3 = new javax.swing.JButton();
         b4 = new javax.swing.JButton();
         b6 = new javax.swing.JButton();
@@ -85,6 +90,15 @@ public class ToolsJPanel extends javax.swing.JPanel {
             }
         });
         add(b2);
+
+        b8.setBackground(new java.awt.Color(100, 114, 123));
+        b8.setText("Disparities List");
+        b8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b8ActionPerformed(evt);
+            }
+        });
+        add(b8);
 
         b3.setBackground(new java.awt.Color(100, 114, 123));
         b3.setText("Receptive Field List");
@@ -177,6 +191,11 @@ public class ToolsJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_b7ActionPerformed
 
+    private void b8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b8ActionPerformed
+        // TODO add your handling code here:
+        p6.setVisible(true);
+    }//GEN-LAST:event_b8ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b1;
@@ -186,5 +205,6 @@ public class ToolsJPanel extends javax.swing.JPanel {
     private javax.swing.JButton b5;
     private javax.swing.JButton b6;
     private javax.swing.JButton b7;
+    private javax.swing.JButton b8;
     // End of variables declaration//GEN-END:variables
 }
