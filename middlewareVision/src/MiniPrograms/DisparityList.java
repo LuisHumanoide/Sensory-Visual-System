@@ -23,26 +23,41 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel1.setFilePath("Disparities", "txt");
         listPanel1.disableEditButtons();
         listPanel1.loadFile();
-        
-        listPanel2.setColumnNames("a","b","mul");
+
+        listPanel2.setColumnNames("a", "b", "mul");
         listPanel2.setFilePath("Gaussians", "txt");
         listPanel2.loadFile();
         minMax();
     }
-    
-    int min=0;
-    int max=0;
-    public void minMax(){
-        String lines[]=FileUtils.fileLines("Disparities.txt");
-        min=Integer.parseInt(lines[0]);
-        max=Integer.parseInt(lines[lines.length-1]);
-        
-        if(max<min){
-            int temp=max;
-            max=min;
-            min=temp;           
+
+    int min = 0;
+    int max = 0;
+    int[] xpoints;
+
+    public void minMax() {
+        String lines[] = FileUtils.fileLines("Disparities.txt");
+        min = Integer.parseInt(lines[0]);
+        max = Integer.parseInt(lines[lines.length - 1]);
+        xpoints = new int[lines.length];
+        int c = 0;
+        for (String line : lines) {
+            xpoints[c] = Integer.parseInt(line);
         }
-        System.out.println("min is "+min+" max is "+max);
+        if (max < min) {
+            int temp = max;
+            max = min;
+            min = temp;
+        }
+        System.out.println("min is " + min + " max is " + max);
+    }
+
+    public void setXpoints() {
+        String lines[] = FileUtils.fileLines("Disparities.txt");
+        xpoints = new int[lines.length];
+        int c = 0;
+        for (String line : lines) {
+            xpoints[c] = Integer.parseInt(line);
+        }
     }
 
     /**
@@ -155,27 +170,24 @@ public class DisparityList extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        int from=Integer.parseInt(fromField.getText());
-        int to=Integer.parseInt(toField.getText());
-        int steps=Integer.parseInt(stepsField.getText());      
+        int from = Integer.parseInt(fromField.getText());
+        int to = Integer.parseInt(toField.getText());
+        int steps = Integer.parseInt(stepsField.getText());
         listPanel1.removeAllRows();
-        if(from<to){
-            int step=(to-from)/steps;
-            for(int i=from;i<=to;i+=step){
-                Object values[]={i};
+        if (from < to) {
+            int step = (to - from) / steps;
+            for (int i = from; i <= to; i += step) {
+                Object values[] = {i};
                 listPanel1.setRow(values);
             }
-        }
-        else{
-            int step=(from-to)/steps;
-            for(int i=from;i>=to;i-=step){
-                Object values[]={i};
+        } else {
+            int step = (from - to) / steps;
+            for (int i = from; i >= to; i -= step) {
+                Object values[] = {i};
                 listPanel1.setRow(values);
             }
         }
         minMax();
-        
-        MathFunctions.discreteGauss(3, 6, 1, min, max);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
