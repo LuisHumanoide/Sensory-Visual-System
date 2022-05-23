@@ -37,6 +37,7 @@ public class DisparityPanel extends javax.swing.JPanel {
             max=temp;
         }
         set=true;
+        repaint();
     }
     
     public void paintComponent(Graphics g) {
@@ -44,12 +45,13 @@ public class DisparityPanel extends javax.swing.JPanel {
         int height = getHeight();
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
-        g.setColor(Color.red);
+        g.setColor(new Color(10,200,200));
         if(set){
             g.drawLine(0, 200, width, 200);
             int step=width/xpoints.length;
-            for(int i=0;i<=xpoints.length;i++){
-                g.fillOval(i*step, 200, i*step+2, 200);
+            for(int i=0;i<xpoints.length;i++){
+                g.fillOval(i*step, 197, 5, 5);
+                g.drawString(xpoints[i]+"", i*step, 220);
             }
         }
 
@@ -79,4 +81,16 @@ public class DisparityPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+}
+
+class gaussian{
+    double a;
+    double b;
+    double m;
+
+    public gaussian(double a, double b, double m) {
+        this.a = a;
+        this.b = b;
+        this.m = m;
+    }
 }

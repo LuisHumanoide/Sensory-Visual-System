@@ -49,6 +49,8 @@ public class DisparityList extends javax.swing.JFrame {
             min = temp;
         }
         System.out.println("min is " + min + " max is " + max);
+        setXpoints();
+        disparityPanel1.setXpoints(xpoints);
     }
 
     public void setXpoints() {
@@ -57,6 +59,7 @@ public class DisparityList extends javax.swing.JFrame {
         int c = 0;
         for (String line : lines) {
             xpoints[c] = Integer.parseInt(line);
+            c++;
         }
     }
 
@@ -187,6 +190,7 @@ public class DisparityList extends javax.swing.JFrame {
                 listPanel1.setRow(values);
             }
         }
+        listPanel1.save();
         minMax();
     }//GEN-LAST:event_jButton1ActionPerformed
 
