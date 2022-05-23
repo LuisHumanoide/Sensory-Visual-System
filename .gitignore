@@ -5,3 +5,7 @@ middlewareVision/log/
 *.class
 middlewareVision/build/built-jar.properties
 middlewareVision/nbproject/private/private.xml
+*.properties
+*.class
+*.class
+*.properties
