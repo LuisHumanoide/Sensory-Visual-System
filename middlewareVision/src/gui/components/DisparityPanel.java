@@ -6,6 +6,8 @@ package gui.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import utils.MathFunctions;
 
 /**
  *
@@ -20,39 +22,60 @@ public class DisparityPanel extends javax.swing.JPanel {
         initComponents();
         setBackground(Color.BLACK);
         repaint();
+        glist = new ArrayList();
     }
-    
+
     int[] xpoints;
     int min;
     int max;
-    boolean set=false;
-    
-    public void setXpoints(int[] xpoints){
-        this.xpoints=xpoints;
-        min=xpoints[0];
-        max=xpoints[xpoints.length-1];
-        if(min>max){
-            int temp=max;
-            min=max;
-            max=temp;
+    boolean set = false;
+    public ArrayList<gaussian> glist;
+
+    public void addGaussian(double a, double b, double m) {
+        glist.add(new gaussian(a, b, m));
+    }
+
+    public void setXpoints(int[] xpoints) {
+        this.xpoints = xpoints;
+        min = xpoints[0];
+        max = xpoints[xpoints.length - 1];
+        if (min > max) {
+            int temp = max;
+            min = max;
+            max = temp;
         }
-        set=true;
+        set = true;
         repaint();
     }
-    
+
     public void paintComponent(Graphics g) {
         int width = getWidth();
         int height = getHeight();
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
-        g.setColor(new Color(10,200,200));
-        if(set){
+        g.setColor(new Color(10, 200, 200));
+        if (set) {
             g.drawLine(0, 200, width, 200);
-            int step=width/xpoints.length;
-            for(int i=0;i<xpoints.length;i++){
-                g.fillOval(i*step, 197, 5, 5);
-                g.drawString(xpoints[i]+"", i*step, 220);
+            int step = width / xpoints.length;
+            for (int i = 0; i < xpoints.length; i++) {
+                g.fillOval(i * step, 197, 5, 5);
+                g.drawString(xpoints[i] + "", i * step, 220);
             }
+            int c=0;
+            for (gaussian ga : glist) {
+                int comb = c;
+                double frac=(double)comb/glist.size();
+                g.setColor(new Color((int)(frac*255),(int)(1.5*frac*255)%255,255-(int)(frac*255)));
+                int xvalues[] = new int[xpoints.length];
+                int yvalues[] = new int[xpoints.length];
+                for (int i = 0; i < xpoints.length; i++) {
+                    xvalues[i] = (int) i * step;
+                    yvalues[i] = (int) (-500 * MathFunctions.discreteGauss(ga.a, ga.b, ga.m, xpoints[i]) + 200);
+                }
+                g.drawPolyline(xvalues, yvalues, xpoints.length);
+                c++;
+            }
+
         }
 
     }
@@ -83,7 +106,8 @@ public class DisparityPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 }
 
-class gaussian{
+class gaussian {
+
     double a;
     double b;
     double m;

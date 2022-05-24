@@ -80,8 +80,8 @@ public class ListPanel extends javax.swing.JPanel {
             defaultVector[i] = null;
         }
     }
-    
-    public void disableEditButtons(){
+
+    public void disableEditButtons() {
         addButton.setVisible(false);
         removeButton.setVisible(false);
         duplicateButton.setVisible(false);
@@ -90,7 +90,7 @@ public class ListPanel extends javax.swing.JPanel {
         upButton.setVisible(false);
         downButton.setVisible(false);
         clearButton.setVisible(false);
-        
+
         jPanel1.remove(addButton);
         jPanel1.remove(removeButton);
         jPanel1.remove(duplicateButton);
@@ -308,8 +308,7 @@ public class ListPanel extends javax.swing.JPanel {
         duplicateColumnValues();
     }//GEN-LAST:event_addButtonActionPerformed
 
-    
-    public void setRow(Object[] values){
+    public void setRow(Object[] values) {
         int row = table.getSelectedRow();
         model.addRow(values);
         if (!empty && row != -1) {
@@ -446,7 +445,7 @@ public class ListPanel extends javax.swing.JPanel {
         paste();
     }//GEN-LAST:event_pasteButtonActionPerformed
 
-    public void paste(){
+    public void paste() {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
 
@@ -460,7 +459,7 @@ public class ListPanel extends javax.swing.JPanel {
                     String values[] = texto.split(" ");
                     for (int i = 0; i < table.getColumnCount(); i++) {
                         if (pasteOrder[i] >= 0) {
-                            table.setValueAt(values[pasteOrder[i]+1], row, i);
+                            table.setValueAt(values[pasteOrder[i] + 1], row, i);
                         }
                     }
                 }
@@ -472,9 +471,7 @@ public class ListPanel extends javax.swing.JPanel {
     }
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        if (filePath != null && extension != null) {
             save();
-        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void tableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyReleased
@@ -488,21 +485,23 @@ public class ListPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_clearButtonActionPerformed
 
     public void save() {
-        String saveString = "";
-        for (int i = 0; i < table.getRowCount(); i++) {
-            if (CompleteRow(i)) {
-                for (int j = 0; j < table.getColumnCount(); j++) {
-                    saveString = saveString + table.getValueAt(i, j);
-                    if (j < table.getColumnCount() - 1) {
-                        saveString = saveString + " ";
+        if (filePath != null && extension != null) {
+            String saveString = "";
+            for (int i = 0; i < table.getRowCount(); i++) {
+                if (CompleteRow(i)) {
+                    for (int j = 0; j < table.getColumnCount(); j++) {
+                        saveString = saveString + table.getValueAt(i, j);
+                        if (j < table.getColumnCount() - 1) {
+                            saveString = saveString + " ";
+                        }
+                    }
+                    if (i < table.getRowCount() - 1) {
+                        saveString = saveString + "\n";
                     }
                 }
-                if (i < table.getRowCount() - 1) {
-                    saveString = saveString + "\n";
-                }
             }
+            FileUtils.write(filePath, saveString, extension);
         }
-        FileUtils.write(filePath, saveString, extension);
     }
 
     public void loadFile() {
@@ -560,7 +559,7 @@ public class ListPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JButton pasteButton;
     public javax.swing.JButton removeButton;
-    private javax.swing.JButton saveButton;
+    public javax.swing.JButton saveButton;
     public javax.swing.JTable table;
     private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables

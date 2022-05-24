@@ -27,7 +27,17 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel2.setColumnNames("a", "b", "mul");
         listPanel2.setFilePath("Gaussians", "txt");
         listPanel2.loadFile();
+
         minMax();
+        addGaussians();
+        disparityPanel1.repaint();
+
+        listPanel2.saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listPanel1.save();
+                addGaussians();
+            }
+        });
     }
 
     int min = 0;
@@ -48,7 +58,6 @@ public class DisparityList extends javax.swing.JFrame {
             max = min;
             min = temp;
         }
-        System.out.println("min is " + min + " max is " + max);
         setXpoints();
         disparityPanel1.setXpoints(xpoints);
     }
@@ -61,6 +70,19 @@ public class DisparityList extends javax.swing.JFrame {
             xpoints[c] = Integer.parseInt(line);
             c++;
         }
+    }
+
+    public void addGaussians() {
+        disparityPanel1.glist.clear();
+        String lines[] = FileUtils.fileLines("Gaussians.txt");
+        for (String line : lines) {
+            String values[] = line.split(" ");
+            double a = Double.parseDouble(values[0]);
+            double b = Double.parseDouble(values[1]);
+            double m = Double.parseDouble(values[2]);
+            disparityPanel1.addGaussian(a, b, m);
+        }
+        disparityPanel1.repaint();
     }
 
     /**
@@ -185,12 +207,14 @@ public class DisparityList extends javax.swing.JFrame {
             }
         } else {
             int step = (from - to) / steps;
-            for (int i = from; i >= to; i -= step) {
+            for (int i = to; i <= from; i += step) {
                 Object values[] = {i};
                 listPanel1.setRow(values);
             }
         }
         listPanel1.save();
+        addGaussians();
+        disparityPanel1.repaint();
         minMax();
     }//GEN-LAST:event_jButton1ActionPerformed
 
