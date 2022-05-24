@@ -24,7 +24,7 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel1.disableEditButtons();
         listPanel1.loadFile();
 
-        listPanel2.setColumnNames("a", "b", "mul");
+        listPanel2.setColumnNames("range", "center");
         listPanel2.setFilePath("Gaussians", "txt");
         listPanel2.loadFile();
 
@@ -34,7 +34,6 @@ public class DisparityList extends javax.swing.JFrame {
 
         listPanel2.saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listPanel1.save();
                 addGaussians();
             }
         });
@@ -79,8 +78,7 @@ public class DisparityList extends javax.swing.JFrame {
             String values[] = line.split(" ");
             double a = Double.parseDouble(values[0]);
             double b = Double.parseDouble(values[1]);
-            double m = Double.parseDouble(values[2]);
-            disparityPanel1.addGaussian(a, b, m);
+            disparityPanel1.addGaussian(a, b);
         }
         disparityPanel1.repaint();
     }
