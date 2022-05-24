@@ -80,6 +80,26 @@ public class ListPanel extends javax.swing.JPanel {
             defaultVector[i] = null;
         }
     }
+    
+    public void disableEditButtons(){
+        addButton.setVisible(false);
+        removeButton.setVisible(false);
+        duplicateButton.setVisible(false);
+        copyButton.setVisible(false);
+        pasteButton.setVisible(false);
+        upButton.setVisible(false);
+        downButton.setVisible(false);
+        clearButton.setVisible(false);
+        
+        jPanel1.remove(addButton);
+        jPanel1.remove(removeButton);
+        jPanel1.remove(duplicateButton);
+        jPanel1.remove(copyButton);
+        jPanel1.remove(pasteButton);
+        jPanel1.remove(upButton);
+        jPanel1.remove(downButton);
+        jPanel1.remove(clearButton);
+    }
 
     public void defaultCopyPasteOrder() {
         copyOrder = new int[table.getColumnCount()];
@@ -129,6 +149,7 @@ public class ListPanel extends javax.swing.JPanel {
         pasteButton = new javax.swing.JButton();
         upButton = new javax.swing.JButton();
         downButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -137,7 +158,7 @@ public class ListPanel extends javax.swing.JPanel {
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel1.setLayout(new java.awt.GridLayout(8, 1, 10, 10));
+        jPanel1.setLayout(new java.awt.GridLayout(9, 1, 10, 10));
 
         addButton.setBackground(new java.awt.Color(60, 88, 94));
         addButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -209,6 +230,16 @@ public class ListPanel extends javax.swing.JPanel {
         });
         jPanel1.add(downButton);
 
+        clearButton.setBackground(new java.awt.Color(60, 88, 94));
+        clearButton.setForeground(new java.awt.Color(255, 255, 255));
+        clearButton.setText("Clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(clearButton);
+
         saveButton.setBackground(new java.awt.Color(45, 69, 86));
         saveButton.setForeground(new java.awt.Color(255, 255, 255));
         saveButton.setText("Save");
@@ -243,11 +274,11 @@ public class ListPanel extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
         );
 
         add(jPanel2);
@@ -277,6 +308,29 @@ public class ListPanel extends javax.swing.JPanel {
         duplicateColumnValues();
     }//GEN-LAST:event_addButtonActionPerformed
 
+    
+    public void setRow(Object[] values){
+        int row = table.getSelectedRow();
+        model.addRow(values);
+        if (!empty && row != -1) {
+            //int row = jTable1.getSelectedRow();
+            int s = table.getRowCount();
+            for (int i = s - 1; i > row; i--) {
+                for (int j = 0; j < table.getColumnCount(); j++) {
+                    table.setValueAt(table.getValueAt(i - 1, j), i, j);
+                }
+            }
+
+            for (int j = 0; j < table.getColumnCount(); j++) {
+                table.setValueAt(values[j], row + 1, j);
+            }
+            table.setRowSelectionInterval(table.getSelectedRow() + 1, table.getSelectedRow() + 1);
+        } else {
+            table.setRowSelectionInterval(0, 0);
+        }
+        empty = false;
+        duplicateColumnValues();
+    }
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:   
         if (removeAction) {
@@ -428,6 +482,11 @@ public class ListPanel extends javax.swing.JPanel {
         duplicateColumnValues();
     }//GEN-LAST:event_tableKeyReleased
 
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        // TODO add your handling code here:
+        removeAllRows();
+    }//GEN-LAST:event_clearButtonActionPerformed
+
     public void save() {
         String saveString = "";
         for (int i = 0; i < table.getRowCount(); i++) {
@@ -492,6 +551,7 @@ public class ListPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JButton clearButton;
     private javax.swing.JButton copyButton;
     private javax.swing.JButton downButton;
     public javax.swing.JButton duplicateButton;
