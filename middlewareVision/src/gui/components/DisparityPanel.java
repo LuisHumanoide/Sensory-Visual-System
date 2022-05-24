@@ -51,7 +51,7 @@ public class DisparityPanel extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         int width = getWidth();
         int height = getHeight();
-        g.setColor(Color.black);
+        g.setColor(new Color(30, 30, 30));
         g.fillRect(0, 0, width, height);
         g.setColor(new Color(10, 200, 200));
         if (set) {

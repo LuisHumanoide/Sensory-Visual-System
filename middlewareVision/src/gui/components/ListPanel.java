@@ -486,7 +486,6 @@ public class ListPanel extends javax.swing.JPanel {
 
     public void save() {
         if (filePath != null && extension != null) {
-            utils.Msg.print("holalala");
             String saveString = "";
             for (int i = 0; i < table.getRowCount(); i++) {
                 if (CompleteRow(i)) {
