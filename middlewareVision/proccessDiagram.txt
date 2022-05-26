@@ -20,6 +20,7 @@ V1SimpleCells [ shape="rectangle" ]
 V2AngularCells [ shape="rectangle" ] 
 V2CornerMotion [ shape="rectangle" ] 
 V2CurvatureCells [ shape="rectangle" ] 
+V3DisparityRange [ shape="rectangle" ] 
 V4Color [ shape="rectangle" ] 
 V4Contour [ shape="rectangle" ] 
 V4ShapeActivationNode [ shape="rectangle" ] 
@@ -35,6 +36,7 @@ LGNSimpleOpponentCells -> MSTPolarCells
 MTComponentCells -> MTPatternCells 
 RetinaProccess -> BasicMotion 
 RetinaProccess -> LGNSimpleOpponentCells 
+V1BinocularComplexCells -> V3DisparityRange 
 V1BinocularSimpleCells -> V1BinocularComplexCells 
 V1ComplexCells -> V1HyperComplex 
 V1ComplexCells -> V1MotionCellsNew 
@@ -107,6 +109,12 @@ rank="same"
 V2AngularCells
 V2CurvatureCells
 V2CornerMotion
+}
+
+subgraph clusterV3 {
+ label="V3"
+rank="same"
+V3DisparityRange
 }
 
 subgraph clusterV4 {

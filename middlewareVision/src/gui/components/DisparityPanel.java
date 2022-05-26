@@ -31,10 +31,19 @@ public class DisparityPanel extends javax.swing.JPanel {
     boolean set = false;
     public ArrayList<gaussian> glist;
 
+    /**
+     * Add a gaussian that has 2 values
+     * @param a the deviation
+     * @param b the center
+     */
     public void addGaussian(double a, double b) {
         glist.add(new gaussian(a, b, 1));
     }
 
+    /**
+     * the xpoints correspond to the absolute disparity values
+     * @param xpoints absolute disparity values
+     */
     public void setXpoints(int[] xpoints) {
         this.xpoints = xpoints;
         min = xpoints[0];
@@ -57,25 +66,35 @@ public class DisparityPanel extends javax.swing.JPanel {
         if (set) {
             g.drawLine(0, 200, width, 200);
             int step = width / xpoints.length;
+            /*
+            Plot the absolute disparity values
+            */
             for (int i = 0; i < xpoints.length; i++) {
                 g.fillOval(i * step, 197, 5, 5);
                 g.drawString(xpoints[i] + "", i * step, 220);
             }
             int c = 0;
+            /*
+             * Plot the disparity gaussians
+             */
             for (gaussian ga : glist) {
                 int comb = c;
                 double frac = (double) comb / glist.size();
+                
                 g.setColor(new Color((int) (frac * 255), (int) (1.5 * frac * 255) % 255, 255 - (int) (frac * 255)));
+                
                 int xvalues[] = new int[xpoints.length];
                 int yvalues[] = new int[xpoints.length];
+                
                 double sum = 0;
+                
                 for (int i = 0; i < xpoints.length; i++) {
                     xvalues[i] = (int) i * step;
-                    yvalues[i] = (int) (-500 * MathFunctions.discreteGauss(ga.a, ga.b, 1, xpoints[i]) + 200);
-                    sum = sum + MathFunctions.discreteGauss(ga.a, ga.b, ga.m, xpoints[i]);
+                    yvalues[i] = (int) (-500 * MathFunctions.Gauss(ga.a, ga.b, 1, xpoints[i]) + 200);
+                    sum = sum + MathFunctions.Gauss(ga.a, ga.b, ga.m, xpoints[i]);
                 }
                 for (int i = 0; i < xpoints.length; i++) {
-                    yvalues[i] = (int) (-500 * MathFunctions.discreteGauss(ga.a, ga.b, (double) (1 / sum), xpoints[i]) + 200);
+                    yvalues[i] = (int) (-500 * MathFunctions.Gauss(ga.a, ga.b, (double) (1 / sum), xpoints[i]) + 200);
                 }
                 g.drawPolyline(xvalues, yvalues, xpoints.length);
                 c++;

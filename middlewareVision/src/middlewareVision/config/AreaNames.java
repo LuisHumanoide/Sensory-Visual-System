@@ -66,6 +66,9 @@ public class AreaNames {
 	public static int V1BinocularSimpleCells = IDHelper.generateID("V1", 10 , 0);
 	public static int V1BinocularComplexCells = IDHelper.generateID("V1", 11 , 0);
 	
+	public static int V3 = IDHelper.generateID("V3", 0, 0);
+	public static int V3DisparityRange = IDHelper.generateID("V3", 1 , 0);
+	
 	//@addNodes
         //no quitar el comentario de add Nodes
 }

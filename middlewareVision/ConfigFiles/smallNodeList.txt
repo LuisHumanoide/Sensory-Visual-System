@@ -19,3 +19,4 @@ MTComponentCells false
 V4Color true
 V4ShapeActivationNode false
 V1DoubleOpponent true
+V3DisparityRange true

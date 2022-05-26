@@ -168,13 +168,13 @@ public class MGraph {
         generateImg("proccessDiagram","png","dot");
 
     }
-    
+    static Runtime run = Runtime.getRuntime();
     static void generateImg(String fileName, String format, String engine) {
         try {
-            String cmd = "bin\\"+engine+".exe" + " -T" + format + " " +  fileName + ".txt "
+            String cmd = "bin\\"+engine+".exe" + " -T " + format + " " +  fileName + ".txt "
                     + "-o " + fileName + "." + format;
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException ioe) {
+            run.exec(cmd);
+        } catch (Exception ioe) {
             System.out.println(ioe);
         }
     }

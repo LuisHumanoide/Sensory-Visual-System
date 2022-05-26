@@ -19,6 +19,7 @@ import middlewareVision.nodes.Visual.MT.MT;
 import middlewareVision.nodes.Visual.MST.MST;
 import middlewareVision.nodes.Visual.MST.MSTPolarCells;
 import middlewareVision.nodes.External.Alert;
+import middlewareVision.nodes.Visual.V3.V3;
 //@import
 
 
@@ -43,6 +44,7 @@ public class Init extends Igniter {
             MT.class.getName(),
             MST.class.getName(), 
             Alert.class.getName(),
+		V3.class.getName(),
 		//@addNodes
         };
 

@@ -123,6 +123,14 @@ public class MatrixUtils {
         return sum;
     }
     
+    public static Mat sum(Mat[] mat, double[] w) {
+        Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
+        for (int i = 0; i < mat.length; i++) {
+           Core.addWeighted(sum, 1, mat[i], w[i], 0, sum);
+        }
+        return sum;
+    }
+    
     public static Mat sum(double w, double bias, int pow, Mat ... mat) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {

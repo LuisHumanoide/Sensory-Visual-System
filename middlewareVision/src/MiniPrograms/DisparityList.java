@@ -25,7 +25,7 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel1.loadFile();
 
         listPanel2.setColumnNames("range", "center");
-        listPanel2.setFilePath("Gaussians", "txt");
+        listPanel2.setFilePath("DisparityGaussians", "txt");
         listPanel2.loadFile();
 
         minMax();
@@ -43,6 +43,9 @@ public class DisparityList extends javax.swing.JFrame {
     int max = 0;
     int[] xpoints;
 
+    /**
+     * Found the minimun and maximun value from the absolute disparities
+     */
     public void minMax() {
         String lines[] = FileUtils.fileLines("Disparities.txt");
         min = Integer.parseInt(lines[0]);
@@ -61,6 +64,9 @@ public class DisparityList extends javax.swing.JFrame {
         disparityPanel1.setXpoints(xpoints);
     }
 
+    /**
+     * Set the x points or the absolute disparity points to the visualizer
+     */
     public void setXpoints() {
         String lines[] = FileUtils.fileLines("Disparities.txt");
         xpoints = new int[lines.length];
@@ -71,9 +77,12 @@ public class DisparityList extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Add the gaussian values to the visualizer
+     */
     public void addGaussians() {
         disparityPanel1.glist.clear();
-        String lines[] = FileUtils.fileLines("Gaussians.txt");
+        String lines[] = FileUtils.fileLines("DisparityGaussians.txt");
         for (String line : lines) {
             String values[] = line.split(" ");
             double a = Double.parseDouble(values[0]);

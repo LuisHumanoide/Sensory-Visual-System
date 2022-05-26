@@ -49,7 +49,10 @@ public class V1BinocularComplexCells extends Activity {
                     
                     divisiveNormalizationAll();
                     
-                    visualize();                                    
+                    visualize();
+                    
+                    LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
+                    send(AreaNames.V3DisparityRange, sendSpike1.getByteArray());
                     
                 }
 
