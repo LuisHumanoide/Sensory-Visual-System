@@ -3,7 +3,7 @@ FeedbackProccess false
 AlertProcess false
 V2AngularCells false
 RetinaProccess true
-BasicMotion true
+BasicMotion false
 V1BinocularComplexCells true
 V1MotionCellsNew false
 LGNSimpleOpponentCells true
@@ -16,7 +16,7 @@ MSTTemplateCells false
 V2CornerMotion false
 V1BinocularSimpleCells true
 MTComponentCells false
-V4Color true
+V4Color false
 V4ShapeActivationNode false
 V1DoubleOpponent true
 V3DisparityRange true

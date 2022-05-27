@@ -22,8 +22,8 @@ public class Config {
 
     public static int gaborOrientations = 4;
     public static int HCfilters = 1;
-    public static int width = 150;
-    public static int heigth = 150;
+    public static int width = 200;
+    public static int heigth = 200;
     public static int motionWidth = 100;
     public static int motionHeight = 100;
     

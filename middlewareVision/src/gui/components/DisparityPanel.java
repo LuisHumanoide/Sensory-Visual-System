@@ -57,6 +57,8 @@ public class DisparityPanel extends javax.swing.JPanel {
         repaint();
     }
 
+    int base=250;
+    int scaling=400;
     public void paintComponent(Graphics g) {
         int width = getWidth();
         int height = getHeight();
@@ -64,14 +66,16 @@ public class DisparityPanel extends javax.swing.JPanel {
         g.fillRect(0, 0, width, height);
         g.setColor(new Color(10, 200, 200));
         if (set) {
-            g.drawLine(0, 200, width, 200);
-            int step = width / xpoints.length;
+            int step = width / (xpoints.length);
+            
+            g.drawLine(0, base, xpoints.length*step, base);
+            
             /*
             Plot the absolute disparity values
             */
             for (int i = 0; i < xpoints.length; i++) {
-                g.fillOval(i * step, 197, 5, 5);
-                g.drawString(xpoints[i] + "", i * step, 220);
+                g.fillOval(i * step, base-3, 5, 5);
+                g.drawString(xpoints[i] + "", i * step, base+20);
             }
             int c = 0;
             /*
@@ -90,11 +94,11 @@ public class DisparityPanel extends javax.swing.JPanel {
                 
                 for (int i = 0; i < xpoints.length; i++) {
                     xvalues[i] = (int) i * step;
-                    yvalues[i] = (int) (-500 * MathFunctions.Gauss(ga.a, ga.b, 1, xpoints[i]) + 200);
+                    yvalues[i] = (int) (-scaling* MathFunctions.Gauss(ga.a, ga.b, 1, xpoints[i]) + base);
                     sum = sum + MathFunctions.Gauss(ga.a, ga.b, ga.m, xpoints[i]);
                 }
                 for (int i = 0; i < xpoints.length; i++) {
-                    yvalues[i] = (int) (-500 * MathFunctions.Gauss(ga.a, ga.b, (double) (1 / sum), xpoints[i]) + 200);
+                    yvalues[i] = (int) (-scaling * MathFunctions.Gauss(ga.a, ga.b, (double) (1 / sum), xpoints[i]) + base);
                 }
                 g.drawPolyline(xvalues, yvalues, xpoints.length);
                 c++;

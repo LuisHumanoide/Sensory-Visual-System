@@ -7,7 +7,7 @@
 	<device>0</device>
 	<!--ORIENTATIONS AND SIZE-->
 	<GaborOrientations>4</GaborOrientations>
-	<dimensions>100</dimensions>
+	<dimensions>150</dimensions>
 	<motionDimensions>100</motionDimensions>
 	<!--V4 COLOR-->
 	<NoConcentricCircles>10</NoConcentricCircles>

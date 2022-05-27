@@ -47,16 +47,35 @@ public class MatrixUtils {
         return result;
     }
 
+    public static Mat elementSum(Mat[] mat, double[] w) {
+
+        Mat result = Mat.zeros(mat[0].height(), mat[0].width(), CvType.CV_32FC1);
+
+        for (int x = 0; x < mat[0].height(); x++) {
+            for (int y = 0; y < mat[0].width(); y++) {
+                double s = 0;
+                for (int i = 0; i < mat.length; i++) {
+                    s = s + mat[i].get(x, y)[0];
+                }
+                result.put(x, y, s);
+                utils.Msg.print("sum " + s);
+
+            }
+        }
+        return result;
+    }
+
     /**
      * Create a matrix with the maximum value from an ArrayList of OpenCV Mar
+     *
      * @param mat is the ArrayList of OpenCV Mats
      * @return an OpenCV Mat with the maximum values of each Mat
      */
     public static Mat maxSum(ArrayList<Mat> matL) {
         Mat[] matArray = new Mat[matL.size()];
-        for(int i=0;i<matL.size();i++){
-            matArray[i]=matL.get(i);
-        }       
+        for (int i = 0; i < matL.size(); i++) {
+            matArray[i] = matL.get(i);
+        }
         return maxSum(matArray);
     }
 
@@ -113,47 +132,49 @@ public class MatrixUtils {
         }
         return mul;
     }
-    
+
     public static Mat sum(Mat[] mat, int w, int bias) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {
-           Core.addWeighted(sum, 1, mat[i], w, 0, sum);
+            Core.patchNaNs(mat[i], 0.0);
+            Core.addWeighted(sum, 1, mat[i], w, 0, sum);
         }
         Core.add(sum, Scalar.all(bias), sum);
         return sum;
     }
-    
+
     public static Mat sum(Mat[] mat, double[] w) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {
-           Core.addWeighted(sum, 1, mat[i], w[i], 0, sum);
+            Core.patchNaNs(mat[i], 0.0);
+            Core.addWeighted(sum, 1, mat[i], w[i], 0, sum);
         }
         return sum;
     }
-    
-    public static Mat sum(double w, double bias, int pow, Mat ... mat) {
+
+    public static Mat sum(double w, double bias, int pow, Mat... mat) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {
-           Mat powm=new Mat();
-           Core.pow(mat[i], pow, powm);
-           Core.addWeighted(sum, 1, powm, w, 0, sum);
+            Mat powm = new Mat();
+            Core.pow(mat[i], pow, powm);
+            Core.addWeighted(sum, 1, powm, w, 0, sum);
         }
         Core.add(sum, Scalar.all(bias), sum);
         return sum;
     }
-    
-    public static Mat [] basicDilate(Cell[] mats, int blurSize, int kernelSize){
-        Mat blur[]=new Mat[mats.length];
-        Mat element = getStructuringElement( MORPH_RECT,
-                       new Size( 2*blurSize + 1, 2*blurSize+1 ),
-                       new Point( blurSize, blurSize ) );
-        for(int i=0;i<mats.length;i++){
-            blur[i]=mats[i].mat.clone();
-            Imgproc.dilate(blur[i], blur[i],element);
+
+    public static Mat[] basicDilate(Cell[] mats, int blurSize, int kernelSize) {
+        Mat blur[] = new Mat[mats.length];
+        Mat element = getStructuringElement(MORPH_RECT,
+                new Size(2 * blurSize + 1, 2 * blurSize + 1),
+                new Point(blurSize, blurSize));
+        for (int i = 0; i < mats.length; i++) {
+            blur[i] = mats[i].mat.clone();
+            Imgproc.dilate(blur[i], blur[i], element);
             //Imgproc.dil
             //Imgproc.GaussianBlur(blur[i], blur[i], new Size(kernelSize, kernelSize), blurSize);
         }
-        return blur;       
+        return blur;
     }
 
 }

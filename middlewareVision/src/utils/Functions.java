@@ -47,7 +47,8 @@ public class Functions {
      */
     public static Mat energyProcess(Mat mat1, Mat mat2) {
         Mat r1, r2;
-
+        Core.patchNaNs(mat1, 0.0);
+        Core.patchNaNs(mat2, 0.0);
         Mat energy = Mat.zeros(mat1.rows(), mat1.cols(), CvType.CV_32FC1);
         r1 = mat1.clone();
         r2 = mat2.clone();
