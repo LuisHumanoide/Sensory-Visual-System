@@ -243,11 +243,12 @@ public class Functions {
     public static Mat stage1MotionProcess(Mat[] T, int dx, double angle) {
         Mat result = new Mat();
         for (int i = 1; i < T.length; i++) {
+            Core.patchNaNs(T[i], 0.0);
             T[i] = SpecialKernels.displaceKernel(T[i], -angle, dx);
         }
         result = MatrixUtils.multiply(T);
         result = SpecialKernels.displaceKernel(result, -angle, (int) (-dx * (T.length / 2)));
-        Core.multiply(result, V1Bank.motionDiff, result);
+        //Core.multiply(result, V1Bank.motionDiff, result);
         return result;
     }
 

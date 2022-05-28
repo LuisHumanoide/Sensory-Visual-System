@@ -70,6 +70,9 @@ public class V1BinocularComplexCells extends Activity {
         }
     }
     
+    /**
+     * Performs the binocular energy process for all cells
+     */
     void energyProcessAll(){
         for (int i = 0; i < Config.gaborBanks; i++) {
             for (int j = 0; j < Config.nDisparities; j++) {
@@ -78,14 +81,24 @@ public class V1BinocularComplexCells extends Activity {
         }
     }
     
-    
+    /**
+     * Performs the binocular energy process for one specific cells with one specific disparity <br>
+     * and frequency
+     * @param sc is the stereoscopic cell
+     */
     void energyProcess(StereoscopicCells sc){
         for (int i = 0; i < Config.gaborOrientations; i++) {
             sc.complexCells[i].mat=Functions.sumPowProcess(sc.complexCells[i].previous[0].mat, sc.complexCells[i].previous[1].mat,2);
         }
+        //create the composed cell, a combination of n orientation disparity cells
         sc.composedComplexCell.mat=Functions.maxSum(sc.complexCells);
     }
     
+    /**
+     * Performs the divisive normalization process for all cells<br>
+     * divisive normalization process changes the contrast<br>
+     * in order to reduce noise 
+     */
     void divisiveNormalizationAll(){
         for (int i = 0; i < Config.gaborBanks; i++) {
             for (int j = 0; j < Config.nDisparities; j++) {
@@ -94,12 +107,16 @@ public class V1BinocularComplexCells extends Activity {
         }
     }
     
+    /**
+     * Performs the divisive normalization process for a specific cells with same frequency <br>
+     * and disparity
+     * @param sc is the stereoscopic cell
+     */
     void divisiveNormalization(StereoscopicCells sc){
         for (int i = 0; i < Config.gaborOrientations; i++) {
             Mat den=MatrixUtils.sum(1, 0.25, 2, 
                     sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat);
             Core.divide(sc.complexCells[i].mat, den, sc.normalizedCells[i].mat);
-           // Core.pow(sc.normalizedCells[i].mat, 2, sc.normalizedCells[i].mat);
         }
         sc.composedNormalizedCell.mat=Functions.maxSum(sc.normalizedCells);
     }

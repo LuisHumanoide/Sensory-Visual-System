@@ -8,7 +8,7 @@
 	<!--ORIENTATIONS AND SIZE-->
 	<GaborOrientations>4</GaborOrientations>
 	<dimensions>150</dimensions>
-	<motionDimensions>100</motionDimensions>
+	<motionDimensions>70</motionDimensions>
 	<!--V4 COLOR-->
 	<NoConcentricCircles>10</NoConcentricCircles>
 	<NoRadialDivisions>10</NoRadialDivisions>

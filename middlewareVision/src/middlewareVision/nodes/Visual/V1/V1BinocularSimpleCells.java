@@ -60,6 +60,11 @@ public class V1BinocularSimpleCells extends Activity {
         }
     }
 
+    /**
+     * performs the summation process of monocular simple cells for creating <br>
+     * the binocular simple cells <br>
+     * The process is performed for all cells
+     */
     void sumAll() {
         for (int i = 0; i < Config.gaborBanks; i++) {
             for (int j = 0; j < Config.nDisparities; j++) {
@@ -68,11 +73,18 @@ public class V1BinocularSimpleCells extends Activity {
         }
     }
     
+    /**
+     * Performs the binocular summation process for specific simple cells <br>
+     * we can choose 2 disparity summation operations <br>
+     * a multiplication or a summation with a pow
+     * @param sc the stereoscopic cell bank with a specific disparity and frequency
+     */
     void sum(StereoscopicCells sc) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
             sc.evenCells[i].mat = Functions.disparityOperation(sc.evenCells[i].previous[0].mat, sc.evenCells[i].previous[1].mat, sc.disparity, Config.sccn, Functions.DISP_OP_MUL);
             sc.oddCells[i].mat = Functions.disparityOperation(sc.oddCells[i].previous[0].mat, sc.oddCells[i].previous[1].mat, sc.disparity, Config.sccn, Functions.DISP_OP_MUL);
         }
+        //creates the composed cells, which are a combination of the n orientation binocular cells
         sc.composedEvenCell.mat=Functions.maxSum(sc.evenCells);
         sc.composedOddCell.mat=Functions.maxSum(sc.oddCells);
     }

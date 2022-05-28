@@ -34,6 +34,10 @@ public class MatrixUtils {
         Mat result = Mat.zeros(mat[0].height(), mat[0].width(), CvType.CV_32FC1);
         ArrayList<Double> values = new ArrayList<>();
 
+        for(int i=0;i<mat.length;i++){
+            Core.patchNaNs(mat[i]);
+        }
+        
         for (int x = 0; x < mat[0].height(); x++) {
             for (int y = 0; y < mat[0].width(); y++) {
                 for (int i = 0; i < mat.length; i++) {
@@ -46,6 +50,8 @@ public class MatrixUtils {
         }
         return result;
     }
+    
+    
 
     public static Mat elementSum(Mat[] mat, double[] w) {
 

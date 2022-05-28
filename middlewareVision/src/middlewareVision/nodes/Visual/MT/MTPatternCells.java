@@ -120,11 +120,11 @@ public class MTPatternCells extends Activity {
      */
     Mat PatternActivation(Cell cell) {
 
-        mul = MatrixUtils.multiply(MatrixUtils.basicDilate(cell.previous, 2, 7));
+        mul = MatrixUtils.multiply(MatrixUtils.basicDilate(cell.previous, 5, 9));
 
         Imgproc.GaussianBlur(mul, blur, new Size(31, 31), 2);
 
-        Core.multiply(blur, Scalar.all(10), blur);
+        Core.multiply(blur, Scalar.all(15), blur);
 
         sum = MatrixUtils.maxSum(cell.previous);
         Core.multiply(blur, sum, m);
