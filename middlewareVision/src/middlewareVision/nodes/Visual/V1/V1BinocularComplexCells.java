@@ -43,6 +43,7 @@ public class V1BinocularComplexCells extends Activity {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);
+                
                 if (spike.getModality() == Modalities.VISUAL) {
                     
                     energyProcessAll();
@@ -52,7 +53,9 @@ public class V1BinocularComplexCells extends Activity {
                     visualize();
                     
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                    send(AreaNames.V3DisparityRange, sendSpike1.getByteArray());
+                    
+                    send(AreaNames.V1BinocularMergeProcess, sendSpike1.getByteArray());
+                    //send(AreaNames.V3DisparityRange, sendSpike1.getByteArray());
                     
                 }
 
@@ -66,7 +69,7 @@ public class V1BinocularComplexCells extends Activity {
     void visualize() {
        for(int i=0;i<Config.nDisparities;i++){
             Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedComplexCell.mat, "complex Cell", i, 12);
-            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedNormalizedCell.mat, "Odd Even Cell", i, 13);
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedNormalizedCell.mat, "Normalized cell", i, 13);
         }
     }
     

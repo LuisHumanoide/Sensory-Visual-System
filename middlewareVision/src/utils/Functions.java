@@ -22,10 +22,16 @@ import utils.filters.CurvatureFilter;
  * @author Laptop
  */
 public class Functions {
-    
+
     public static final int DISP_OP_SUM = 1;
     public static final int DISP_OP_MUL = 2;
 
+    /**
+     * this process performs a filtering with a matrix and a kernel.
+     * @param img original matrix to filter
+     * @param filter kernel or filter
+     * @return the result of the convolution between the original matrix and a filter
+     */
     public static Mat filter(Mat img, Mat filter) {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
         img.convertTo(img.clone(), CV_32FC1);
@@ -39,11 +45,11 @@ public class Functions {
     }
 
     /**
-     * Energy process
-     *
-     * @param mat1
-     * @param mat2
-     * @return
+     * Energy process<br>
+     * a squared sum of the matrices is performed, but at the end the root of the activation is taken.
+     * @param mat1 matrix 1
+     * @param mat2 matrix 2
+     * @return the energy matrix
      */
     public static Mat energyProcess(Mat mat1, Mat mat2) {
         Mat r1, r2;
@@ -65,9 +71,16 @@ public class Functions {
         return energy;
     }
 
+    /**
+     * Similar to the energy process, in this process 2 matrices are squared, and then summed, without performing a square root.
+     * @param mat1 matrix 1
+     * @param mat2 matrix 2
+     * @param pow pow
+     * @return  the summation matrix
+     */
     public static Mat sumPowProcess(Mat mat1, Mat mat2, int pow) {
         Mat r1, r2, r3;
-        r3=new Mat();
+        r3 = new Mat();
         r1 = mat1.clone();
         r2 = mat2.clone();
 
@@ -81,56 +94,111 @@ public class Functions {
         return r1;
     }
 
+    /**
+     * This method implements the summation of energies where the input is the monocular inputs
+     * @param L Left matrix
+     * @param R Right matrix
+     * @param disparity disparity index
+     * @return the energy summation matrix
+     */
     public static Mat energyDisparityProcess(Mat L, Mat R, int disparity) {
         return energyProcess(L, SpecialKernels.displaceKernel(R, 0, disparity));
     }
 
     /**
-     * https://www.researchgate.net/publication/221079016_An_Analytical_Model_of_Divisive_Normalization_in_Disparity-Tuned_Complex_Cells
+     * 
+     * This method implements the sum of disparities to obtain the activation of the single cells, the method is described in the following paper <br>
+     * DOI:10.1007/978-3-540-74690-4_79
      *
-     * @param L
-     * @param R
-     * @param disparity
-     * @return
+     * @param L Left matrix
+     * @param R Right matrix
+     * @param disparity disparity value
+     * @return the resulting summation matrix
      */
     public static Mat disparitySum(Mat L, Mat R, int disparity, int pow) {
         Mat dst = new Mat();
         Mat L1 = L.clone();
         Mat R1 = R.clone();
-        
+
         double p = 0.5;
 
         Core.multiply(L1, Scalar.all(p), L1);
         Core.multiply(R1, Scalar.all(p), R1);
-        
+
         Core.add(SpecialKernels.displaceKernel(L1, 0, disparity / 2), SpecialKernels.displaceKernel(R1, 0, -disparity / 2), dst);
-        
+
         Core.pow(dst, pow, dst);
-        
+
         return dst;
     }
-    
-    public static Mat disparityMul(Mat L, Mat R, int disparity){
+
+    /**
+     * Multiplication process to obtain the activation of single binocular
+     * cells, <br>
+     * this process is proposed in this work to have a stricter activation.
+     *
+     * @param L L Matrix
+     * @param R R Matrix
+     * @param disparity disparity of the matrixes
+     * @return the result of the binocular simple cell
+     */
+    public static Mat disparityMul(Mat L, Mat R, int disparity) {
         Mat dst = new Mat();
         Mat L1 = L.clone();
         Mat R1 = R.clone();
-        
+
         Core.multiply(SpecialKernels.displaceKernel(L1, 0, disparity / 2), SpecialKernels.displaceKernel(R1, 0, -disparity / 2), dst);
-        
-        return dst;      
+
+        return dst;
     }
-    
-    public static Mat disparityOperation(Mat L, Mat R, int disparity, int pow, int operation){
-        Mat dst=new Mat();
-        if(operation==DISP_OP_SUM){
-            dst=disparitySum(L, R, disparity, pow);
+
+    /**
+     * Operation to obtain the activation of binocular single cells, <br>
+     * we can choose between activation by the energy process (state of the art)
+     * or the multiplication process (proposed by us).
+     *
+     * @param L L Matrix
+     * @param R R Matrix
+     * @param disparity disparity
+     * @param pow pow of the sum (if we choose summation)
+     * @param operation operation: multiplication or summation
+     * @return the activation of the binocular simple cells
+     */
+    public static Mat disparityOperation(Mat L, Mat R, int disparity, int pow, int operation) {
+        Mat dst = new Mat();
+        if (operation == DISP_OP_SUM) {
+            dst = disparitySum(L, R, disparity, pow);
         }
-        if(operation==DISP_OP_MUL){
-            dst=disparityMul(L, R, disparity);
+        if (operation == DISP_OP_MUL) {
+            dst = disparityMul(L, R, disparity);
             Core.sqrt(dst, dst);
             Imgproc.threshold(dst, dst, 0, 1, Imgproc.THRESH_TOZERO);
         }
         return dst;
+    }
+
+    /**
+     * This process performs a weighted sum with the different spatial
+     * frequencies to reduce disparity noise.
+     *
+     * @param cellArray array of cells
+     * @param pow power to which it will be raised by the addition of
+     * @return
+     */
+    public static Mat disparityMergeProcess(Cell[] cellArray, int pow) {
+        Mat matArray[] = new Mat[cellArray.length];
+        Mat result = new Mat();
+        for (int i = 0; i < matArray.length; i++) {
+            Core.patchNaNs(cellArray[i].mat);
+            matArray[i] = cellArray[i].mat;
+        }
+        if (Config.gaborBanks == 1) {
+            pow = 1;
+        }
+        result = MatrixUtils.sum(matArray, (double) (1 / (double) Config.gaborBanks), 0);
+        Core.pow(result, pow, result);
+        
+        return result;
     }
 
     /**

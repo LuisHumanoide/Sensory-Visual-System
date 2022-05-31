@@ -10,8 +10,8 @@ import utils.Config;
 import utils.MathFunctions;
 
 /**
- *
- * @author Luis Humanoide
+ * This class encapsulates the properties of stereo cells that respond to ranges of disparities.
+ * @author Luis Parra
  */
 public class StereoscopicRangeCells {
 

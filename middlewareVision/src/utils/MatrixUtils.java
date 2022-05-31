@@ -52,7 +52,12 @@ public class MatrixUtils {
     }
     
     
-
+    /**
+     * Performs the sum of each element of an array of matrices with an array of variable weights.
+     * @param mat matrix array
+     * @param w weight array
+     * @return the resulting summation matrix
+     */
     public static Mat elementSum(Mat[] mat, double[] w) {
 
         Mat result = Mat.zeros(mat[0].height(), mat[0].width(), CvType.CV_32FC1);
@@ -64,7 +69,6 @@ public class MatrixUtils {
                     s = s + mat[i].get(x, y)[0];
                 }
                 result.put(x, y, s);
-                utils.Msg.print("sum " + s);
 
             }
         }
@@ -85,6 +89,11 @@ public class MatrixUtils {
         return maxSum(matArray);
     }
 
+    /**
+     * Integrates all maximal elements in a cell array
+     * @param mat cell array
+     * @return the resulting max matrix
+     */
     public static Mat maxSum(Cell... mat) {
 
         Mat result = Mat.zeros(mat[0].mat.height(), mat[0].mat.width(), CvType.CV_32FC1);
@@ -119,6 +128,11 @@ public class MatrixUtils {
         return max;
     }
 
+    /**
+     * It performs the multiplication of an array of OpenCV Mat
+     * @param mat array of Mat
+     * @return the matrix resulting of M1 x M2 x ... x Mn
+     */
     public static Mat multiply(Mat[] mat) {
         Mat mul = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         Core.add(mul, new Scalar(1), mul);
@@ -129,6 +143,11 @@ public class MatrixUtils {
         return mul;
     }
 
+    /**
+     * This multiplies an array of cells
+     * @param mat array of cells
+     * @return the multiplied matrix result
+     */
     public static Mat multiply(Cell[] mat) {
         Mat mul = Mat.zeros(mat[0].mat.width(), mat[0].mat.height(), CvType.CV_32FC1);
         Core.add(mul, new Scalar(1), mul);
@@ -139,7 +158,14 @@ public class MatrixUtils {
         return mul;
     }
 
-    public static Mat sum(Mat[] mat, int w, int bias) {
+    /**
+     * sums an array of matrices with a constant weight ratio and bias value
+     * @param mat array of matrixes
+     * @param w weight
+     * @param bias bias
+     * @return the summation of openCV Mats
+     */
+    public static Mat sum(Mat[] mat, double w, int bias) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {
             Core.patchNaNs(mat[i], 0.0);
@@ -149,6 +175,12 @@ public class MatrixUtils {
         return sum;
     }
 
+    /**
+     * sum an array of matrices with a variable weight ratio and without bias
+     * @param mat matrix array
+     * @param w weight array
+     * @return the summation matrix
+     */
     public static Mat sum(Mat[] mat, double[] w) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {
@@ -158,6 +190,14 @@ public class MatrixUtils {
         return sum;
     }
 
+    /**
+     * sum an array of matrices with a constant weight ratio, a bias, and a power, before summing, the matrices are raised to a certain power.
+     * @param w constant weight
+     * @param bias bias value
+     * @param pow pow value
+     * @param mat matrix array
+     * @return the summation matrix
+     */
     public static Mat sum(double w, double bias, int pow, Mat... mat) {
         Mat sum = Mat.zeros(mat[0].width(), mat[0].height(), CvType.CV_32FC1);
         for (int i = 0; i < mat.length; i++) {
@@ -169,6 +209,13 @@ public class MatrixUtils {
         return sum;
     }
 
+    /**
+     * Performs a dilation to an array of cells.
+     * @param mats cell array
+     * @param blurSize size of the blur
+     * @param kernelSize kernel size
+     * @return an array of dilated matrixes
+     */
     public static Mat[] basicDilate(Cell[] mats, int blurSize, int kernelSize) {
         Mat blur[] = new Mat[mats.length];
         Mat element = getStructuringElement(MORPH_RECT,
@@ -177,8 +224,6 @@ public class MatrixUtils {
         for (int i = 0; i < mats.length; i++) {
             blur[i] = mats[i].mat.clone();
             Imgproc.dilate(blur[i], blur[i], element);
-            //Imgproc.dil
-            //Imgproc.GaussianBlur(blur[i], blur[i], new Size(kernelSize, kernelSize), blurSize);
         }
         return blur;
     }

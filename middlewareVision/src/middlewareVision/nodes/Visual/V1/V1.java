@@ -33,6 +33,8 @@ public class V1 extends Area{
 	addProcess(V1BinocularSimpleCells.class);
 	addProcess(V1BinocularComplexCells.class);
 	
+	addProcess(V1BinocularMergeProcess.class);
+	
 	//@AddProcess
     }
 
@@ -59,6 +61,8 @@ public class V1 extends Area{
 	
 	send(AreaNames.V1BinocularSimpleCells,data);
 	send(AreaNames.V1BinocularComplexCells,data);
+	
+	send(AreaNames.V1BinocularMergeProcess,data);
 	
 	//@SendProcess
     }

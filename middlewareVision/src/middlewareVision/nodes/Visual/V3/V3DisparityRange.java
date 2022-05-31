@@ -89,7 +89,7 @@ public class V3DisparityRange extends Activity {
             Mat mArray[]=new Mat[V3Bank.SRC[index].xvalues.length];
             //store the cells with same orientation and different disparities
             for(int j=0;j<mArray.length;j++){
-                mArray[j]=V1Bank.SSC[idx][j].normalizedCells[i].mat.clone();
+                mArray[j]=V1Bank.SMC[j].cells[i].mat.clone();
             }
             //performs the gaussian sum, where th weights are the values of the gaussian
             V3Bank.SRC[index].cells[i].mat=MatrixUtils.sum(mArray, V3Bank.SRC[index].yvalues);

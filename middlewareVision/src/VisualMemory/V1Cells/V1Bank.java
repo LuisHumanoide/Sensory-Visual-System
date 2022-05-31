@@ -5,10 +5,6 @@
  */
 package VisualMemory.V1Cells;
 
-import VisualMemory.V1Cells.SimpleCells;
-import VisualMemory.V1Cells.HypercomplexCells;
-import VisualMemory.V1Cells.DoubleOpponentCells;
-import VisualMemory.V1Cells.ComplexCells;
 import MiniPrograms.RF;
 import VisualMemory.MTCells.MTBank;
 import java.io.File;
@@ -39,16 +35,18 @@ public class V1Bank {
     //[frequency][disparity index]
     public static StereoscopicCells[][] SSC;
     
+    //[disparity index]
+    public static StereoscopicMergedCells[] SMC;
+    
     static String GaborFile = "RFV1//Gabor//filters.txt";
     static String DisparityFile = "Disparities.txt";
     static String HCfiles = "RFV1HC//";
 
     /**
      * Initialize all cells from V1
-     *
-     * @param dimensions
      */
-    public static void initializeCells() {     
+    public static void initializeCells() {
+        
         String gaborLines[] = FileUtils.fileLines(GaborFile);       
         Config.gaborBanks = gaborLines.length;
         
@@ -59,22 +57,32 @@ public class V1Bank {
         Config.HCfilters = hcfiles.length;
         Config.nDisparities=disparities.length;
         
+        //reserve memory for cell banks
         SC = new SimpleCells[gaborLines.length][2];
         CC = new ComplexCells[gaborLines.length][2];
         HCC = new HypercomplexCells[gaborLines.length][2];
         DOC = new DoubleOpponentCells[1][2];
         MC = new MotionCellsV1[gaborLines.length][2];
         
+        //reserve memory for stereoscopic cell banks
         SSC = new StereoscopicCells[gaborLines.length][disparities.length];
+        SMC = new StereoscopicMergedCells[disparities.length];
         
+        //Simple Mat to compute the motion difference in the retina
         motionDiff=new Mat();
 
+        /*
+        Creating the double opponent cells banks
+        */
         for (int i2 = 0; i2 < 1; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {
                 DOC[i2][i3] = new DoubleOpponentCells(Config.gaborOrientations);
             }
         }
 
+        /*
+        Creating the V1 cells
+        */
         for (int i2 = 0; i2 < gaborLines.length; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {
                 SC[i2][i3] = new SimpleCells(Config.gaborOrientations);
@@ -86,9 +94,13 @@ public class V1Bank {
             }
             for(int i=0;i<disparities.length;i++){
                 SSC[i2][i]=new StereoscopicCells(Integer.parseInt(disparities[i]),SC[i2]);
+                if(i2==0){
+                    SMC[i] = new StereoscopicMergedCells(Integer.parseInt(disparities[i]));
+                }
             }
-        }
+        }   
         
+        //Initialize the cells from area MT
         MTBank.initializeComponentCells(MC[0][0].cells.length, MC[0][0].cells[0].length, Config.motionWidth);
 
         loadGaborFilters(gaborLines, 2);
