@@ -30,9 +30,9 @@ V2CornerMotion [ label="V2CornerMotion" shape="octagon" ]
 V3 [ label="V3" shape="circle" ]
 V3DisparityRange [ label="V3DisparityRange" shape="octagon" ]
 V4 [ label="V4" shape="circle" ]
-V4Contour [ label="V4Contour" shape="octagon" ]
 V4Color [ label="V4Color" shape="octagon" ]
-V4ShapeActivationNode [ label="V4ShapeActivationNode" shape="octagon" ]
+V4SimpleShapeCells [ label="V4SimpleShapeCells" shape="octagon" ]
+V4SimpleShapeScaleInv [ label="V4SimpleShapeScaleInv" shape="octagon" ]
 
 
 Alert -- AlertProcess;
@@ -65,8 +65,8 @@ V2 -- V2CornerMotion;
 
 V3 -- V3DisparityRange;
 
-V4 -- V4Contour;
 V4 -- V4Color;
-V4 -- V4ShapeActivationNode;
+V4 -- V4SimpleShapeCells;
+V4 -- V4SimpleShapeScaleInv;
 
 }

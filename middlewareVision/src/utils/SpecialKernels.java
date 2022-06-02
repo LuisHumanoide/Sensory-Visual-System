@@ -8,7 +8,6 @@ package utils;
 import MiniPrograms.RF;
 import java.io.File;
 import java.util.ArrayList;
-import middlewareVision.nodes.Visual.V4.V4CellStructure;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -40,7 +39,7 @@ public class SpecialKernels {
      */
     public static void loadKernels() {
         loadV2Kernels();
-        V4CellStructure.loadV4Structure();
+//        V4CellStructure.loadV4Structure();
     }
 
     /**

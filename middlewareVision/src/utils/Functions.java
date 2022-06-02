@@ -43,6 +43,14 @@ public class Functions {
         Imgproc.threshold(filt, filt, 1, 0, Imgproc.THRESH_TRUNC);
         return filt;
     }
+    
+    
+    public static Mat filter2(Mat img, Mat filter){
+        Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
+        img.convertTo(img.clone(), CV_32FC1);
+        Imgproc.filter2D(img, filt, CV_32FC1, filter);
+        return filt;
+    }
 
     /**
      * Energy process<br>
@@ -281,12 +289,12 @@ public class Functions {
         Core.add(convexResult, Scalar.all(1), convexResult);
 
         for (int i = 0; i < cFilter.n; i++) {
-            concaveFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(cFilter.concaveFilters[i], cFilter.angle));
+            concaveFiltered[i] = Functions.filter2(src, SpecialKernels.rotateKernelRadians(cFilter.concaveFilters[i], cFilter.angle));
             Core.multiply(concaveFiltered[i], Scalar.all(cFilter.mul), concaveFiltered[i]);
             concaveResult = concaveResult.mul(concaveFiltered[i]);
 
             if (convex) {
-                convexFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(cFilter.convexFilters[i], cFilter.angle));
+                convexFiltered[i] = Functions.filter2(src, SpecialKernels.rotateKernelRadians(cFilter.convexFilters[i], cFilter.angle));
                 Core.multiply(convexFiltered[i], Scalar.all(cFilter.mul), convexFiltered[i]);
                 convexResult = convexResult.mul(convexFiltered[i]);
             }

@@ -668,7 +668,7 @@ public class CurvatureRF extends javax.swing.JFrame {
         Core.add(concaveResult, Scalar.all(1), concaveResult);
         Core.add(convexResult, Scalar.all(1), convexResult);
         for (int i = 0; i < numberFilters; i++) {
-            concaveFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(concaveFilters[i], angle));
+            concaveFiltered[i] = Functions.filter2(src, SpecialKernels.rotateKernelRadians(concaveFilters[i], angle));
             //convexFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(convexFilters[i], angle));
             Core.multiply(concaveFiltered[i], Scalar.all(mulFactor), concaveFiltered[i]);
             //Core.multiply(convexFiltered[i], Scalar.all(mulFactor), convexFiltered[i]);

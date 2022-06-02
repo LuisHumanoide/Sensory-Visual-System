@@ -26,9 +26,25 @@ public class Cell{
     public int id;
     //filter to make a convolution
     public Mat filter;
+    //Label of the cell
+    String label;
 
     public Mat geteMat() {
         return eMat;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label, int eye) {
+        this.label = label;
+        if(eye==0){
+            LabeledCells.addCellL(label, this);
+        }
+        if(eye==1){
+            LabeledCells.addCellR(label, this);
+        }       
     }
 
     public void seteMat(Mat eMat) {

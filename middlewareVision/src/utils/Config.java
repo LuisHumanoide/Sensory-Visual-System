@@ -39,7 +39,7 @@ public class Config {
     public static int displace = 0;
     public static int gaborBanks = 0;
 
-    public static int h = 32;
+    public static int h = 40;
     public static int v = 100;
 
     //V4 Color parameters

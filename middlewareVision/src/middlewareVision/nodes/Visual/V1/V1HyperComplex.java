@@ -63,7 +63,6 @@ public class V1HyperComplex extends Activity {
                     for (int index = 0; index < Config.gaborOrientations; index++) {
                         LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(index), 0, 0);
                         send(AreaNames.V2AngularCells, sendSpike1.getByteArray());
-                        send(AreaNames.V4Contour, sendSpike1.getByteArray());
                         visualize();
                     }
                 }

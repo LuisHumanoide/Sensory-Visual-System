@@ -40,13 +40,12 @@ public class V2CurvatureCells extends Activity {
                 if (spike.getModality() == Modalities.VISUAL) {
 
                     curvatureProcess();
-                    
-                    visualize();
-                    
+
+                    //visualize();
                     Visualizer.lockLimit("Curv");
-                    
-                    send(AreaNames.V4ShapeActivationNode, null);
-                    
+
+                    //send(AreaNames.V4ShapeActivationNode, null);
+
                 }
             } catch (Exception ex) {
                 //Logger.getLogger(V2CurvatureCells.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,6 +91,13 @@ public class V2CurvatureCells extends Activity {
         for (int i = 0; i < V2Bank.CurvC[x1][x2].getnCurvatures(); i++) {
             for (int j = 0; j < V2Bank.CurvC[x1][x2].getnAngleDivisions(); j++) {
                 V2Bank.CurvC[x1][x2].cells[i][j].mat = Functions.curvatureFiltering(src, V2Bank.CurvC[x1][x2].filters[i][j], true);
+                if (x2 == 0) {
+                    V2Bank.CurvC[x1][x2].cells[i][j].setLabel("c" + x1 + "-" + i + "" + j, 0);
+                }
+                if (x2 == 1) {
+                    V2Bank.CurvC[x1][x2].cells[i][j].setLabel("c" + x1 + "-" + i + "" + j, 1);
+                }
+
             }
             V2Bank.CurvC[x1][x2].composedCells[i].mat = Functions.maxSum(V2Bank.CurvC[x1][x2].cells[i]);
         }

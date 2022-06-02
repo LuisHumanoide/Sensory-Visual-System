@@ -21,9 +21,11 @@ public class V4 extends Area{
     public V4() {
         this.ID = AreaNames.V4;
         this.namer = AreaNames.class;
-        addProcess(V4Contour.class);
-        addProcess(V4Color.class);
-	addProcess(V4ShapeActivationNode.class);	
+        addProcess(V4Color.class);	
+	addProcess(V4SimpleShapeCells.class);
+	
+	addProcess(V4SimpleShapeScaleInv.class);
+	
 	//@AddProcess
     }
 
@@ -36,11 +38,11 @@ public class V4 extends Area{
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        //SimpleLogger.log(this,"V2 BIG NODE:"+new String(data));
         send(AreaNames.V4Color,data);	
-	send(AreaNames.V4Contour,data);
-	send(AreaNames.V4ShapeActivationNode,data);	
-	//send(AreaNames.V4Visualizer,data);	
+	send(AreaNames.V4SimpleShapeCells,data);
+	
+	send(AreaNames.V4SimpleShapeScaleInv,data);
+	
 	//@SendProcess
     }
     

@@ -21,7 +21,7 @@ public class AreaNames {
         public static int V2	=           IDHelper.generateID("V2", 0, 0);
         /****************************************************************************/
 	public static int V2AngularCells	=   IDHelper.generateID("V2",1,0);	
-        public static int V2CurvatureCells = IDHelper.generateID("V2", 3 , 0);
+        public static int V2CurvatureCells = IDHelper.generateID("V2", 4 , 0);
         /****************************************************************************/
         public static int V4 =              IDHelper.generateID("V4",0,0);
         /****************************************************************************/
@@ -70,6 +70,10 @@ public class AreaNames {
 	public static int V3DisparityRange = IDHelper.generateID("V3", 1 , 0);
 	
 	public static int V1BinocularMergeProcess = IDHelper.generateID("V1", 12 , 0);
+	
+	public static int V4SimpleShapeCells = IDHelper.generateID("V4", 4 , 0);
+	
+	public static int V4SimpleShapeScaleInv = IDHelper.generateID("V4", 5 , 0);
 	
 	//@addNodes
         //no quitar el comentario de add Nodes
