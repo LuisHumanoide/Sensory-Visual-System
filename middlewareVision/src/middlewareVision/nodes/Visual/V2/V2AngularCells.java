@@ -6,12 +6,10 @@
 package middlewareVision.nodes.Visual.V2;
 
 import VisualMemory.Cell;
-import VisualMemory.LabeledCells;
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
 import generator.ProcessList;
 import spike.Location;
-import gui.FrameActivity;
 import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,7 +71,6 @@ public class V2AngularCells extends Activity {
                     
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     
-                    //send(AreaNames.V4ShapeActivationNode, sendSpike1.getByteArray());
                     send(AreaNames.V4SimpleShapeCells, sendSpike1.getByteArray());
                     send(AreaNames.V2CornerMotion, sendSpike1.getByteArray());
 

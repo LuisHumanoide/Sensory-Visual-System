@@ -161,7 +161,7 @@ public class Cell{
     }
 
     /**
-     * Set the previous Cells, useful for feedback process
+     * Set the previous Cells, useful for feedback process or make the activation process with the previous cells
      * @param pre 
      */
     public void setPrevious(Cell... pre) {
@@ -173,6 +173,10 @@ public class Cell{
         }
     }
     
+    /**
+     * Set the previous cells from a list
+     * @param list 
+     */
     public void setPrevious(List<Cell> list){
         int i=0;
         previous = new Cell[list.size()];

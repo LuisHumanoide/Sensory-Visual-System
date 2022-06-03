@@ -22,27 +22,20 @@ public class V4 extends Area{
         this.ID = AreaNames.V4;
         this.namer = AreaNames.class;
         addProcess(V4Color.class);	
-	addProcess(V4SimpleShapeCells.class);
-	
-	addProcess(V4SimpleShapeScaleInv.class);
-	
+	addProcess(V4SimpleShapeCells.class);	
+	addProcess(V4SimpleShapeScaleInv.class);	
 	//@AddProcess
     }
 
     @Override
     public void init() {
-        //send(AreaNames.AMY_GENHNEI)
-        //SimpleLogger.log(this,"BIG NODE V2");
-        value++;
     }
 
     @Override
     public void receive(int nodeID, byte[] data) {
         send(AreaNames.V4Color,data);	
-	send(AreaNames.V4SimpleShapeCells,data);
-	
-	send(AreaNames.V4SimpleShapeScaleInv,data);
-	
+	send(AreaNames.V4SimpleShapeCells,data);	
+	send(AreaNames.V4SimpleShapeScaleInv,data);	
 	//@SendProcess
     }
     

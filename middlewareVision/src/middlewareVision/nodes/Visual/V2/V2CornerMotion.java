@@ -1,10 +1,7 @@
 package middlewareVision.nodes.Visual.V2;
 
-import VisualMemory.MTCells.MTBank;
 import VisualMemory.MotionCell;
-import VisualMemory.V2Cells.CornerMotionCells;
 import VisualMemory.V2Cells.V2Bank;
-import spike.Location;
 import generator.ProcessList;
 import gui.Visualizer;
 import java.awt.Color;
@@ -18,7 +15,6 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import spike.Modalities;
 import utils.Config;
 import utils.LongSpike;
 

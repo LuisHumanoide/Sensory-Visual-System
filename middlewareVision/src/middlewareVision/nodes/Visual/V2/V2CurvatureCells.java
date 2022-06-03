@@ -41,7 +41,7 @@ public class V2CurvatureCells extends Activity {
 
                     curvatureProcess();
 
-                    //visualize();
+                    visualize();
                     Visualizer.lockLimit("Curv");
 
                     //send(AreaNames.V4ShapeActivationNode, null);

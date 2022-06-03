@@ -6,7 +6,6 @@
 package middlewareVision.nodes.Visual.Retina;
 
 import generator.ProcessList;
-import gui.Controls;
 import gui.Frame;
 import gui.GUI;
 import java.awt.image.BufferedImage;
@@ -14,31 +13,22 @@ import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.util.LinkedList;
 import middlewareVision.config.AreaNames;
-import gui.GUIActivity;
 import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import kmiddle2.nodes.activities.Activity;
-import middlewareVision.nodes.Visual.LGN.LGNSimpleOpponentCells;
 import org.opencv.calib3d.StereoBM;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
-import static org.opencv.core.CvType.CV_8U;
 import static org.opencv.core.CvType.CV_8UC1;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import static org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY;
-import static org.opencv.imgproc.Imgproc.cvtColor;
-import org.opencv.videoio.VideoCapture;
 import spike.Location;
 import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
 import utils.LongSpike;
-import utils.Msg;
 
 /**
  *
