@@ -1,30 +1,54 @@
 digraph G{
 rankdir="LR"
 newrank="true" 
-AlertProcess [ shape="rectangle" ] 
-FeedbackProccess [ shape="rectangle" ] 
-LGNSimpleOpponentCells [ shape="rectangle" ] 
-MSTPolarCells [ shape="rectangle" ] 
-MSTTemplateCells [ shape="rectangle" ] 
-MTComponentCells [ shape="rectangle" ] 
-MTPatternCells [ shape="rectangle" ] 
-BasicMotion [ shape="rectangle" ] 
-RetinaProccess [ shape="rectangle" ] 
-V1BinocularComplexCells [ shape="rectangle" ] 
-V1BinocularMergeProcess [ shape="rectangle" ] 
-V1BinocularSimpleCells [ shape="rectangle" ] 
-V1ComplexCells [ shape="rectangle" ] 
-V1DoubleOpponent [ shape="rectangle" ] 
-V1HyperComplex [ shape="rectangle" ] 
-V1MotionCellsNew [ shape="rectangle" ] 
-V1SimpleCells [ shape="rectangle" ] 
-V2AngularCells [ shape="rectangle" ] 
-V2CornerMotion [ shape="rectangle" ] 
-V2CurvatureCells [ shape="rectangle" ] 
-V3DisparityRange [ shape="rectangle" ] 
-V4Color [ shape="rectangle" ] 
-V4Contour [ shape="rectangle" ] 
-V4ShapeActivationNode [ shape="rectangle" ] 
+AlertProcess [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+FeedbackProccess [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+LGNSimpleOpponentCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+MSTPolarCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+MSTTemplateCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+MTComponentCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+MTPatternCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+BasicMotion [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+RetinaProccess [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1BinocularComplexCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1BinocularMergeProcess [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1BinocularSimpleCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1ComplexCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1DoubleOpponent [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1HyperComplex [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1MotionCellsNew [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V1SimpleCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V2AngularCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V2CornerMotion [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V2CurvatureCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V3DisparityRange [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V4Color [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V4Contour [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
+V4ShapeActivationNode [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+ ] 
 
 
 AlertProcess -> RetinaProccess 
@@ -57,24 +81,40 @@ V2CurvatureCells -> V4ShapeActivationNode
 subgraph clusterAlert {
  label="Alert"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 AlertProcess
 }
 
 subgraph clusterTestAttention {
  label="TestAttention"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 FeedbackProccess
 }
 
 subgraph clusterLGN {
  label="LGN"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 LGNSimpleOpponentCells
 }
 
 subgraph clusterMST {
  label="MST"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 MSTPolarCells
 MSTTemplateCells
 }
@@ -82,6 +122,10 @@ MSTTemplateCells
 subgraph clusterMT {
  label="MT"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 MTComponentCells
 MTPatternCells
 }
@@ -89,6 +133,10 @@ MTPatternCells
 subgraph clusterRetina {
  label="Retina"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 RetinaProccess
 BasicMotion
 }
@@ -96,6 +144,10 @@ BasicMotion
 subgraph clusterV1 {
  label="V1"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 V1SimpleCells
 V1ComplexCells
 V1DoubleOpponent
@@ -109,6 +161,10 @@ V1BinocularMergeProcess
 subgraph clusterV2 {
  label="V2"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 V2AngularCells
 V2CurvatureCells
 V2CornerMotion
@@ -117,12 +173,20 @@ V2CornerMotion
 subgraph clusterV3 {
  label="V3"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 V3DisparityRange
 }
 
 subgraph clusterV4 {
  label="V4"
 rank="same"
+fillcolor="lightblue"
+style = dashed
+fontname = "cambria"
+
 V4Contour
 V4Color
 V4ShapeActivationNode
