@@ -19,22 +19,11 @@ public class V1 extends Area{
 	addProcess(V1SimpleCells.class);
 	addProcess(V1ComplexCells.class);
 	addProcess(V1DoubleOpponent.class);
-	addProcess(V1HyperComplex.class);
-	
-	//addProcess(V1MotionCells.class);
-	//
-	
-	//addProcess(V1MotionCells2.class);
-	
-	//addProcess(ReichardtMotion.class);
-	
-	addProcess(V1MotionCellsNew.class);
-	
+	addProcess(V1HyperComplex.class);	
+	addProcess(V1MotionCellsNew.class);	
 	addProcess(V1BinocularSimpleCells.class);
-	addProcess(V1BinocularComplexCells.class);
-	
-	addProcess(V1BinocularMergeProcess.class);
-	
+	addProcess(V1BinocularComplexCells.class);	
+	addProcess(V1BinocularMergeProcess.class);	
 	//@AddProcess
     }
 
@@ -44,26 +33,15 @@ public class V1 extends Area{
 
     @Override
     public void receive(int nodeID, byte[] data) {
-        //send(AreaNames.V1Proccess, data);
 	send(AreaNames.V1SimpleCells,data);
 	send(AreaNames.V1ComplexCells,data);
 	send(AreaNames.V1DoubleOpponent,data);
 	send(AreaNames.V1HyperComplex,data);	
-	send(AreaNames.V1SimpleCellsFilter,data);
-	//send(AreaNames.V1MotionCells,data);
-	//
-	
-	//send(AreaNames.V1MotionCells2,data);
-	
-	//send(AreaNames.ReichardtMotion,data);
-	
-	send(AreaNames.V1MotionCellsNew,data);
-	
+	send(AreaNames.V1SimpleCellsFilter,data);	
+	send(AreaNames.V1MotionCellsNew,data);	
 	send(AreaNames.V1BinocularSimpleCells,data);
-	send(AreaNames.V1BinocularComplexCells,data);
-	
-	send(AreaNames.V1BinocularMergeProcess,data);
-	
+	send(AreaNames.V1BinocularComplexCells,data);	
+	send(AreaNames.V1BinocularMergeProcess,data);	
 	//@SendProcess
     }
     

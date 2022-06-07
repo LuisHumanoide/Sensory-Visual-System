@@ -17,9 +17,7 @@ import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
-import utils.Functions;
 import utils.LongSpike;
-import utils.SpecialKernels;
 import utils.numSync;
 
 /**

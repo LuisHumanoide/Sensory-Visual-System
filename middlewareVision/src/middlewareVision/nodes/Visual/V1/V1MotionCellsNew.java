@@ -32,7 +32,6 @@ public class V1MotionCellsNew extends Activity {
 
     @Override
     public void init() {
-        utils.Msg.print("big node v1MotionCellsNew");
     }
 
     @Override

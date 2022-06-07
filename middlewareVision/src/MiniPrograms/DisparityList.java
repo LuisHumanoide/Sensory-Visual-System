@@ -14,6 +14,7 @@ import utils.MathFunctions;
  */
 public class DisparityList extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form DisparityList
      */
@@ -39,28 +40,37 @@ public class DisparityList extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * variables used to store the min and max value from the absolute disparity
+     */
     int min = 0;
     int max = 0;
+    //values of the absolute disparity, these values will be used for finding the y values of the gaussian
     int[] xpoints;
 
     /**
      * Found the minimun and maximun value from the absolute disparities
      */
     public void minMax() {
+        //load the disparity file 
         String lines[] = FileUtils.fileLines("Disparities.txt");
+        //the min and max value are the values of the extremes
         min = Integer.parseInt(lines[0]);
         max = Integer.parseInt(lines[lines.length - 1]);
         xpoints = new int[lines.length];
         int c = 0;
+        //creates the x points values
         for (String line : lines) {
             xpoints[c] = Integer.parseInt(line);
         }
+        //if the min value is the maximun, then a swap process is performed
         if (max < min) {
             int temp = max;
             max = min;
             min = temp;
         }
         setXpoints();
+        //set the x points to the disparity panel 
         disparityPanel1.setXpoints(xpoints);
     }
 

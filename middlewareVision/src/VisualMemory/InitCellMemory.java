@@ -10,6 +10,7 @@ import VisualMemory.MSTCells.MSTPolar;
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
 import VisualMemory.V3Cells.V3Bank;
+import VisualMemory.V4Cells.V4Bank;
 
 /**
  *
@@ -19,11 +20,13 @@ public class InitCellMemory {
     
     public static void initCellMemory(){
         //extra,frequencies,eyes
+        LabeledCells.initMap();
         LGNBank.initializeCells(1);
         V1Bank.initializeCells();
         V3Bank.initializeCells();
         //MT starts automatically with V1
         V2Bank.initializeCells();
+        V4Bank.initializeCells();
         MSTPolar.initializeCells();
     }
     

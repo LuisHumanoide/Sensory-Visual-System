@@ -18,10 +18,8 @@ public class V2 extends Area{
         this.ID = AreaNames.V2;
         this.namer = AreaNames.class;
         addProcess(V2AngularCells.class);	
-	addProcess(V2CurvatureCells.class);
-	
-	addProcess(V2CornerMotion.class);
-	
+	addProcess(V2CurvatureCells.class);	
+	addProcess(V2CornerMotion.class);	
 	//@AddProcess
     }
 
@@ -32,11 +30,8 @@ public class V2 extends Area{
     @Override
     public void receive(int nodeID, byte[] data) {
         send(AreaNames.V2AngularCells, data);
-        //send(AreaNames.V2IlusoryCells, data);	
-	send(AreaNames.V2CurvatureCells,data);
-	
-	send(AreaNames.V2CornerMotion,data);
-	
+	send(AreaNames.V2CurvatureCells,data);	
+	send(AreaNames.V2CornerMotion,data);	
 	//@SendProcess
     }
     

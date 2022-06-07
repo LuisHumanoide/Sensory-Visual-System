@@ -10,7 +10,6 @@ import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
 import generator.ProcessList;
 import spike.Location;
-import gui.FrameActivity;
 import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,7 +71,7 @@ public class V2AngularCells extends Activity {
                     
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     
-                    send(AreaNames.V4ShapeActivationNode, sendSpike1.getByteArray());
+                    send(AreaNames.V4SimpleShapeCells, sendSpike1.getByteArray());
                     send(AreaNames.V2CornerMotion, sendSpike1.getByteArray());
 
                 }
@@ -156,6 +155,14 @@ public class V2AngularCells extends Activity {
         for (int i = 0; i < Config.gaborOrientations; i++) {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                 V2Bank.AC[x1][x2].Cells[i][j].mat = Functions.V2Activation(filtered[j], filtered[(i + j + 1) % (Config.gaborOrientations * 2)], l3);
+                
+                if(x2==0){
+                    V2Bank.AC[x1][x2].Cells[i][j].setLabel("a"+x1+"-"+i+""+j, 0);
+                }
+                if(x2==1){
+                    V2Bank.AC[x1][x2].Cells[i][j].setLabel("a"+x1+"-"+i+""+j, 1);
+                }
+                
                 V2Bank.AC[x1][x2].Cells[i][j].setPrevious(
                         V1Bank.HCC[x1][x2].mergedCells[j % Config.gaborOrientations],
                         V1Bank.HCC[x1][x2].mergedCells[((i + j + 1) % (Config.gaborOrientations * 2)) % 4]);

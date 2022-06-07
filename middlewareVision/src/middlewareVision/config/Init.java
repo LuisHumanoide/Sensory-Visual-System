@@ -2,7 +2,6 @@ package middlewareVision.config;
 
 import VisualMemory.InitCellMemory;
 import generator.ProcessList;
-import gui.Controls;
 import gui.Visualizer;
 import kmiddle2.nodes.service.Igniter;
 import middlewareVision.nodes.Visual.V1.V1;
@@ -10,9 +9,7 @@ import middlewareVision.nodes.Visual.Retina.Retina;
 import middlewareVision.nodes.Visual.V2.V2;
 import middlewareVision.nodes.Visual.V4.V4;
 import org.opencv.core.Core;
-import utils.layoutManager;
 import middlewareVision.nodes.Visual.LGN.LGN;
-import middlewareVision.nodes.Visual.V4.V4Memory;
 import utils.SpecialKernels;
 import middlewareVision.nodes.External.TestAttention;
 import middlewareVision.nodes.Visual.MT.MT;
@@ -20,6 +17,7 @@ import middlewareVision.nodes.Visual.MST.MST;
 import middlewareVision.nodes.Visual.MST.MSTPolarCells;
 import middlewareVision.nodes.External.Alert;
 import middlewareVision.nodes.Visual.V3.V3;
+import utils.Config;
 //@import
 
 
@@ -63,10 +61,7 @@ public class Init extends Igniter {
         XMLReader.readXML();
         ProcessList.openList();
         InitCellMemory.initCellMemory();
-        V4Memory.initV1Map();
-        //Controls cc=new Controls();
-        //cc.setVisible(true);
-        Visualizer.initVisualizer(1000);
+        Visualizer.initVisualizer(Config.h*Config.v);
         Visualizer.addLimit("zero", 0);
         MSTPolarCells.getVrow();
         SpecialKernels.loadKernels();

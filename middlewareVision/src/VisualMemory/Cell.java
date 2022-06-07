@@ -26,9 +26,25 @@ public class Cell{
     public int id;
     //filter to make a convolution
     public Mat filter;
+    //Label of the cell
+    String label;
 
     public Mat geteMat() {
         return eMat;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label, int eye) {
+        this.label = label;
+        if(eye==0){
+            LabeledCells.addCellL(label, this);
+        }
+        if(eye==1){
+            LabeledCells.addCellR(label, this);
+        }       
     }
 
     public void seteMat(Mat eMat) {
@@ -145,7 +161,7 @@ public class Cell{
     }
 
     /**
-     * Set the previous Cells, useful for feedback process
+     * Set the previous Cells, useful for feedback process or make the activation process with the previous cells
      * @param pre 
      */
     public void setPrevious(Cell... pre) {
@@ -157,6 +173,10 @@ public class Cell{
         }
     }
     
+    /**
+     * Set the previous cells from a list
+     * @param list 
+     */
     public void setPrevious(List<Cell> list){
         int i=0;
         previous = new Cell[list.size()];

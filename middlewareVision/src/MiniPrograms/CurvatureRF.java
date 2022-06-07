@@ -26,11 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
-import static org.opencv.core.CvType.CV_32F;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import utils.Convertor;
 import utils.FileUtils;
 import utils.Functions;
@@ -82,6 +79,12 @@ public class CurvatureRF extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Change the image type in order to be acepted by the OpenCV algorithms
+     * @param eleScreenshot screenshot of the image
+     * @param type type
+     * @return a image with a new type
+     */
     private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
         BufferedImage bi = new BufferedImage(eleScreenshot.getWidth(), eleScreenshot.getHeight(), type);
         Graphics g = bi.getGraphics();
@@ -90,6 +93,9 @@ public class CurvatureRF extends javax.swing.JFrame {
         return bi;
     }
 
+    /**
+     * Method for drag and drop images from the computer
+     */
     public void modifyLabel() {
         TransferHandler th = new TransferHandler() {
 
@@ -119,6 +125,9 @@ public class CurvatureRF extends javax.swing.JFrame {
         originalImage.setTransferHandler(th);
     }
 
+    /**
+     * Load the values from a file to each J Text Field
+     */
     void loadFieldList() {
         DefaultListModel model = new DefaultListModel();
         String fileNames[] = FileUtils.getFiles(folder);
@@ -128,6 +137,9 @@ public class CurvatureRF extends javax.swing.JFrame {
         jList1.setModel(model);
     }
 
+    /**
+     * Every field is mapped to an field array for making the things more easy
+     */
     void loadFields() {
         fields = new JTextField[11];
         fields[0] = sizef;
@@ -462,6 +474,9 @@ public class CurvatureRF extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * It makes the gabor filters for the curvature process
+     */
     void generateFilters() {
         mainGabor.setParameters(toInt(fields[0].getText()), toDouble(fields[1].getText()),
                 toDouble(fields[2].getText()), toDouble(fields[3].getText()), toDouble(fields[4].getText()),
@@ -478,6 +493,10 @@ public class CurvatureRF extends javax.swing.JFrame {
         saveFile(namef.getText());
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * It makes load the values from the file that is clicked
+     * @param evt 
+     */
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
         String content = FileUtils.readFile(new File(folder + jList1.getSelectedValue() + ".txt"));
@@ -509,6 +528,13 @@ public class CurvatureRF extends javax.swing.JFrame {
         incDecInt(sizef, evt, 1);
     }//GEN-LAST:event_sizefKeyPressed
 
+    /**
+     * Method for increasing or decreasing the value of the fields when a up or down key is pressed<br>
+     * the inc/dec is in double/fractions
+     * @param field JTextField
+     * @param evt event
+     * @param inc increasing value
+     */
     void incDec(JTextField field, KeyEvent evt, double inc) {
         //df.setRoundingMode(RoundingMode.DOWN);
         double value;
@@ -530,8 +556,14 @@ public class CurvatureRF extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Method for increasing or decreading the value of the fields when a up or down key is pressed<br>
+     * Increment or decrement with integer values
+     * @param field field to increment or decrement the value of
+     * @param evt event
+     * @param inc value of increasing/decreasing
+     */
     void incDecInt(JTextField field, KeyEvent evt, int inc) {
-        //df.setRoundingMode(RoundingMode.DOWN);
         int value;
         try {
             if (evt.getKeyCode() == KeyEvent.VK_UP) {
@@ -656,6 +688,12 @@ public class CurvatureRF extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_mulfKeyReleased
 
+    /**
+     * Curvature filtering processing<br>
+     * This method is also found in the Functions.java class for more information
+     * @param angle angle of rotation of the filters
+     * @return a Mat with the curvature activation
+     */
     Mat filterProcess(double angle) {
         Mat concaveFiltered[];
         Mat convexFiltered[];
@@ -668,7 +706,7 @@ public class CurvatureRF extends javax.swing.JFrame {
         Core.add(concaveResult, Scalar.all(1), concaveResult);
         Core.add(convexResult, Scalar.all(1), convexResult);
         for (int i = 0; i < numberFilters; i++) {
-            concaveFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(concaveFilters[i], angle));
+            concaveFiltered[i] = Functions.filter2(src, SpecialKernels.rotateKernelRadians(concaveFilters[i], angle));
             //convexFiltered[i] = Functions.filter(src, SpecialKernels.rotateKernelRadians(convexFilters[i], angle));
             Core.multiply(concaveFiltered[i], Scalar.all(mulFactor), concaveFiltered[i]);
             //Core.multiply(convexFiltered[i], Scalar.all(mulFactor), convexFiltered[i]);
@@ -681,6 +719,11 @@ public class CurvatureRF extends javax.swing.JFrame {
         //convolvedImage.setIcon(new ImageIcon(Convertor.Mat2Img(concaveResult)));
     }
 
+    /**
+     * Performs the curvature process with several angles<br>
+     * and then it makes a summation for archieving the angular invariance<br>
+     * with more n steps, the process will be more slow
+     */
     void convolution() {
         int n = 18;
         Mat results[] = new Mat[n];
@@ -693,6 +736,10 @@ public class CurvatureRF extends javax.swing.JFrame {
         convolvedImage.setIcon(new ImageIcon(Convertor.Mat2Img(result)));
     }
 
+    /**
+     * Save the parameters from the fields into a file
+     * @param name name of the file filter
+     */
     void saveFile(String name) {
         String ac = "";
         for (int i = 0; i < fields.length; i++) {
@@ -707,6 +754,11 @@ public class CurvatureRF extends javax.swing.JFrame {
         jList1.setSelectedIndex(indexOf(namef.getText()));
     }
 
+    /**
+     * Index of the file selected from the list of files
+     * @param string string to search
+     * @return the index of the string
+     */
     int indexOf(String string) {
         int index = 0;
         for (int i = 0; i < jList1.getModel().getSize(); i++) {
@@ -718,6 +770,10 @@ public class CurvatureRF extends javax.swing.JFrame {
         return index;
     }
 
+    /**
+     * It makes the concave and convex filters, these filters are rotate Gabor filters<br>
+     * these filters are applied to make a convolution and the result will be multiplied in the method: filterProcess
+     */
     void makeFilters() {
         concaveFilters = new Mat[numberFilters];
         convexFilters = new Mat[numberFilters];
@@ -748,6 +804,10 @@ public class CurvatureRF extends javax.swing.JFrame {
         loadImageFilters();
     }
 
+    /**
+     * This method make the composed filter in order to show in the visualizer<br>
+     * the composed filter is not used in the curvature process, it's only for visualizing purposes
+     */
     void makeComposedFilter() {
         for (int i = 0; i < numberFilters; i++) {
             Core.add(composedFilter, concaveFilters[i], composedFilter);
@@ -757,6 +817,9 @@ public class CurvatureRF extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Convert the composed filter into a image to be shown in the label 'filterImage'
+     */
     void loadImageFilters() {
         fimg = Convertor.ConvertMat2FilterImage(composedFilter);
         //fimg = Scalr.resize(fimg, Integer.parseInt(kernelSize.getText()) * zoom);
@@ -802,7 +865,7 @@ public class CurvatureRF extends javax.swing.JFrame {
     }
 
     /**
-     * Methods for shorten the conversion to double and integer
+     * Methods for shorten the conversion from string to double
      *
      * @param text
      * @return
@@ -811,6 +874,11 @@ public class CurvatureRF extends javax.swing.JFrame {
         return Double.parseDouble(text);
     }
 
+    /**
+     * Method for shorten the conversion from string to integer
+     * @param text
+     * @return 
+     */
     int toInt(String text) {
         return Integer.parseInt(text);
     }
