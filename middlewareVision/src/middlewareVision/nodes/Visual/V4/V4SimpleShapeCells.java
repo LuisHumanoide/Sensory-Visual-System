@@ -47,6 +47,8 @@ public class V4SimpleShapeCells extends Activity {
 
                     visualize();
                     
+                    Visualizer.lockLimit("V4");
+                    
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     
                     send(AreaNames.V4SimpleShapeScaleInv, sendSpike1.getByteArray());
@@ -57,15 +59,27 @@ public class V4SimpleShapeCells extends Activity {
             }
         }
     }
+    
+    int getRowIndex(){
+        int i1=Visualizer.getRow("AC");
+        int i2=Visualizer.getRow("Curv");
+        if(i2>i1){
+            return i2;
+        }
+        else{
+            return i1;
+        }
+    }
 
     /**
      * Visualize the activations
      */
     void visualize() {
         int size = V4Bank.SSC.length;
+        int index=getRowIndex();
         for (int i = 0; i < size; i++) {
-            Visualizer.setImage(V4Bank.SSC[i][0].cell.mat, "shape " + i + " " + V4Bank.SSC[i][0].nameCell + " scale " + V4Bank.SSC[i][0].scale, 28, i, "V4");
-            Visualizer.setImage(V4Bank.SSC[i][1].cell.mat, "shape " + i + " " + V4Bank.SSC[i][1].nameCell + " scale " + V4Bank.SSC[i][1].scale, 29, i, "V4");
+            Visualizer.setImage(V4Bank.SSC[i][0].cell.mat, "shape " + i + " " + V4Bank.SSC[i][0].nameCell + " scale " + V4Bank.SSC[i][0].scale, index+1, i, "V4");
+            Visualizer.setImage(V4Bank.SSC[i][1].cell.mat, "shape " + i + " " + V4Bank.SSC[i][1].nameCell + " scale " + V4Bank.SSC[i][1].scale, index+2, i, "V4");
         }
     }
 

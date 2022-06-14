@@ -133,7 +133,7 @@ public class Functions {
         Core.multiply(L1, Scalar.all(p), L1);
         Core.multiply(R1, Scalar.all(p), R1);
 
-        Core.add(SpecialKernels.displaceKernel(L1, 0, disparity / 2), SpecialKernels.displaceKernel(R1, 0, -disparity / 2), dst);
+        Core.add(SpecialKernels.displaceKernel(L1, 0, -disparity / 2), SpecialKernels.displaceKernel(R1, 0, disparity / 2), dst);
 
         Core.pow(dst, pow, dst);
 
@@ -155,7 +155,7 @@ public class Functions {
         Mat L1 = L.clone();
         Mat R1 = R.clone();
 
-        Core.multiply(SpecialKernels.displaceKernel(L1, 0, disparity / 2), SpecialKernels.displaceKernel(R1, 0, -disparity / 2), dst);
+        Core.multiply(SpecialKernels.displaceKernel(L1, 0, -disparity / 2), SpecialKernels.displaceKernel(R1, 0, disparity / 2), dst);
 
         return dst;
     }

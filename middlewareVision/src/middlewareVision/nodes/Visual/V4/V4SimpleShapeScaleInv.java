@@ -53,8 +53,8 @@ public class V4SimpleShapeScaleInv extends Activity {
     void visualize() {
         int size = V4Bank.SMC.length;
         for (int i = 0; i < size; i++) {
-            Visualizer.setImage(V4Bank.SMC[i][0].cell.mat, "shape " + i + " " + V4Bank.SMC[i][0].nameCell + " scale ", 30, i, "V4");
-            Visualizer.setImage(V4Bank.SMC[i][1].cell.mat, "shape " + i + " " + V4Bank.SMC[i][1].nameCell + " scale ", 31, i, "V4");
+            Visualizer.setImage(V4Bank.SMC[i][0].cell.mat, "shape " +  V4Bank.SMC[i][0].nameCell , Visualizer.getRow("V4")+1, i, "V4SI");
+            Visualizer.setImage(V4Bank.SMC[i][1].cell.mat, "shape " +  V4Bank.SMC[i][1].nameCell , Visualizer.getRow("V4")+2, i, "V4SI");
         }
     }
 
