@@ -163,32 +163,32 @@ public class RetinaProccess extends Activity {
      */
     public void setImage(BufferedImage img, BufferedImage img2) {
         Mat transMat[] = transduction(img);
-        Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "LMM L", 0,0);
-        Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "SMLPM L", 0,1);
-        Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "LPM L", 0,2);                
-        
+        Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "L L", 0, 0);
+        Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "M L", 0, 1);
+        Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "S L", 0, 2);
+
         Mat transMat2[] = transduction(img2);
-        Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "LMM R", 1,0);
-        Visualizer.setImage(Convertor.Mat2Img(transMat2[1]), "SMLPM R", 1,1);
-        Visualizer.setImage(Convertor.Mat2Img(transMat2[2]), "LPM R", 1,2);
-        
-        Mat m1=transMat[2].clone();
-        Mat m2=transMat2[2].clone();
+        Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "L R", 1, 0);
+        Visualizer.setImage(Convertor.Mat2Img(transMat2[1]), "M R", 1, 1);
+        Visualizer.setImage(Convertor.Mat2Img(transMat2[2]), "S R", 1, 2);
+
+        Mat m1 = transMat[2].clone();
+        Mat m2 = transMat2[2].clone();
         m1.convertTo(m1, CV_8UC1);
         m2.convertTo(m2, CV_8UC1);
         Mat diffMat = new Mat();
 
-        StereoBM stereo=StereoBM.create(16,15);
+        StereoBM stereo = StereoBM.create(16, 15);
         stereo.setTextureThreshold(15);
         stereo.setUniquenessRatio(2);
         stereo.compute(m1, m2, diffMat);
 
-        Visualizer.setImage(Convertor.Mat2Img2(diffMat), "stereo diff", 1,3);
+        Visualizer.setImage(Convertor.Mat2Img2(diffMat), "stereo diff", 1, 3);
 
         if (ready) {
             for (int i = 0; i < 3; i++) {
                 LongSpike spike = new LongSpike(Modalities.VISUAL, new Location(i, 1), Convertor.MatToMatrix(transMat[i]), 0);
-                LongSpike spike2 = new LongSpike(Modalities.VISUAL, new Location(i+3, 1), Convertor.MatToMatrix(transMat2[i]), 0);
+                LongSpike spike2 = new LongSpike(Modalities.VISUAL, new Location(i + 3, 1), Convertor.MatToMatrix(transMat2[i]), 0);
                 try {
                     send(AreaNames.LGNSimpleOpponentCells, spike.getByteArray());
                     send(AreaNames.LGNSimpleOpponentCells, spike2.getByteArray());
@@ -227,10 +227,9 @@ public class RetinaProccess extends Activity {
         LinkedList<Mat> LMS = new LinkedList<>();
         Core.split(mat, LMS);
 
-        //Retinal Filters 
-        LMM(LMS, retinaOutput[0]);
-        SMLPM(LMS, retinaOutput[1]);
-        LPM(LMS, retinaOutput[2]);
+        retinaOutput[0] = LMS.get(0);
+        retinaOutput[1] = LMS.get(1);
+        retinaOutput[2] = LMS.get(2);
 
         return retinaOutput;
     }
@@ -274,58 +273,5 @@ public class RetinaProccess extends Activity {
         dest.put(0, 0, dstData);
     }
 
-    /**
-     * retinal filter LMM
-     *
-     * @param LMS
-     * @param dst
-     */
-    private void LMM(LinkedList<Mat> LMS, Mat dst) {
-        int rows = LMS.getFirst().rows();
-        int cols = LMS.getFirst().cols();
-        Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
-        Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
-
-        Mat upperKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.UPPER_KERNEL_SIGMA);
-        Mat lowerKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.LOWER_KERNEL_SIGMA);
-
-        Imgproc.sepFilter2D(LMS.get(0), LG, -1, upperKernel, upperKernel);
-        Imgproc.sepFilter2D(LMS.get(1), MG, -1, lowerKernel, lowerKernel);
-
-        Core.addWeighted(LG, this.LMM_ALPHA, MG, -this.LMM_BETA, 0, dst);
-    }
-
-    /**
-     * retinal filter SMLPM
-     *
-     * @param LMS
-     * @param dst
-     */
-    private void SMLPM(LinkedList<Mat> LMS, Mat dst) {
-        int rows = LMS.getFirst().rows();
-        int cols = LMS.getFirst().cols();
-        Mat S = new Mat(rows, cols, CvType.CV_32FC1);
-        Mat LPM = new Mat(rows, cols, CvType.CV_32FC1);
-
-        Mat upperKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.UPPER_KERNEL_SIGMA);
-        Mat lowerKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.LOWER_KERNEL_SIGMA);
-
-        Core.addWeighted(LMS.get(0), this.SMLPM_GAMMA, LMS.get(1), this.SMLPM_DELTA, 0, LPM);
-        Imgproc.sepFilter2D(LMS.get(2), S, -1, upperKernel, upperKernel);
-
-        Imgproc.sepFilter2D(LPM, LPM, -1, lowerKernel, lowerKernel);
-
-        Core.addWeighted(S, this.SMLPM_ALPHA, LPM, -this.SMLPM_BETA, 0, dst);
-    }
-
-    /**
-     * Retinal filter LPM
-     *
-     * @param LMS
-     * @param dst
-     */
-    private void LPM(LinkedList<Mat> LMS, Mat dst) {
-        Core.addWeighted(LMS.get(0), this.LPM_ALPHA, LMS.get(1), this.LPM_BETA, 0, dst);
-    }
 
 }

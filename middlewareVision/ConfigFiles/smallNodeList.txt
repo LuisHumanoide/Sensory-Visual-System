@@ -19,6 +19,6 @@ V2CornerMotion false
 V1BinocularSimpleCells true
 MTComponentCells false
 V4SimpleShapeCells false
-V4Color false
+V4Color true
 V1DoubleOpponent true
 V3DisparityRange true

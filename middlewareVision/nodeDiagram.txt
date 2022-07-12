@@ -61,11 +61,11 @@ V3DisparityRange [ label="V3DisparityRange" shape="octagon" fillcolor="snow1" st
  ]
 V4 [ label="V4" shape="circle" fillcolor="azure3" style="filled"
  ]
-V4Contour [ label="V4Contour" shape="octagon" fillcolor="snow1" style="solid"
- ]
 V4Color [ label="V4Color" shape="octagon" fillcolor="snow1" style="solid"
  ]
-V4ShapeActivationNode [ label="V4ShapeActivationNode" shape="octagon" fillcolor="snow1" style="solid"
+V4SimpleShapeCells [ label="V4SimpleShapeCells" shape="octagon" fillcolor="snow1" style="solid"
+ ]
+V4SimpleShapeScaleInv [ label="V4SimpleShapeScaleInv" shape="octagon" fillcolor="snow1" style="solid"
  ]
 
 
@@ -99,8 +99,8 @@ V2 -- V2CornerMotion;
 
 V3 -- V3DisparityRange;
 
-V4 -- V4Contour;
 V4 -- V4Color;
-V4 -- V4ShapeActivationNode;
+V4 -- V4SimpleShapeCells;
+V4 -- V4SimpleShapeScaleInv;
 
 }

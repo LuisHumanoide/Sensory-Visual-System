@@ -45,9 +45,9 @@ V3DisparityRange [ shape="rectangle", fillcolor="aliceblue", style="filled", fon
  ] 
 V4Color [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
  ] 
-V4Contour [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+V4SimpleShapeCells [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
  ] 
-V4ShapeActivationNode [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
+V4SimpleShapeScaleInv [ shape="rectangle", fillcolor="aliceblue", style="filled", fontname = "cambria"
  ] 
 
 
@@ -70,13 +70,12 @@ V1DoubleOpponent -> V4Color
 V1DoubleOpponent -> V1SimpleCells 
 V1HyperComplex -> V2CurvatureCells 
 V1HyperComplex -> V2AngularCells 
-V1HyperComplex -> V4Contour 
 V1MotionCellsNew -> MTComponentCells 
 V1SimpleCells -> V1ComplexCells 
 V1SimpleCells -> V1BinocularSimpleCells 
 V2AngularCells -> V2CornerMotion 
-V2AngularCells -> V4ShapeActivationNode 
-V2CurvatureCells -> V4ShapeActivationNode 
+V2AngularCells -> V4SimpleShapeCells 
+V4SimpleShapeCells -> V4SimpleShapeScaleInv 
 
 subgraph clusterAlert {
  label="Alert"
@@ -187,9 +186,9 @@ fillcolor="lightblue"
 style = dashed
 fontname = "cambria"
 
-V4Contour
 V4Color
-V4ShapeActivationNode
+V4SimpleShapeCells
+V4SimpleShapeScaleInv
 }
 
 }

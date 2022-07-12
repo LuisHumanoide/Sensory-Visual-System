@@ -143,8 +143,8 @@ public class LGNSimpleOpponentCells extends Activity {
                 mostrar las imagenes procesadas
                      */
                     for (int i = 0; i < LMSConesL.length; i++) {
-                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "dkl L" + i, 2, i);
-                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "dkl R" + i, 3, i);
+                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "DKL Left" + i, 2, i);
+                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "DKL Right" + i, 3, i);
                         //mandar los spikes de salida a las celulas simples y doble oponentes de V1
                         LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, -1), 0, 0);
                         //send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
@@ -200,15 +200,19 @@ public class LGNSimpleOpponentCells extends Activity {
         Mat[] DKL = {new Mat(), new Mat(), new Mat()};
 
         //LMS to DKL
+        
+        //D=L-M
         LMM(LMSCones, DKL[0]);
+        //K=S-(L+M)
         SMLPM(LMSCones, DKL[1]);
+        //L=L+M
         LPM(LMSCones, DKL[2]);
 
         return DKL;
     }
 
     /**
-     * LMM
+     * L-M
      *
      * @param LMS
      * @param dst
@@ -229,7 +233,7 @@ public class LGNSimpleOpponentCells extends Activity {
     }
 
     /**
-     * SMLPM
+     * S-(L+M)
      *
      * @param LMS
      * @param dst
@@ -252,7 +256,7 @@ public class LGNSimpleOpponentCells extends Activity {
     }
 
     /**
-     * LPM
+     * L+M
      *
      * @param LMS
      * @param dst
