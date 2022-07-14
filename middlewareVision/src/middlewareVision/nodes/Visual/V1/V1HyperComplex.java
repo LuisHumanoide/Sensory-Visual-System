@@ -141,7 +141,7 @@ public class V1HyperComplex extends Activity {
         for (int i = 0; i < V1Bank.HCC[x1][x2].Cells.length; i++) {
             for (int j = 0; j < Config.gaborOrientations; j++) {
                 float angle = j * inc;
-                V1Bank.HCC[x1][x2].Cells[i][j].mat = Functions.filter(cell[j].mat, SpecialKernels.rotateKernelRadians(V1Bank.HCC[x1][x2].filters[i], angle));
+                V1Bank.HCC[x1][x2].Cells[i][j].mat = Functions.filter(cell[j].mat, SpecialKernels.rotateKernelRadians(V1Bank.HCC[x1][x2].filters[i], -angle));
             }
         }
     }

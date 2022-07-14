@@ -2,10 +2,10 @@ V2CurvatureCells false
 FeedbackProccess false
 AlertProcess false
 V2AngularCells false
-V1BinocularMergeProcess true
+V1BinocularMergeProcess false
 RetinaProccess true
 BasicMotion false
-V1BinocularComplexCells true
+V1BinocularComplexCells false
 V1MotionCellsNew false
 LGNSimpleOpponentCells true
 MSTPolarCells false
@@ -16,9 +16,9 @@ V1HyperComplex true
 V4SimpleShapeScaleInv false
 MSTTemplateCells false
 V2CornerMotion false
-V1BinocularSimpleCells true
+V1BinocularSimpleCells false
 MTComponentCells false
 V4SimpleShapeCells false
 V4Color true
 V1DoubleOpponent true
-V3DisparityRange true
+V3DisparityRange false

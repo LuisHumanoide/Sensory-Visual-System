@@ -31,13 +31,13 @@ public class V1Bank {
     public static HypercomplexCells[][] HCC;
     public static DoubleOpponentCells[][] DOC;
     public static MotionCellsV1[][] MC;
-    
+
     //[frequency][disparity index]
     public static StereoscopicCells[][] SSC;
-    
+
     //[disparity index]
     public static StereoscopicMergedCells[] SMC;
-    
+
     static String GaborFile = "RFV1//Gabor//filters.txt";
     static String DisparityFile = "Disparities.txt";
     static String HCfiles = "RFV1HC//";
@@ -46,34 +46,34 @@ public class V1Bank {
      * Initialize all cells from V1
      */
     public static void initializeCells() {
-        
-        String gaborLines[] = FileUtils.fileLines(GaborFile);       
+
+        String gaborLines[] = FileUtils.fileLines(GaborFile);
         Config.gaborBanks = gaborLines.length;
-        
+
         String disparities[] = FileUtils.fileLines(DisparityFile);
-        
+
         File hcfolder = new File(HCfiles);
         File hcfiles[] = hcfolder.listFiles();
         Config.HCfilters = hcfiles.length;
-        Config.nDisparities=disparities.length;
-        
+        Config.nDisparities = disparities.length;
+
         //reserve memory for cell banks
         SC = new SimpleCells[gaborLines.length][2];
         CC = new ComplexCells[gaborLines.length][2];
         HCC = new HypercomplexCells[gaborLines.length][2];
         DOC = new DoubleOpponentCells[1][2];
         MC = new MotionCellsV1[gaborLines.length][2];
-        
+
         //reserve memory for stereoscopic cell banks
         SSC = new StereoscopicCells[gaborLines.length][disparities.length];
         SMC = new StereoscopicMergedCells[disparities.length];
-        
+
         //Simple Mat to compute the motion difference in the retina
-        motionDiff=new Mat();
+        motionDiff = new Mat();
 
         /*
         Creating the double opponent cells banks
-        */
+         */
         for (int i2 = 0; i2 < 1; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {
                 DOC[i2][i3] = new DoubleOpponentCells(Config.gaborOrientations);
@@ -82,7 +82,7 @@ public class V1Bank {
 
         /*
         Creating the V1 cells
-        */
+         */
         for (int i2 = 0; i2 < gaborLines.length; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {
                 SC[i2][i3] = new SimpleCells(Config.gaborOrientations);
@@ -92,14 +92,14 @@ public class V1Bank {
                 CC[i2][i3].setSimpleCells(SC[i2][i3]);
                 MC[i2][i3].setPrevious(CC[i2][i3].Cells);
             }
-            for(int i=0;i<disparities.length;i++){
-                SSC[i2][i]=new StereoscopicCells(Integer.parseInt(disparities[i]),SC[i2]);
-                if(i2==0){
+            for (int i = 0; i < disparities.length; i++) {
+                SSC[i2][i] = new StereoscopicCells(Integer.parseInt(disparities[i]), SC[i2]);
+                if (i2 == 0) {
                     SMC[i] = new StereoscopicMergedCells(Integer.parseInt(disparities[i]));
                 }
             }
-        }   
-        
+        }
+
         //Initialize the cells from area MT
         MTBank.initializeComponentCells(MC[0][0].cells.length, MC[0][0].cells[0].length, Config.motionWidth);
 
@@ -135,8 +135,14 @@ public class V1Bank {
                     Double.parseDouble(values[5]));
             for (int j = 0; j < eyes; j++) {
                 for (int k = 0; k < Config.gaborOrientations; k++) {
+                    double angle = (Math.PI / (double) Config.gaborOrientations) * k;
+                    /*
                     SC[i][j].evenFilter[k] = SpecialKernels.rotateKernelRadians(evenFilter.makeFilter(), k * SpecialKernels.inc);
                     SC[i][j].oddFilter[k] = SpecialKernels.rotateKernelRadians(oddFilter.makeFilter(), k * SpecialKernels.inc);
+                    */
+                    SC[i][j].evenFilter[k] = evenFilter.makeFilter(angle);
+                    SC[i][j].oddFilter[k] = oddFilter.makeFilter(angle);
+                    
                     SC[i][j].geven = evenFilter;
                     SC[i][j].godd = oddFilter;
 

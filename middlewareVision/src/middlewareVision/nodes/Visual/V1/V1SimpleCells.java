@@ -10,13 +10,16 @@ import middlewareVision.config.AreaNames;
 import gui.Visualizer;
 import kmiddle2.nodes.activities.Activity;
 import org.opencv.core.Core;
+import static org.opencv.core.CvType.CV_64F;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
 import utils.Functions;
 import utils.LongSpike;
+import utils.MatrixUtils;
 import utils.numSync;
 
 /**
@@ -61,12 +64,15 @@ public class V1SimpleCells extends Activity {
             receive spike
                  */
                 LongSpike spike = new LongSpike(data);
+                Mat LCell=MatrixUtils.sum(new Mat[]{V1Bank.DOC[0][0].Cells[0].mat, V1Bank.DOC[0][0].Cells[1].mat, V1Bank.DOC[0][0].Cells[2].mat}, new double[]{0,0,1});
+                Mat RCell=MatrixUtils.sum(new Mat[]{V1Bank.DOC[0][1].Cells[0].mat, V1Bank.DOC[0][1].Cells[1].mat, V1Bank.DOC[0][1].Cells[2].mat}, new double[]{0,0,1});
+                
 
                 if (spike.getModality() == Modalities.VISUAL) {
 
                     //normalizeInput(2);
                     
-                    convolveSimpleCells(V1Bank.DOC[0][0].Cells[2].mat, V1Bank.DOC[0][1].Cells[2].mat);
+                    convolveSimpleCells(LCell, RCell);
 
 
                     visualize();
@@ -165,8 +171,8 @@ public class V1SimpleCells extends Activity {
 
     void convolve(int x1, int x2, Mat src) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
-            V1Bank.SC[x1][x2].Even[i].mat = Functions.filter(src, V1Bank.SC[x1][x2].evenFilter[i]);
-            V1Bank.SC[x1][x2].Odd[i].mat = Functions.filter(src, V1Bank.SC[x1][x2].oddFilter[i]);
+            V1Bank.SC[x1][x2].Even[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].evenFilter[i],0.2);
+            V1Bank.SC[x1][x2].Odd[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].oddFilter[i],0.2);
         }
     }
 

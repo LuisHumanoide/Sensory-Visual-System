@@ -11,6 +11,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_32F;
 import static org.opencv.core.CvType.CV_32FC1;
+import static org.opencv.core.CvType.CV_32FC3;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -41,6 +42,18 @@ public class Functions {
             Core.divide(filt, Scalar.all(max), filt);
         }
         Imgproc.threshold(filt, filt, 1, 0, Imgproc.THRESH_TRUNC);
+        return filt;
+    }
+    
+    public static Mat filterV1(Mat img, Mat filter, double thresh) {
+        Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
+        img.convertTo(img.clone(), CV_32F);
+        Imgproc.filter2D(img, filt, CV_32F, filter);
+        double max = Core.minMaxLoc(filt).maxVal;
+        if (max > 1) {
+            Core.divide(filt, Scalar.all(max), filt);
+        }
+        Imgproc.threshold(filt, filt, thresh, 1, Imgproc.THRESH_TOZERO);
         return filt;
     }
     
