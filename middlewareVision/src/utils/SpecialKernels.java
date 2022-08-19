@@ -99,7 +99,7 @@ public class SpecialKernels {
         Mat baseKernel = getCompositeRF(path + "/" + file + ".txt");
         for (int i = 0; i < Config.gaborOrientations * 2; i++) {
             double angle = (180 / Config.gaborOrientations) * i;
-            double rangle = Math.toRadians(angle);
+            double rangle = -Math.toRadians(angle);
             v2Kernels[i] = SpecialKernels.rotateKernelRadians(baseKernel, rangle);
         }
     }

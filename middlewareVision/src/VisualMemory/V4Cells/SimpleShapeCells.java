@@ -94,7 +94,7 @@ public class SimpleShapeCells {
 
             for (int i = 0; i < filter.size(); i++) {
                 //create a matrix from the filter parameters
-                matArray[i] = filter.get(i).makeFilter();
+                matArray[i] = filter.get(i).makeFilter2();
             }
             //if the size of the list is >1, a combined filter is created, if is 1, the combined filter is the same of the original
             Mat combinedFilter = MatrixUtils.sum(matArray, 1, 0);

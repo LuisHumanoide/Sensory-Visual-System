@@ -118,11 +118,13 @@ public class V4SimpleShapeCells extends Activity {
             }
             //Performs the filter
             mArray[i] = Functions.filter(keyMat, V4Bank.SSC[index][eye].filterMap.get(key));
+            //mArray[i] = keyMat.clone();
             i++;
         }
         //Process of combination and obtaining the activation
         //First a weighted sum is performed
         V4Bank.SSC[index][eye].cell.mat = MatrixUtils.sum(mArray, (double) (1 / (double) keys.size()), 0);
+        //4Bank.SSC[index][eye].cell.mat = MatrixUtils.sum(mArray, 1, 0);
         //normalization
         double max = Core.minMaxLoc(V4Bank.SSC[index][eye].cell.mat).maxVal;        
         if (max > 1) {
@@ -130,6 +132,7 @@ public class V4SimpleShapeCells extends Activity {
         }
         //the activations are raised to a pow
         Core.pow(V4Bank.SSC[index][eye].cell.mat, 2, V4Bank.SSC[index][eye].cell.mat);
+        //Core.multiply(V4Bank.SSC[index][eye].cell.mat, Scalar.all(5), V4Bank.SSC[index][eye].cell.mat);
     }
 
 }

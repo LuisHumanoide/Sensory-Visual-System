@@ -61,6 +61,10 @@ public class GaussianFilter {
     public Mat makeFilter(){
         return SpecialKernels.getAdvencedGauss(new Size(size,size), amp, -py+size/2, -px+size/2, rx, ry, Math.toRadians(angle+90));
     }
+    
+    public Mat makeFilter2(){
+        return SpecialKernels.getAdvencedGauss(new Size(size,size), amp, -py+size/2, px+size/2, rx, ry, Math.toRadians(angle+90));
+    }
 
     public double getRx() {
         return rx;
