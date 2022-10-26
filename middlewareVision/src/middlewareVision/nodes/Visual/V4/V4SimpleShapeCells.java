@@ -1,5 +1,6 @@
 package middlewareVision.nodes.Visual.V4;
 
+import VisualMemory.LGNCells.LGNBank;
 import VisualMemory.LabeledCells;
 import VisualMemory.V4Cells.V4Bank;
 import spike.Location;
@@ -123,7 +124,8 @@ public class V4SimpleShapeCells extends Activity {
         }
         //Process of combination and obtaining the activation
         //First a weighted sum is performed
-        V4Bank.SSC[index][eye].cell.mat = MatrixUtils.sum(mArray, (double) (1 / (double) keys.size()), 0);
+       // V4Bank.SSC[index][eye].cell.mat = MatrixUtils.sum(mArray, (double) (1 / (double) keys.size()), 0);
+        V4Bank.SSC[index][eye].cell.mat = MatrixUtils.multiply(mArray);
         //4Bank.SSC[index][eye].cell.mat = MatrixUtils.sum(mArray, 1, 0);
         //normalization
         double max = Core.minMaxLoc(V4Bank.SSC[index][eye].cell.mat).maxVal;        
@@ -131,7 +133,9 @@ public class V4SimpleShapeCells extends Activity {
             Core.divide(V4Bank.SSC[index][eye].cell.mat, Scalar.all(max), V4Bank.SSC[index][eye].cell.mat);
         }
         //the activations are raised to a pow
-        Core.pow(V4Bank.SSC[index][eye].cell.mat, 2, V4Bank.SSC[index][eye].cell.mat);
+        Core.pow(V4Bank.SSC[index][eye].cell.mat, 1, V4Bank.SSC[index][eye].cell.mat);
+        Core.sqrt(V4Bank.SSC[index][eye].cell.mat, V4Bank.SSC[index][eye].cell.mat);
+        
         //Core.multiply(V4Bank.SSC[index][eye].cell.mat, Scalar.all(5), V4Bank.SSC[index][eye].cell.mat);
     }
 

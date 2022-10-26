@@ -1,5 +1,6 @@
 package middlewareVision.nodes.Visual.V4;
 
+import VisualMemory.LGNCells.LGNBank;
 import VisualMemory.V4Cells.V4Bank;
 import spike.Location;
 import generator.ProcessList;
@@ -8,6 +9,7 @@ import kmiddle2.nodes.activities.Activity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
+import org.opencv.core.Core;
 import spike.Modalities;
 import utils.LongSpike;
 import utils.MatrixUtils;
@@ -77,6 +79,7 @@ public class V4SimpleShapeScaleInv extends Activity {
      */
     void mergeActivationOneCell(int index, int eye) {
             V4Bank.SMC[index][eye].cell.mat = MatrixUtils.maxSum(V4Bank.SMC[index][eye].cell.previous);
+            Core.addWeighted(V4Bank.SMC[index][eye].cell.mat,0.8, LGNBank.SOC[0][0].Cells[0].mat, 0.2,0,V4Bank.SMC[index][eye].cell.mat);
     }
 
 }
