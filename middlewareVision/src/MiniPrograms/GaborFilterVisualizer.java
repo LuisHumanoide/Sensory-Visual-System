@@ -168,6 +168,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         filterSum = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gabor Visualization");
@@ -351,11 +352,19 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         filterSum.setText("[]");
         jPanel1.add(filterSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 389, -1, -1));
 
+        jButton6.setText("LatexCopy");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 420, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -548,6 +557,15 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         paste();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        String cString="\\sigma="+String.format("%.2f",Float.parseFloat(sigmaField.getText()))+",\\lambda="+String.format("%.2f",Float.parseFloat(lambdaField.getText()))+
+                ",\\gamma="+String.format("%.2f",Float.parseFloat(gammaField.getText()))+",\\psi="+String.format("%.2f",Float.parseFloat(psiField.getText()));
+        StringSelection stringSelection = new StringSelection(cString);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     void paste() {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
@@ -636,6 +654,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
