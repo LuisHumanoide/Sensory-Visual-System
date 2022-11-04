@@ -3,6 +3,7 @@ package middlewareVision.nodes.Visual.V4;
 import VisualMemory.V1Cells.V1Bank;
 import generator.ProcessList;
 import gui.Visualizer;
+import java.awt.Color;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
 import java.util.logging.Level;
@@ -95,13 +96,22 @@ public class V4Color extends Activity {
                     K = -1;
                 }
                 int[] colorLabel = {getConcentricCircleLabel(D, K), getAngleLabel(D, K), getHeightLabel(L)};
-                matLabel[eye].put(j, i, new byte[]{(byte) (getConcentricCircleLabel(D, K) * (255 / Config.NoConcentricCircles)),
-                    (byte) (getAngleLabel(D, K) * (255 / Config.NoRadialDivisions)), (byte) (getHeightLabel(L) * (255 / Config.NoHeightDivisions))});
+                
+                float angle=(float) ((float)getAngleLabel(D, K)/(float)Config.NoRadialDivisions)-0.25f;
+                float radial=(float) ((float)getConcentricCircleLabel(D, K)/(float)Config.NoConcentricCircles);
+                float h=(float) ((float)getHeightLabel(L)/(float)Config.NoHeightDivisions);
+                
+                Color color = Color.getHSBColor(angle,radial,h);
+                
+                matLabel[eye].put(j, i, new byte[]{(byte) color.getRed(),
+                    (byte) color.getGreen(), (byte) color.getBlue()});
+                
                 labels.setLabel(i, j, colorLabel);
             }
         }
         return labels;
     }
+
 
     public String assignColorLabel(double D, double K) {
         String colorLabel;

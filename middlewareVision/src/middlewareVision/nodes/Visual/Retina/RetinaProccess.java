@@ -36,43 +36,9 @@ import utils.LongSpike;
  */
 public class RetinaProccess extends Activity {
 
-    /**
-     * *************************************************************************
-     * CONSTANTES
-     * *************************************************************************
-     */
     private static final float[][] BGR_TO_LMS = {{0.4275f, 0.4990f, 0.0472f},
     {0.2206f, 0.7030f, 0.0918f},
     {0.0270f, 0.0707f, 0.9911f}};
-
-    private static final int KERNEL_SIZE = 3;
-
-    private static final float UPPER_KERNEL_SIGMA = 0.25f;
-    private static final float LOWER_KERNEL_SIGMA = 1.25f;
-
-    //private static final float LMM_ALPHA = 1.6f;
-    //private static final float LMM_BETA = 1.5f;
-    private static final float LMM_ALPHA = 3.2f;
-    private static final float LMM_BETA = 3f;
-
-    //private static final float SMLPM_ALPHA = 0.7f;
-    //private static final float SMLPM_BETA = 0.6f;
-    private static final float SMLPM_ALPHA = 1.2f;
-    private static final float SMLPM_BETA = 1.4f;
-    private static final float SMLPM_GAMMA = 0.6f;
-    private static final float SMLPM_DELTA = 0.4f;
-
-    private static final float LPM_ALPHA = 0.6f;
-    private static final float LPM_BETA = 0.4f;
-
-    private final String DIRECTORY = "SO/";
-
-    private final String LMM_FILE_NAME = "L-M";
-    private final String SMLPM_FILE_NAME = "S-L+M";
-    private final String LPM_FILE_NAME = "L+M";
-
-    private final String IMAGE_EXTENSION = ".jpg";
-    private final String TEXT_EXTENSION = ".txt";
 
     /**
      * *************************************************************************
@@ -100,11 +66,6 @@ public class RetinaProccess extends Activity {
      */
     private boolean start = false;
 
-    /**
-     * *************************************************************************
-     * CONSTRUCTOR Y METODOS PARA RECIBIR
-     * *************************************************************************
-     */
     GUI gui;
 
     public RetinaProccess() {
@@ -113,9 +74,7 @@ public class RetinaProccess extends Activity {
         this.namer = AreaNames.class;
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
 
-        //frame.setSize(Config.width, Config.heigth+50);
         initFrames(3, 1);
-//        Controls.setRet(this);
         gui = new GUI(this);
         gui.setVisible(true);
         thread.start();
@@ -166,11 +125,13 @@ public class RetinaProccess extends Activity {
         Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "L L", 0, 0);
         Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "M L", 0, 1);
         Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "S L", 0, 2);
+        Visualizer.setImage(img, "Original L", 0, 3);
 
         Mat transMat2[] = transduction(img2);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "L R", 1, 0);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[1]), "M R", 1, 1);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[2]), "S R", 1, 2);
+        Visualizer.setImage(img2, "Original R", 1, 3);
 
         Mat m1 = transMat[2].clone();
         Mat m2 = transMat2[2].clone();
@@ -183,7 +144,7 @@ public class RetinaProccess extends Activity {
         stereo.setUniquenessRatio(2);
         stereo.compute(m1, m2, diffMat);
 
-        Visualizer.setImage(Convertor.Mat2Img2(diffMat), "stereo diff", 1, 3);
+        Visualizer.setImage(Convertor.Mat2Img2(diffMat), "stereo diff", 1, 4);
 
         if (ready) {
             for (int i = 0; i < 3; i++) {

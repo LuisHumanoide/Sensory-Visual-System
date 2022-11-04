@@ -64,18 +64,17 @@ public class V1SimpleCells extends Activity {
             receive spike
                  */
                 LongSpike spike = new LongSpike(data);
-                Mat LCell=MatrixUtils.sum(new Mat[]{V1Bank.DOC[0][0].Cells[0].mat, V1Bank.DOC[0][0].Cells[1].mat, V1Bank.DOC[0][0].Cells[2].mat}, new double[]{0,0,1});
-                Mat RCell=MatrixUtils.sum(new Mat[]{V1Bank.DOC[0][1].Cells[0].mat, V1Bank.DOC[0][1].Cells[1].mat, V1Bank.DOC[0][1].Cells[2].mat}, new double[]{0,0,1});
-                
+                Mat LCell = MatrixUtils.sum(new Mat[]{V1Bank.DOC[0][0].Cells[0].mat, V1Bank.DOC[0][0].Cells[1].mat, V1Bank.DOC[0][0].Cells[2].mat}, new double[]{0, 0, 1});
+                Mat RCell = MatrixUtils.sum(new Mat[]{V1Bank.DOC[0][1].Cells[0].mat, V1Bank.DOC[0][1].Cells[1].mat, V1Bank.DOC[0][1].Cells[2].mat}, new double[]{0, 0, 1});
 
                 if (spike.getModality() == Modalities.VISUAL) {
 
                     //normalizeInput(2);
-                    
                     convolveSimpleCells(LCell, RCell);
 
-
                     visualize();
+                    Visualizer.addLimit("SCinf", 6);
+                    Visualizer.addLimit("SCsup", 4 * (Config.gaborBanks - 1) + 10);
 
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
 
@@ -89,11 +88,12 @@ public class V1SimpleCells extends Activity {
                 }
 
                 if (spike.getModality() == Modalities.ATTENTION) {
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
+                    Location l = (Location) spike.getLocation();
+                    if (l.getValues()[0] == 0) {
+                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                         send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
-                        visualize();
                     }
+                    visualize();
                 }
             }
         } catch (Exception ex) {
@@ -123,23 +123,20 @@ public class V1SimpleCells extends Activity {
                 }
             }
         }
-        Visualizer.addLimit("SCinf", 6);
-        Visualizer.addLimit("SCsup", 4 * (Config.gaborBanks - 1) + 10);
     }
 
     void normalizeInput(int index) {
         double maxx = 0;
         double maxL;
         double maxR;
-        maxL=Core.minMaxLoc(V1Bank.DOC[0][0].Cells[index].mat).maxVal;
-        maxR=Core.minMaxLoc(V1Bank.DOC[0][1].Cells[index].mat).maxVal;
-        if(maxL>maxR){
-            maxx=maxL;
+        maxL = Core.minMaxLoc(V1Bank.DOC[0][0].Cells[index].mat).maxVal;
+        maxR = Core.minMaxLoc(V1Bank.DOC[0][1].Cells[index].mat).maxVal;
+        if (maxL > maxR) {
+            maxx = maxL;
+        } else {
+            maxx = maxR;
         }
-        else{
-            maxx=maxR;
-        }
-        if(maxx>1){
+        if (maxx > 1) {
             Core.divide(V1Bank.DOC[0][0].Cells[index].mat, Scalar.all(maxx), V1Bank.DOC[0][0].Cells[index].mat);
             Core.divide(V1Bank.DOC[0][1].Cells[index].mat, Scalar.all(maxx), V1Bank.DOC[0][1].Cells[index].mat);
         }
@@ -171,8 +168,8 @@ public class V1SimpleCells extends Activity {
 
     void convolve(int x1, int x2, Mat src) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
-            V1Bank.SC[x1][x2].Even[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].evenFilter[i],0.2);
-            V1Bank.SC[x1][x2].Odd[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].oddFilter[i],0.2);
+            V1Bank.SC[x1][x2].Even[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].evenFilter[i], 0.2);
+            V1Bank.SC[x1][x2].Odd[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].oddFilter[i], 0.2);
         }
     }
 

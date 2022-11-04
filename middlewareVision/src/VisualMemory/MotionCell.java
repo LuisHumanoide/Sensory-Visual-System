@@ -79,7 +79,7 @@ public class MotionCell extends Cell {
         if (timeCount == dt) {
             timeCount = 0;
             addDelay(mat.clone());
-            mat1st = Functions.stage1MotionProcess(matT, this.dx, (double) ((Math.PI / Config.gaborOrientations) * id));
+            mat1st = Functions.stage1MotionProcess(matT, this.dx, -(double) ((Math.PI / Config.gaborOrientations) * id));
         }
         timeCount++;
     }

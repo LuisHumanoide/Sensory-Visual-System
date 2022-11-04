@@ -53,11 +53,17 @@ public class V1ComplexCells extends Activity {
 
                 }
                 if (spike.getModality() == Modalities.ATTENTION) {
-                    for (int i = 0; i < Config.gaborOrientations; i++) {
-                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(i), 0, 0);
+                    Location l = (Location) spike.getLocation();
+                    if (l.getValues()[0] == 0) {
+                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                         send(AreaNames.V1HyperComplex, sendSpike1.getByteArray());
-                        visualize();
                     }
+                    /*
+                    Send an attentional spike to the previous nodes
+                     */
+                    LongSpike sendSpike2 = new LongSpike(Modalities.ATTENTION, new Location(1), 0, 0);
+                    send(AreaNames.V1SimpleCells, sendSpike2.getByteArray());
+                    visualize();
                 }
 
             } catch (Exception ex) {

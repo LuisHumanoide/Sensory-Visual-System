@@ -64,7 +64,7 @@ public class FeedbackProccess extends Activity {
     //Number of eyes
     int numEyes = 2;
     //Feedback ratio for predecessors when feedback is propagated backward
-    double feedbackRatio=0.2;
+    double feedbackRatio=0.3;
 
     /**
      * Performs feedback process for all single cells of V1, for all orientations.<br>

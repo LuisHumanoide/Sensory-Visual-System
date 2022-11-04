@@ -60,11 +60,17 @@ public class V1HyperComplex extends Activity {
                     send(AreaNames.V2AngularCells, sendSpike.getByteArray());
                 }
                 if (spike.getModality() == Modalities.ATTENTION) {
-                    for (int index = 0; index < Config.gaborOrientations; index++) {
-                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(index), 0, 0);
+                    Location l = (Location) spike.getLocation();
+                    if (l.getValues()[0] == 0) {
+                        LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                         send(AreaNames.V2AngularCells, sendSpike1.getByteArray());
-                        visualize();
                     }
+                    /*
+                    Send an attentional spike to the previous nodes
+                     */
+                    LongSpike sendSpike2 = new LongSpike(Modalities.ATTENTION, new Location(1), 0, 0);
+                    send(AreaNames.V1ComplexCells, sendSpike2.getByteArray());
+                    visualize();
                 }
 
             } catch (Exception ex) {
@@ -121,8 +127,9 @@ public class V1HyperComplex extends Activity {
 
     /**
      * Merge the hyper complex cell in one map for each orientation
+     *
      * @param x1
-     * @param x2 
+     * @param x2
      */
     void mergeHCC(int x1, int x2) {
         for (int j = 0; j < Config.gaborOrientations; j++) {
@@ -141,6 +148,7 @@ public class V1HyperComplex extends Activity {
         for (int i = 0; i < V1Bank.HCC[x1][x2].Cells.length; i++) {
             for (int j = 0; j < Config.gaborOrientations; j++) {
                 float angle = j * inc;
+                V1Bank.HCC[x1][x2].Cells[i][j].setPrevious(V1Bank.CC[x1][x2].Cells[j]);
                 V1Bank.HCC[x1][x2].Cells[i][j].mat = Functions.filter(cell[j].mat, SpecialKernels.rotateKernelRadians(V1Bank.HCC[x1][x2].filters[i], -angle));
             }
         }

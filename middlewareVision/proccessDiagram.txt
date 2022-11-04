@@ -66,13 +66,16 @@ V1BinocularMergeProcess -> V3DisparityRange
 V1BinocularSimpleCells -> V1BinocularComplexCells 
 V1ComplexCells -> V1HyperComplex 
 V1ComplexCells -> V1MotionCellsNew 
+V1ComplexCells -> V1SimpleCells 
 V1DoubleOpponent -> V4Color 
 V1DoubleOpponent -> V1SimpleCells 
 V1HyperComplex -> V2CurvatureCells 
+V1HyperComplex -> V1ComplexCells 
 V1HyperComplex -> V2AngularCells 
 V1MotionCellsNew -> MTComponentCells 
 V1SimpleCells -> V1ComplexCells 
 V1SimpleCells -> V1BinocularSimpleCells 
+V2AngularCells -> V1HyperComplex 
 V2AngularCells -> V2CornerMotion 
 V2AngularCells -> V4SimpleShapeCells 
 V4SimpleShapeCells -> V4SimpleShapeScaleInv 

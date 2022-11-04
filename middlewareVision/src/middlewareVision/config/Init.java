@@ -1,6 +1,7 @@
 package middlewareVision.config;
 
 import VisualMemory.InitCellMemory;
+import com.sun.media.jfxmedia.logging.Logger;
 import generator.ProcessList;
 import gui.Visualizer;
 import kmiddle2.nodes.service.Igniter;
@@ -26,7 +27,7 @@ https://www.enmimaquinafunciona.com/pregunta/90466/como-clonar-git-repositorio-s
  */
 public class Init extends Igniter {
 
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
     private byte ENTITY_ID = 33;
 
     public Init() {
@@ -42,14 +43,15 @@ public class Init extends Igniter {
             MT.class.getName(),
             MST.class.getName(), 
             Alert.class.getName(),
-		V3.class.getName(),
+	    V3.class.getName(),
 		//@addNodes
         };
-
+        
         configuration.setLocal(true);
-        configuration.setDebug(!DEBUG);
-        configuration.setTCP();
+        configuration.setDebug(false);
+        configuration.setUDP();
         configuration.setEntityID(ENTITY_ID);
+        Logger.setLevel(Logger.OFF);
         Init.restart();
         setAreas(areaNames);
         run();

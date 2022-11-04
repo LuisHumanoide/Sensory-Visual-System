@@ -63,6 +63,9 @@ public class V2CurvatureCells extends Activity {
                 Visualizer.setImage(V2Bank.CurvC[k][1].composedCells[i].mat, "curvature R radius:" + V2Bank.CurvC[0][0].filters[i][0].radius, Visualizer.getRow("AC") + k * x1 + 2, i, "Curv");
             }
         }
+        /*for(int i=0;i<V2Bank.CurvC[0][0].getnAngleDivisions();i++){
+            isualizer.setImage(V2Bank.CurvC[0][0].cells[0][i].mat, "curvature L radius:" + V2Bank.CurvC[0][0].filters[0][0].radius, 18, i, "Curv");
+        }*/
     }
 
     /**
@@ -90,7 +93,7 @@ public class V2CurvatureCells extends Activity {
     void filterCurvatureCells(int x1, int x2, Mat src) {
         for (int i = 0; i < V2Bank.CurvC[x1][x2].getnCurvatures(); i++) {
             for (int j = 0; j < V2Bank.CurvC[x1][x2].getnAngleDivisions(); j++) {
-                V2Bank.CurvC[x1][x2].cells[i][j].mat = Functions.curvatureFiltering(src, V2Bank.CurvC[x1][x2].filters[i][j], true);
+                V2Bank.CurvC[x1][x2].cells[i][j].mat = Functions.curvatureFiltering(src, V2Bank.CurvC[x1][x2].filters[i][j], false);
                 if (x2 == 0) {
                     V2Bank.CurvC[x1][x2].cells[i][j].setLabel("c" + x1 + "-" + i + "" + j, 0);
                 }

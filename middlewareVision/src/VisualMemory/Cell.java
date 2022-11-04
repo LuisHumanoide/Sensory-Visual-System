@@ -37,6 +37,12 @@ public class Cell{
         return label;
     }
 
+    /**
+     * If the cell is labeled it is added to the LabeledCells map
+     * in order to be used in the simple shape selectivity model
+     * @param label
+     * @param eye 
+     */
     public void setLabel(String label, int eye) {
         this.label = label;
         if(eye==0){

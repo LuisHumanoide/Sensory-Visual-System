@@ -129,7 +129,7 @@ public class AttentionTrigger extends javax.swing.JFrame {
     private void V1SimpleCellsAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_V1SimpleCellsAllActionPerformed
 
         Mat filter = SpecialKernels.getGauss(V1Bank.SC[0][0].Even[0].mat.size(), 10, 10, 1);
-        proccess.addToV1SimpleCells(filter, 0.8, 0.2, null);
+        proccess.addToV1SimpleCells(filter, 0.8, 0.4, null);
     }//GEN-LAST:event_V1SimpleCellsAllActionPerformed
 
     /**
@@ -139,7 +139,7 @@ public class AttentionTrigger extends javax.swing.JFrame {
     private void V1ComplexCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_V1ComplexCellsActionPerformed
         // TODO add your handling code here:
         Mat filter = SpecialKernels.getGauss(V1Bank.SC[0][0].Even[0].mat.size(), 20, 10, 1);
-        proccess.addToV1ComplexCells(filter, 0.8, 0.2, null);
+        proccess.addToV1ComplexCells(filter, 0.8, 0.4, null);
     }//GEN-LAST:event_V1ComplexCellsActionPerformed
 
     /**
@@ -149,7 +149,7 @@ public class AttentionTrigger extends javax.swing.JFrame {
     private void V1HyperComplexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_V1HyperComplexActionPerformed
         // TODO add your handling code here:
         Mat filter = SpecialKernels.getGauss(V1Bank.SC[0][0].Even[0].mat.size(), 20, 10, 1);
-        proccess.addToV1HyperComplexCells(filter, 0.5, 0.3, null);
+        proccess.addToV1HyperComplexCells(filter, 0.5, 0.4, null);
     }//GEN-LAST:event_V1HyperComplexActionPerformed
 
     /**

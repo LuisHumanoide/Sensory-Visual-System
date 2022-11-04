@@ -53,6 +53,9 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
     int w=250;
     int h=250;
 
+    /**
+     * Constructor
+     */
     public GaborFilterVisualizer() {
         initComponents();
         modifyLabel();
@@ -81,6 +84,9 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Modify the label of the source image, the program allows to drop images 
+     */
     public void modifyLabel() {
         TransferHandler th = new TransferHandler() {
 
@@ -111,6 +117,12 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         originalImage.setTransferHandler(th);
     }
 
+    /**
+     * Convert the type of the image in order to allow the opencv operations
+     * @param eleScreenshot
+     * @param type
+     * @return 
+     */
     private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
         BufferedImage bi = new BufferedImage(eleScreenshot.getWidth(), eleScreenshot.getHeight(), type);
         Graphics g = bi.getGraphics();
@@ -119,6 +131,9 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         return bi;
     }
 
+    /**
+     * Performs the convolution between the source image and the Gabor filter
+     */
     void convolution() {
         Mat mImage = Convertor.bufferedImageToMat(imageFile);
         Mat fImage = new Mat();
@@ -385,6 +400,9 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     BufferedImage fimg;
 
+    /**
+     * Visualize the Gabor filter
+     */
     public void visualize() {
         gaborFilter = new Mat();
         int kSize = Integer.parseInt(kernelSize.getText());
@@ -399,6 +417,11 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         filterSum.setText(String.format("%.3f", Core.sumElems(gaborFilter).val[0]));
         loadImageFilter();
     }
+    
+    /**
+     * Modify the size of the Gabor filter image
+     * @param evt 
+     */
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged
         // TODO add your handling code here:
         zoom = jSlider1.getValue();
@@ -543,6 +566,10 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         saveValues();
     }//GEN-LAST:event_angleFieldKeyReleased
 
+    /**
+     * Copy the Gabor values in order to paste into the Gabor filter list
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         String cString = "♦♣♠ " + kernelSize.getText() + " " + sigmaField.getText() + " " + lambdaField.getText() + " "
@@ -557,15 +584,22 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         paste();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    /**
+     * Copy the Gabor filter values for be used in a latex document
+     * @param evt 
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         String cString="\\sigma="+String.format("%.2f",Float.parseFloat(sigmaField.getText()))+",\\lambda="+String.format("%.2f",Float.parseFloat(lambdaField.getText()))+
-                ",\\gamma="+String.format("%.2f",Float.parseFloat(gammaField.getText()))+",\\psi="+String.format("%.2f",Float.parseFloat(psiField.getText()));
+                ",\\gamma="+String.format("%.2f",Float.parseFloat(gammaField.getText()));
         StringSelection stringSelection = new StringSelection(cString);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    /**
+     * Paste values from the Gabor list
+     */
     void paste() {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
@@ -593,6 +627,9 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Load the image filter in toe filterImage label
+     */
     void loadImageFilter() {
         fimg = Convertor.ConvertMat2FilterImage(gaborFilter);
         fimg = Scalr.resize(fimg, Integer.parseInt(kernelSize.getText()) * zoom);
@@ -601,6 +638,9 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         //saveValues();
     }
 
+    /**
+     * Save the Gabor filter values in a file
+     */
     void saveValues() {
         String sValues = kernelSize.getText() + " " + sigmaField.getText() + " " + lambdaField.getText() + " "
                 + gammaField.getText() + " " + psiField.getText() + " " + thetaField.getText() + " " + angleField.getText();

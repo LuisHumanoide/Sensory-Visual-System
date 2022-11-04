@@ -157,7 +157,7 @@ public class MatrixUtils {
         }
         return mul;
     }
-
+          
     /**
      * sums an array of matrices with a constant weight ratio and bias value
      * @param mat array of matrixes
@@ -203,6 +203,25 @@ public class MatrixUtils {
         for (int i = 0; i < mat.length; i++) {
             Mat powm = new Mat();
             Core.pow(mat[i], pow, powm);
+            Core.addWeighted(sum, 1, powm, w, 0, sum);
+        }
+        Core.add(sum, Scalar.all(bias), sum);
+        return sum;
+    }
+    
+    /**
+     * sum an array of matrices with a constant weight ratio, a bias, and a power, before summing, the matrices are raised to a certain power.
+     * @param w constant weight
+     * @param bias bias value
+     * @param pow pow value
+     * @param mat matrix array
+     * @return the summation matrix
+     */
+    public static Mat sum(Cell[] mat, double w, double bias, int pow) {
+        Mat sum = Mat.zeros(mat[0].mat.width(), mat[0].mat.height(), CvType.CV_32FC1);
+        for (int i = 0; i < mat.length; i++) {
+            Mat powm = new Mat();
+            Core.pow(mat[i].mat, pow, powm);
             Core.addWeighted(sum, 1, powm, w, 0, sum);
         }
         Core.add(sum, Scalar.all(bias), sum);

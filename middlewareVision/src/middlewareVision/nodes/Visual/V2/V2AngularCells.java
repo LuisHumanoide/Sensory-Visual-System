@@ -64,20 +64,26 @@ public class V2AngularCells extends Activity {
                 if (spike.getModality() == Modalities.VISUAL) {
 
                     angularProcess();
-                    
+
                     visualize();
-                    
+
                     Visualizer.lockLimit("AC");
-                    
+
                     LongSpike sendSpike1 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                    
+
                     send(AreaNames.V4SimpleShapeCells, sendSpike1.getByteArray());
                     send(AreaNames.V2CornerMotion, sendSpike1.getByteArray());
 
                 }
 
                 if (spike.getModality() == Modalities.ATTENTION) {
-                    
+                    Location l = (Location) spike.getLocation();
+                    if (l.getValues()[0] == 0) {
+                        
+                    }
+                    LongSpike sendSpike2 = new LongSpike(Modalities.ATTENTION, new Location(1), 0, 0);
+                    send(AreaNames.V1HyperComplex, sendSpike2.getByteArray());
+                    mergeAllCells();
                     visualize();
 
                 }
@@ -92,10 +98,14 @@ public class V2AngularCells extends Activity {
     public void visualize() {
         for (int x0 = 0; x0 < Config.gaborBanks; x0++) {
             for (int i = 0; i < V2Bank.AC[0][0].mergedAC.length; i++) {
-                Visualizer.setImage(V2Bank.AC[x0][0].mergedAC[i], "Angular Cells L", Visualizer.getRow("HC")+1, i, "AC");
-                Visualizer.setImage(V2Bank.AC[x0][1].mergedAC[i], "Angular Cells R", Visualizer.getRow("HC")+2, i, "AC");
+                Visualizer.setImage(V2Bank.AC[x0][0].mergedAC[i], "Angular Cells L", Visualizer.getRow("HC") + 1, i, "AC");
+                Visualizer.setImage(V2Bank.AC[x0][1].mergedAC[i], "Angular Cells R", Visualizer.getRow("HC") + 2, i, "AC");
             }
         }
+        /* for (int i = 0; i < V2Bank.AC[0][0].Cells[0].length; i++) {
+                Visualizer.setImage(V2Bank.AC[0][0].Cells[3][i].mat, "Angular Cells L", Visualizer.getRow("HC")+1, i, "AC");
+                //Visualizer.setImage(V2Bank.AC[0][1].mergedAC[i], "Angular Cells R", Visualizer.getRow("HC")+2, i, "AC");
+            }*/
     }
 
     /**
@@ -104,7 +114,7 @@ public class V2AngularCells extends Activity {
     public void angularProcess() {
         for (int i = 0; i < Config.gaborBanks; i++) {
             for (int j = 0; j < 2; j++) {
-                //Obtain the filtered Matrixes bu an angular activation
+                //Obtain the filtered Matrixes by an angular activation
                 Mat filtered[] = filterMatrix(V1Bank.HCC[i][j].mergedCells);
                 angularActivation(i, j, filtered);
                 V2Bank.AC[i][j].mergeCells();
@@ -112,10 +122,23 @@ public class V2AngularCells extends Activity {
             }
         }
     }
+    
+    /**
+     * Process to perform angular activation for all V2 cells.
+     */
+    public void mergeAllCells() {
+        for (int i = 0; i < Config.gaborBanks; i++) {
+            for (int j = 0; j < 2; j++) {
+                mergeCells(i, j);
+            }
+        }
+    }
 
     /**
-     * Merge all angular cells with the same aperture and different direction<br>
+     * Merge all angular cells with the same aperture and different
+     * direction<br>
      * in order to visualize better
+     *
      * @param x1 gabor bank
      * @param x2 eye
      */
@@ -146,7 +169,7 @@ public class V2AngularCells extends Activity {
      * value used to adjust the filters for scooping
      */
     double value = -0.1;
-    double l3 = 0.02;
+    double l3 = 1000;
 
     /**
      * multiply the matrixes for generating the activation map
@@ -155,14 +178,14 @@ public class V2AngularCells extends Activity {
         for (int i = 0; i < Config.gaborOrientations; i++) {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                 V2Bank.AC[x1][x2].Cells[i][j].mat = Functions.V2Activation(filtered[j], filtered[(i + j + 1) % (Config.gaborOrientations * 2)], l3);
-                
-                if(x2==0){
-                    V2Bank.AC[x1][x2].Cells[i][j].setLabel("a"+x1+"-"+i+""+j, 0);
+
+                if (x2 == 0) {
+                    V2Bank.AC[x1][x2].Cells[i][j].setLabel("a" + x1 + "-" + i + "" + j, 0);
                 }
-                if(x2==1){
-                    V2Bank.AC[x1][x2].Cells[i][j].setLabel("a"+x1+"-"+i+""+j, 1);
+                if (x2 == 1) {
+                    V2Bank.AC[x1][x2].Cells[i][j].setLabel("a" + x1 + "-" + i + "" + j, 1);
                 }
-                
+
                 V2Bank.AC[x1][x2].Cells[i][j].setPrevious(
                         V1Bank.HCC[x1][x2].mergedCells[j % Config.gaborOrientations],
                         V1Bank.HCC[x1][x2].mergedCells[((i + j + 1) % (Config.gaborOrientations * 2)) % 4]);

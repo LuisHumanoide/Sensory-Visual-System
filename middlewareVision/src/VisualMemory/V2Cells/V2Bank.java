@@ -16,6 +16,7 @@ import utils.FileUtils;
  */
 public class V2Bank {
 
+    //[frequency][eye]
     public static AngleCells[][] AC;
     public static CurvatureCells[][] CurvC;
     public static CornerMotionCells[][] CMC;
@@ -31,7 +32,7 @@ public class V2Bank {
         for (int i2 = 0; i2 < Config.gaborBanks; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {
                 AC[i2][i3] = new AngleCells(Config.gaborOrientations, 2 * Config.gaborOrientations);
-                CurvC[i2][i3] = new CurvatureCells(numCurvatures, 10);
+                CurvC[i2][i3] = new CurvatureCells(numCurvatures, 5);
                 CurvC[i2][i3].generateFiltersByFolder(folder);
                 CMC[i2][i3]=new CornerMotionCells("ConfigFiles/speeds.txt");
             }

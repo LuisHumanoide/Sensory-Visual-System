@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import org.opencv.core.Core;
+import org.opencv.core.Scalar;
 import spike.Modalities;
 import utils.Config;
 import utils.LongSpike;
@@ -64,7 +65,7 @@ public class V1MotionCellsNew extends Activity {
                 Logger.getLogger(V1MotionCellsNew.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
 
     /**
@@ -86,9 +87,14 @@ public class V1MotionCellsNew extends Activity {
                             Config.gaborOrientations + 2 + (j - Config.gaborOrientations), "v1motion");
                 }
             }
-        }
+            //Visualizer.setImage(MC[x1][x2].composedCells[i].mat, "composed ",i,6,"v1motion");
+        } 
+       
+       
+        
     }
-
+    //Boolean variable to perform the motion substraction
+    boolean subst=false;
     /**
      * Performs the motion detection, based on <b> Reichardt Detectors</b>
      * <ul>
@@ -105,11 +111,16 @@ public class V1MotionCellsNew extends Activity {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                 MC[i1][i2].cells[i][j].cellMotionProcess(MC[i1][i2].cells[i][j % Config.gaborOrientations].previous[0].mat);
                 //performs the substraction 
-                Core.subtract(MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat1st, MC[i1][i2].cells[i][(j + Config.gaborOrientations) % (Config.gaborOrientations * 2)].mat1st,
-                        MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat);
+                if (subst) {
+                    Core.subtract(MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat1st, MC[i1][i2].cells[i][(j + Config.gaborOrientations) % (Config.gaborOrientations * 2)].mat1st,
+                            MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat);
+                } else {
+                    MC[i1][i2].cells[i][j].mat = MC[i1][i2].cells[i][j].mat1st.clone();
+                }
+                Core.multiply(MC[i1][i2].cells[i][j].mat, Scalar.all(10), MC[i1][i2].cells[i][j].mat);
             }
         }
-        //MC[i1][i2].createComposedCells();
+        MC[i1][i2].createComposedCells();
     }
 
 }

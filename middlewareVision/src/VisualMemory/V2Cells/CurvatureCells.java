@@ -54,7 +54,7 @@ public class CurvatureCells {
         cells = new Cell[nCurvatures][nAngleDivisions];
         composedCells = new Cell[nCurvatures];
         filters = new CurvatureFilter[nCurvatures][nAngleDivisions];
-        inc = (float) (2 * Math.PI / nAngleDivisions);
+        inc = (float) (2 * Math.PI / (float)nAngleDivisions);
         loadCells();
     }
 
