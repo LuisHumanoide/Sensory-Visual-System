@@ -7,12 +7,12 @@
 	<device>0</device>
 	<!--ORIENTATIONS AND SIZE-->
 	<GaborOrientations>4</GaborOrientations>
-	<dimensions>150</dimensions>
+	<dimensions>200</dimensions>
 	<motionDimensions>70</motionDimensions>
 	<!--V4 COLOR-->
-	<NoConcentricCircles>3</NoConcentricCircles>
-	<NoRadialDivisions>4</NoRadialDivisions>
-	<NoHeightDivisions>3</NoHeightDivisions>
+	<NoConcentricCircles>10</NoConcentricCircles>
+	<NoRadialDivisions>10</NoRadialDivisions>
+	<NoHeightDivisions>10</NoHeightDivisions>
 	<!--MST RADIAL-->
 	<dxExpCont>4</dxExpCont>
 	<dtExpCont>1</dtExpCont>

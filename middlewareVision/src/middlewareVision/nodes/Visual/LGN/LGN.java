@@ -2,7 +2,6 @@ package middlewareVision.nodes.Visual.LGN;
 
 
 
-import com.sun.media.jfxmedia.logging.Logger;
 import kmiddle2.nodes.areas.Area;
 import middlewareVision.config.AreaNames;
 

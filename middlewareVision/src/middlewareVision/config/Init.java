@@ -1,7 +1,6 @@
 package middlewareVision.config;
 
 import VisualMemory.InitCellMemory;
-import com.sun.media.jfxmedia.logging.Logger;
 import generator.ProcessList;
 import gui.Visualizer;
 import kmiddle2.nodes.service.Igniter;
@@ -51,7 +50,6 @@ public class Init extends Igniter {
         configuration.setDebug(false);
         configuration.setUDP();
         configuration.setEntityID(ENTITY_ID);
-        Logger.setLevel(Logger.OFF);
         Init.restart();
         setAreas(areaNames);
         run();

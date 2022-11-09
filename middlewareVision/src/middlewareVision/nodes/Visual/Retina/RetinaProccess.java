@@ -23,7 +23,6 @@ import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_8UC1;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import spike.Location;
 import spike.Modalities;
 import utils.Config;
@@ -40,46 +39,25 @@ public class RetinaProccess extends Activity {
     {0.2206f, 0.7030f, 0.0918f},
     {0.0270f, 0.0707f, 0.9911f}};
 
-    /**
-     * *************************************************************************
-     * VARIABLES
-     * *************************************************************************
-     */
-    public Frame[] frames;
-
-    /**
-     * initialize the array of frames
-     *
-     * @param numFrames number of frames
-     * @param index index for the layout manager
-     */
-    public void initFrames(int numFrames, int index) {
-        frames = new Frame[numFrames];
-        for (int i = 0; i < numFrames; i++) {
-            frames[i] = new Frame(i + index);
-            frames[i].setSize(Config.width, Config.heigth);
-        }
-    }
-
     /*
-    * Cambiar a true para que inicie todo
+    * Change to true to start everything
      */
     private boolean start = false;
 
     GUI gui;
 
     public RetinaProccess() {
-
         this.ID = AreaNames.RetinaProccess;
         this.namer = AreaNames.class;
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
 
-        initFrames(3, 1);
         gui = new GUI(this);
         gui.setVisible(true);
         thread.start();
     }
+    
     boolean ready = false;
+    
     Thread thread = new Thread() {
         public void run() {
             ready = true;
@@ -107,11 +85,6 @@ public class RetinaProccess extends Activity {
 
     }
 
-    /**
-     * ************************************************************************
-     * METODOS
-     * ************************************************************************
-     */
     public Mat src;
     BufferedImage img;
 
@@ -121,18 +94,22 @@ public class RetinaProccess extends Activity {
      * @throws IOException
      */
     public void setImage(BufferedImage img, BufferedImage img2) {
+        //Visualize LMS activations
+        //LEFT
         Mat transMat[] = transduction(img);
         Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "L L", 0, 0);
         Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "M L", 0, 1);
         Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "S L", 0, 2);
         Visualizer.setImage(img, "Original L", 0, 3);
 
+        //RIGHT
         Mat transMat2[] = transduction(img2);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "L R", 1, 0);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[1]), "M R", 1, 1);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[2]), "S R", 1, 2);
         Visualizer.setImage(img2, "Original R", 1, 3);
 
+        //Mat of stereo difference
         Mat m1 = transMat[2].clone();
         Mat m2 = transMat2[2].clone();
         m1.convertTo(m1, CV_8UC1);

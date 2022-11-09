@@ -53,8 +53,6 @@ public class V1SimpleCells extends Activity {
     public void init() {
     }
 
-    //sync that receive 3 indexes
-    numSync sync = new numSync(3);
 
     @Override
     public void receive(int nodeID, byte[] data) {
@@ -80,11 +78,6 @@ public class V1SimpleCells extends Activity {
 
                     send(AreaNames.V1ComplexCells, sendSpike1.getByteArray());
                     send(AreaNames.V1BinocularSimpleCells, sendSpike1.getByteArray());
-                }
-
-                if (sync.isComplete()) {
-                    //edge border detection is performed, with phi angle = 0
-
                 }
 
                 if (spike.getModality() == Modalities.ATTENTION) {
@@ -125,6 +118,11 @@ public class V1SimpleCells extends Activity {
         }
     }
 
+    /**
+     * Keeping the value of the activation under than 1
+     *
+     * @param index
+     */
     void normalizeInput(int index) {
         double maxx = 0;
         double maxL;

@@ -6,8 +6,6 @@ import imgio.RetinalImageIO;
 import imgio.RetinalTextIO;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import matrix.matrix;
 import middlewareVision.config.AreaNames;
 import gui.Visualizer;
@@ -26,23 +24,15 @@ import utils.numSync;
  */
 public class LGNSimpleOpponentCells extends Activity {
 
-    /**
-     * ****************************************************************
-     * Valores constantes
-     * ***************************************************************
-     */
+
     private static final int KERNEL_SIZE = 3;
 
     private static final float UPPER_KERNEL_SIGMA = 0.25f;
     private static final float LOWER_KERNEL_SIGMA = 1.25f;
 
-    //private static final float LMM_ALPHA = 1.6f;
-    //private static final float LMM_BETA = 1.5f;
     private static final float LMM_ALPHA = 3.2f;
     private static final float LMM_BETA = 3f;
 
-    //private static final float SMLPM_ALPHA = 0.7f;
-    //private static final float SMLPM_BETA = 0.6f;
     private static final float SMLPM_ALPHA = 1.2f;
     private static final float SMLPM_BETA = 1.4f;
     private static final float SMLPM_GAMMA = 0.6f;
@@ -51,34 +41,14 @@ public class LGNSimpleOpponentCells extends Activity {
     private static final float LPM_ALPHA = 0.6f;
     private static final float LPM_BETA = 0.4f;
 
-    private final String DIRECTORY = "SO/";
 
-    private final String LMM_FILE_NAME = "L-M";
-    private final String SMLPM_FILE_NAME = "S-L+M";
-    private final String LPM_FILE_NAME = "L+M";
-
-    private final String IMAGE_EXTENSION = ".jpg";
-    private final String TEXT_EXTENSION = ".txt";
-
-    /**
-     * *************************************************************************
-     * Fin de constantes
-     * ************************************************************************
-     */
     Mat LMSConesL[];
     Mat LMSConesR[];
     Mat DKL_L[];
     Mat DKL_R[];
     int indexFrame = 4;
 
-    /*
-    ****************************************************************************
-    Constructores y metodos para recibir información
-    ****************************************************************************
-     */
-    /**
-     * Constructor
-     */
+
     public LGNSimpleOpponentCells() {
         this.ID = AreaNames.LGNSimpleOpponentCells;
         this.namer = AreaNames.class;
@@ -94,13 +64,13 @@ public class LGNSimpleOpponentCells extends Activity {
     }
 
     /*
-    sincronizador
-    recibe 3 matrices
+    sync
+    recies 6 maps
      */
     numSync sync = new numSync(6);
 
     /**
-     * metodo para recibir
+     * receive method
      *
      * @param nodeID
      * @param data
@@ -109,27 +79,27 @@ public class LGNSimpleOpponentCells extends Activity {
     public void receive(int nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
-                //spike que recibe
+                //input spike
                 LongSpike spike = new LongSpike(data);
-                //si es de la modalidad visual entonces acepta
+                //if is from modality VISUAL then it accept it
                 if (spike.getModality() == Modalities.VISUAL) {
-                    //obtiene el indice de la locación
+                    //obtain the location index
                     Location l = (Location) spike.getLocation();
-                    //obtiene el primer valor del arreglo
+                    //obtain the first value of the array
                     int index = l.getValues()[0];
-                    //convierte el objeto matrix serializable en una matriz de opencv y la asigna al arreglo LMNCones
+                    //converts the serializable matrix object to an opencv matrix and assigns it to the LMNCones array
                     if (index < 3) {
                         LMSConesL[index] = Convertor.matrixToMat((matrix) spike.getIntensity());
                     }
                     if (index >= 3) {
                         LMSConesR[index - 3] = Convertor.matrixToMat((matrix) spike.getIntensity());
                     }
-                    //los indices recibidos se agregan al sincronizador
+                    //received indexes are added to the synchronizer
                     sync.addReceived(index);
                 }
-                //Si se completa el sincronizador
+                //If the synchronizer is completed
                 if (sync.isComplete()) {
-                    //mandar a hacer la transduccion
+                    //send for transduction
                     Mat DKL_L[] = transduction(LMSConesL, 0, 0);
                     LGNBank.SOC[0][0].Cells[0].mat = DKL_L[0];
                     LGNBank.SOC[0][0].Cells[1].mat = DKL_L[1];
@@ -140,16 +110,16 @@ public class LGNSimpleOpponentCells extends Activity {
                     LGNBank.SOC[0][1].Cells[1].mat = DKL_R[1];
                     LGNBank.SOC[0][1].Cells[2].mat = DKL_R[2];
                     /*
-                mostrar las imagenes procesadas
+                        display the processed images
                      */
                     for (int i = 0; i < LMSConesL.length; i++) {
                         Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "DKL Left" + i, 2, i);
                         Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "DKL Right" + i, 3, i);
-                        //mandar los spikes de salida a las celulas simples y doble oponentes de V1
+                        //send the output spikes to the single and double opponent cells of V1
                         LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, -1), 0, 0);
-                        //send(AreaNames.V1SimpleCells, sendSpike.getByteArray());
                         send(AreaNames.V1DoubleOpponent, sendSpike.getByteArray());
                     }
+                    //send the a control spike to MST cells
                     LongSpike sendSpike2 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
                     send(AreaNames.MSTPolarCells,sendSpike2.getByteArray());
 
@@ -161,35 +131,9 @@ public class LGNSimpleOpponentCells extends Activity {
         }
     }
 
-    /**
-     * ************************************************************************
-     * METODOS
-     * ************************************************************************
-     */
-    /**
-     * Este método no se usa porque no se escribe nada en archivos
-     *
-     * @param LMSCones
-     * @param path
-     * @return
-     */
-    public Mat[] transduction(Mat[] LMSCones, String path, int scale, int eye) {
-        Mat[] DKL = transduction(LMSCones, scale, eye);
-
-        RetinalImageIO.lmmWriter(DKL[0], path + DIRECTORY + LMM_FILE_NAME + IMAGE_EXTENSION);
-        RetinalTextIO.writeMatrixImage(DKL[0], path + DIRECTORY + LMM_FILE_NAME + TEXT_EXTENSION);
-
-        RetinalImageIO.smlpmWriter(DKL[1], path + DIRECTORY + SMLPM_FILE_NAME + IMAGE_EXTENSION);
-        RetinalTextIO.writeMatrixImage(DKL[1], path + DIRECTORY + SMLPM_FILE_NAME + TEXT_EXTENSION);
-
-        RetinalImageIO.lpmWriter(DKL[2], path + DIRECTORY + LPM_FILE_NAME + IMAGE_EXTENSION);
-        RetinalTextIO.writeMatrixImage(DKL[2], path + DIRECTORY + LPM_FILE_NAME + TEXT_EXTENSION);
-
-        return DKL;
-    }
 
     /**
-     * Hacer la transducción que le corresponde a los conos que vienen de la
+     * To make the transduction that corresponds to the cones that come from the retina
      * retina
      *
      * @param LMSCones
