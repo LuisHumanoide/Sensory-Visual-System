@@ -94,7 +94,7 @@ public class V1MotionCellsNew extends Activity {
         
     }
     //Boolean variable to perform the motion substraction
-    boolean subst=false;
+    boolean subst=true;
     /**
      * Performs the motion detection, based on <b> Reichardt Detectors</b>
      * <ul>

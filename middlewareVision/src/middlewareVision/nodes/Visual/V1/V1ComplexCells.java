@@ -9,7 +9,10 @@ import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import gui.Visualizer;
 import kmiddle2.nodes.activities.Activity;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
@@ -39,19 +42,24 @@ public class V1ComplexCells extends Activity {
                 LongSpike spike = new LongSpike(data);
 
                 if (spike.getModality() == Modalities.VISUAL) {
-
+                    //make the spatial invariance process
                     energyProcessAll();
-
+                    //visualize the activations
                     visualize();
 
                     Visualizer.addLimit("CC", Visualizer.getRow("SCsup") + 2 * (Config.gaborBanks - 1) + 1);
 
                     LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-
+                    //send spikes to hypercomplex and motion cells
                     send(AreaNames.V1HyperComplex, sendSpike.getByteArray());
                     send(AreaNames.V1MotionCellsNew, sendSpike.getByteArray());
 
                 }
+                /**
+                 * If the Spikes comes from Attention then the modulation matrix
+                 * will be propagated to the previous nodes
+                 * and it will refresh the visualization of the complex cells matrix
+                 */
                 if (spike.getModality() == Modalities.ATTENTION) {
                     Location l = (Location) spike.getLocation();
                     if (l.getValues()[0] == 0) {
@@ -124,7 +132,8 @@ public class V1ComplexCells extends Activity {
     public void energyProcess(int x1, int x2) {
         int x = CC[x1][x2].Cells.length;
         for (int i = 0; i < x; i++) {
-            CC[x1][x2].Cells[i].mat = Functions.energyProcess(CC[x1][x2].simpleCells.Even[i].mat, CC[x1][x2].simpleCells.Odd[i].mat);
+            CC[x1][x2].Cells[i].mat = Functions.sumPowProcess(CC[x1][x2].simpleCells.Even[i].mat, 
+                    CC[x1][x2].simpleCells.Odd[i].mat, 2);
         }
     }
 

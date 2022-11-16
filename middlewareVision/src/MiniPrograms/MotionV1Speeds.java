@@ -16,7 +16,7 @@ public class MotionV1Speeds extends javax.swing.JFrame {
      */
     public MotionV1Speeds() {
         initComponents();
-        listPanel1.setColumnNames("dx","dt");
+        listPanel1.setColumnNames("Δd","Δt");
         listPanel1.setClipboardString("♦");
         listPanel1.setFilePath("ConfigFiles/speeds", "txt");
         listPanel1.loadFile();

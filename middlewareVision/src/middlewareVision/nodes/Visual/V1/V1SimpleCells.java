@@ -10,6 +10,8 @@ import middlewareVision.config.AreaNames;
 import gui.Visualizer;
 import kmiddle2.nodes.activities.Activity;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import static org.opencv.core.CvType.CV_32F;
 import static org.opencv.core.CvType.CV_64F;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
@@ -52,7 +54,6 @@ public class V1SimpleCells extends Activity {
     @Override
     public void init() {
     }
-
 
     @Override
     public void receive(int nodeID, byte[] data) {
@@ -166,9 +167,28 @@ public class V1SimpleCells extends Activity {
 
     void convolve(int x1, int x2, Mat src) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
-            V1Bank.SC[x1][x2].Even[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].evenFilter[i], 0.2);
-            V1Bank.SC[x1][x2].Odd[i].mat = Functions.filterV1(src, V1Bank.SC[x1][x2].oddFilter[i], 0.2);
+            V1Bank.SC[x1][x2].Even[i].mat = filterV1(src, V1Bank.SC[x1][x2].evenFilter[i], 0.2);
+            V1Bank.SC[x1][x2].Odd[i].mat = filterV1(src, V1Bank.SC[x1][x2].oddFilter[i], 0.2);
         }
+    }
+
+    /**
+     * Obtain a filtered matrix
+     * @param img source matrix
+     * @param filter filter
+     * @param thresh threshold value
+     * @return a filtered matrix
+     */
+    Mat filterV1(Mat img, Mat filter, double thresh) {
+        Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
+        img.convertTo(img.clone(), CV_32F);
+        Imgproc.filter2D(img, filt, CV_32F, filter);
+        double max = Core.minMaxLoc(filt).maxVal;
+        if (max > 1) {
+            Core.divide(filt, Scalar.all(max), filt);
+        }
+        Imgproc.threshold(filt, filt, thresh, 1, Imgproc.THRESH_TOZERO);
+        return filt;
     }
 
 }
