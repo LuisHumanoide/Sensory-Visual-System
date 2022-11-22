@@ -13,13 +13,14 @@ import utils.FileUtils;
  */
 public class V3Bank {
 
-    static String gaussiansFile = "DisparityGaussians.txt";
-    static String DisparityFile = "Disparities.txt";
+    //disparity files
+    static String gaussiansFile = "ConfigFiles//DisparityGaussians.txt";
+    static String DisparityFile = "ConfigFiles//Disparities.txt";
     //[disparity index]
     public static StereoscopicRangeCells[] SRC;
 
     /**
-     * Initialize the V3 cells, mainly corresponsing to the relative disparity or disparity range cells
+     * Initialize the V3 cells, mainly corresponding to the relative disparity or disparity range cells
      */
     public static void initializeCells() {
 

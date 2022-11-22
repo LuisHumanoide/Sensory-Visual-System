@@ -39,32 +39,41 @@ public class V1Bank {
     public static StereoscopicMergedCells[] SMC;
 
     static String GaborFile = "RFV1//Gabor//filters.txt";
-    static String DisparityFile = "Disparities.txt";
+    static String DisparityFile = "ConfigFiles//Disparities.txt";
     static String HCfiles = "RFV1HC//";
 
     /**
      * Initialize all cells from V1
      */
     public static void initializeCells() {
-
+        //Gabor lines are each line of the Gabor list file
         String gaborLines[] = FileUtils.fileLines(GaborFile);
+        //the number of lines is the size of the Gabor banks
         Config.gaborBanks = gaborLines.length;
 
+        //Read the disparity file
         String disparities[] = FileUtils.fileLines(DisparityFile);
 
+        //folder of the hypercomplex filter template
         File hcfolder = new File(HCfiles);
+        //read each hypercomplex filter template
         File hcfiles[] = hcfolder.listFiles();
+        
+        //set the values in the config class
         Config.HCfilters = hcfiles.length;
         Config.nDisparities = disparities.length;
 
         //reserve memory for cell banks
+        //[number of double opponent cell types][number of eyes]
+        DOC = new DoubleOpponentCells[1][2];
+        //[number of gabor filter types][number of eyes]
         SC = new SimpleCells[gaborLines.length][2];
         CC = new ComplexCells[gaborLines.length][2];
-        HCC = new HypercomplexCells[gaborLines.length][2];
-        DOC = new DoubleOpponentCells[1][2];
+        HCC = new HypercomplexCells[gaborLines.length][2];    
         MC = new MotionCellsV1[gaborLines.length][2];
 
         //reserve memory for stereoscopic cell banks
+        //[number of gabor filter types][number of disparities]
         SSC = new StereoscopicCells[gaborLines.length][disparities.length];
         SMC = new StereoscopicMergedCells[disparities.length];
 
@@ -83,15 +92,24 @@ public class V1Bank {
         /*
         Creating the V1 cells
          */
+        //for each Gabor filter type do
         for (int i2 = 0; i2 < gaborLines.length; i2++) {
+            //for each eye do
             for (int i3 = 0; i3 < 2; i3++) {
+                //create the simple cells
                 SC[i2][i3] = new SimpleCells(Config.gaborOrientations);
+                //complex cells
                 CC[i2][i3] = new ComplexCells(Config.gaborOrientations);
+                //hypercomplex
                 HCC[i2][i3] = new HypercomplexCells(Config.HCfilters, Config.gaborOrientations);
+                //Load the speeds file
                 MC[i2][i3] = new MotionCellsV1("ConfigFiles/speeds.txt");
+                //set the complex cells previous cells
                 CC[i2][i3].setSimpleCells(SC[i2][i3]);
+                //set the previous cells of the motion cells
                 MC[i2][i3].setPrevious(CC[i2][i3].Cells);
             }
+            //for each absolute disparity
             for (int i = 0; i < disparities.length; i++) {
                 SSC[i2][i] = new StereoscopicCells(Integer.parseInt(disparities[i]), SC[i2]);
                 if (i2 == 0) {
@@ -111,12 +129,12 @@ public class V1Bank {
      * Load Gabor Filters from a file, the system can have several types of
      * gabor filters
      *
-     * @param gaborLines
-     * @param eyes
-     * @param index1
+     * @param gaborLines number of gabor filter types
+     * @param eyes number of eyes
      */
     public static void loadGaborFilters(String gaborLines[], int eyes) {
         int i = 0;
+        //for each line
         for (String st : gaborLines) {
             String values[] = st.split(" ");
             GaborFilter evenFilter = new GaborFilter(
@@ -136,10 +154,6 @@ public class V1Bank {
             for (int j = 0; j < eyes; j++) {
                 for (int k = 0; k < Config.gaborOrientations; k++) {
                     double angle = (Math.PI / (double) Config.gaborOrientations) * k;
-                    /*
-                    SC[i][j].evenFilter[k] = SpecialKernels.rotateKernelRadians(evenFilter.makeFilter(), k * SpecialKernels.inc);
-                    SC[i][j].oddFilter[k] = SpecialKernels.rotateKernelRadians(oddFilter.makeFilter(), k * SpecialKernels.inc);
-                    */
                     SC[i][j].evenFilter[k] = evenFilter.makeFilter(angle);
                     SC[i][j].oddFilter[k] = oddFilter.makeFilter(angle);
                     

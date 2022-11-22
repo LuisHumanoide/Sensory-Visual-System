@@ -2,8 +2,6 @@ package middlewareVision.nodes.Visual.LGN;
 
 import VisualMemory.LGNCells.LGNBank;
 import generator.ProcessList;
-import imgio.RetinalImageIO;
-import imgio.RetinalTextIO;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
 import matrix.matrix;
@@ -24,7 +22,6 @@ import utils.numSync;
  */
 public class LGNSimpleOpponentCells extends Activity {
 
-
     private static final int KERNEL_SIZE = 3;
 
     private static final float UPPER_KERNEL_SIGMA = 0.25f;
@@ -41,13 +38,11 @@ public class LGNSimpleOpponentCells extends Activity {
     private static final float LPM_ALPHA = 0.6f;
     private static final float LPM_BETA = 0.4f;
 
-
     Mat LMSConesL[];
     Mat LMSConesR[];
     Mat DKL_L[];
     Mat DKL_R[];
     int indexFrame = 4;
-
 
     public LGNSimpleOpponentCells() {
         this.ID = AreaNames.LGNSimpleOpponentCells;
@@ -115,13 +110,14 @@ public class LGNSimpleOpponentCells extends Activity {
                     for (int i = 0; i < LMSConesL.length; i++) {
                         Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "DKL Left" + i, 2, i);
                         Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "DKL Right" + i, 3, i);
-                        //send the output spikes to the single and double opponent cells of V1
-                        LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(i, -1), 0, 0);
-                        send(AreaNames.V1DoubleOpponent, sendSpike.getByteArray());
+
                     }
+                    //send the output spikes to the single and double opponent cells of V1
+                    LongSpike sendSpike = new LongSpike(Modalities.VISUAL, 0, 0, 0);
+                    send(AreaNames.V1DoubleOpponent, sendSpike.getByteArray());
                     //send the a control spike to MST cells
                     LongSpike sendSpike2 = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
-                    send(AreaNames.MSTPolarCells,sendSpike2.getByteArray());
+                    send(AreaNames.MSTPolarCells, sendSpike2.getByteArray());
 
                 }
 
@@ -131,10 +127,9 @@ public class LGNSimpleOpponentCells extends Activity {
         }
     }
 
-
     /**
-     * To make the transduction that corresponds to the cones that come from the retina
-     * retina
+     * To make the transduction that corresponds to the cones that come from the
+     * retina retina
      *
      * @param LMSCones
      * @return
@@ -144,7 +139,6 @@ public class LGNSimpleOpponentCells extends Activity {
         Mat[] DKL = {new Mat(), new Mat(), new Mat()};
 
         //LMS to DKL
-        
         //D=L-M
         LMM(LMSCones, DKL[0]);
         //K=S-(L+M)

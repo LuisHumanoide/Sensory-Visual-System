@@ -37,7 +37,6 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import mapOpener.AmapViewer;
 import middlewareVision.nodes.Visual.Retina.RetinaProccess;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -187,13 +186,13 @@ public class RetinaPanel extends JPanel {
             playButton.setText("▶");
 
         } catch (IOException ex) {
-            Logger.getLogger(AmapViewer.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return img2;
     }
 
     /**
-     * Render the file tree that showns the folder of the images
+     * Render the file tree that shows the folder of the images
      */
     void renderTree() {
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) jTree1.getCellRenderer();

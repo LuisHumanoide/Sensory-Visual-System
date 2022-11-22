@@ -23,13 +23,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
-import mapOpener.Convertor;
+import middlewareVision.config.XMLReader;
 import org.opencv.core.Core;
 import static org.opencv.core.CvType.CV_32F;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import utils.Convertor;
 import utils.FileUtils;
 import utils.Scalr;
 import utils.SpecialKernels;
@@ -44,7 +44,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
      * Creates new form GaussianVisualizer
      */
     String fileName = "ConfigFiles/DoGValues.txt";
-    String originalImageFile = "ConfigFiles/Paris.JPG";
+    String originalImageFile = XMLReader.getValue("filterEditorImage");
     JTextField[] fields;
     Mat DoGFilter;
     BufferedImage fImage;
@@ -53,8 +53,8 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     double norm1 = 0;
     double sum1 = 0;
     double sum2 = 0;
-    int w = 250;
-    int h = 250;
+    int w = XMLReader.getIntValue("filterImageWidth");
+    int h = XMLReader.getIntValue("filterImageHeight");
 
     public GaussianVisualizer() {
         initComponents();
@@ -77,6 +77,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         visualize();
         convolution();
     }
+    
 
     public void modifyLabel() {
         TransferHandler th = new TransferHandler() {
@@ -120,7 +121,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         Mat mImage = Convertor.bufferedImageToMat(imageFile);
         Mat fImage = new Mat();
         Imgproc.filter2D(mImage, fImage, CV_32F, DoGFilter);
-        filteredImage = Convertor.ConvertMat2Image2(fImage);
+        filteredImage = Convertor.Mat2Img2(fImage);
         convolvedImage.setIcon(new ImageIcon(filteredImage));
         saveValues();
     }
@@ -541,6 +542,8 @@ public class GaussianVisualizer extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        w = XMLReader.getIntValue("filterImageWidth");
+        h = XMLReader.getIntValue("filterImageHeight");
         saveValues();
         visualize();
         loadImageFilter();

@@ -28,15 +28,12 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(screenSize.width / 4, screenSize.height - 30);
-        JPanel jp1 = new JPanel();
-        JPanel jp2 = new JPanel();
         ret = new RetinaPanel(rp);
         controls=new ControlsPanel(ret);
         ret.setVisible(true);
         controls.setVisible(true);
         TabbedPanel.setBounds(0, 0, 200, 200);
         TabbedPanel.add("Image", ret);
-        //TabbedPanel.add("panel2", controls);
 
     }
 

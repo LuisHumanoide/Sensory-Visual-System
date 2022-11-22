@@ -4,12 +4,8 @@ import VisualMemory.LGNCells.LGNBank;
 import VisualMemory.V1Cells.V1Bank;
 import generator.ProcessList;
 import gui.Visualizer;
-import imgio.RetinalImageIO;
-import imgio.RetinalTextIO;
 import spike.Location;
 import kmiddle2.nodes.activities.Activity;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -42,14 +38,6 @@ public class V1DoubleOpponent extends Activity {
     private final float SMLPM_ALPHA = 2f; // Blue
     private final float SMLPM_BETA = 2.2f; // Yellow
 
-    private final String DIRECTORY = "DO/";
-
-    private final String LMM_FILE_NAME = "L-M";
-    private final String SMLPM_FILE_NAME = "S-L+M";
-
-    private final String IMAGE_EXTENSION = ".jpg";
-    private final String TEXT_EXTENSION = ".txt";
-
     int indexFrame = 8;
 
     /*
@@ -67,20 +55,14 @@ public class V1DoubleOpponent extends Activity {
     public void init() {
     }
 
-    numSync sync = new numSync(0, 1, 2);
-
     @Override
     public void receive(int nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);
-                Location l = (Location) spike.getLocation();
-                int i1 = l.getValues()[0];
 
                 if (spike.getModality() == Modalities.VISUAL) {
-                    sync.addReceived(i1);
-                }
-                if (sync.isComplete()) {
+
                     Mat DKL_L[] = {LGNBank.SOC[0][0].Cells[0].mat,
                         LGNBank.SOC[0][0].Cells[1].mat,
                         LGNBank.SOC[0][0].Cells[2].mat
@@ -91,7 +73,7 @@ public class V1DoubleOpponent extends Activity {
                     };
                     transduction(DKL_L, 0);
                     transduction(DKL_R, 1);
-                    
+
                     for (int i = 0; i < 3; i++) {
                         Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
                         Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
@@ -117,22 +99,6 @@ public class V1DoubleOpponent extends Activity {
         V1Bank.DOC[0][eye].Cells[0].mat = LMM(DKL);
         V1Bank.DOC[0][eye].Cells[1].mat = SMLPM(DKL);
         V1Bank.DOC[0][eye].Cells[2].mat = LGNBank.SOC[0][eye].Cells[2].mat.clone();
-    }
-
-    /**
-     *
-     * @param DKL
-     * @param path
-     */
-    public void transduction(Mat[] DKL, String path) {
-        Mat lmm = LMM(DKL);
-        Mat smlpm = SMLPM(DKL);
-
-        RetinalImageIO.lmmWriter(lmm, path + DIRECTORY + LMM_FILE_NAME + IMAGE_EXTENSION);
-        RetinalTextIO.writeMatrixImage(lmm, path + DIRECTORY + LMM_FILE_NAME + TEXT_EXTENSION);
-
-        RetinalImageIO.smlpmWriter(smlpm, path + DIRECTORY + SMLPM_FILE_NAME + IMAGE_EXTENSION);
-        RetinalTextIO.writeMatrixImage(smlpm, path + DIRECTORY + SMLPM_FILE_NAME + TEXT_EXTENSION);
     }
 
     /**

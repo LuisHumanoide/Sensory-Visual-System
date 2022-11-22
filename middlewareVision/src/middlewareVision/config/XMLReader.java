@@ -74,5 +74,33 @@ public class XMLReader {
         } catch (Exception ex) {
         }
     }
+    
+    public static String getValue(String key){
+        String value="";
+        File xmlFile = new File("ConfigFiles/Configuration.xml");
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(xmlFile);
+            doc.getDocumentElement();
+
+            NodeList GeneralConfiguration = doc.getElementsByTagName("Configuration");
+
+            Node property = GeneralConfiguration.item(0);
+            if (property.getNodeType() == Node.ELEMENT_NODE) {
+                Element propertyElement = (Element) property;
+
+                value = propertyElement.getElementsByTagName(key).item(0).getTextContent();
+               
+
+            }
+        } catch (Exception ex) {
+        }
+        return value;
+    }
+    
+    public static int getIntValue(String key){
+        return Integer.parseInt(getValue(key));
+    }
 
 }

@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import middlewareVision.config.XMLReader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -54,9 +55,11 @@ public class CurvatureRF extends javax.swing.JFrame {
     double mulFactor = 1;
     BufferedImage fimg;
     String folder = "RFV2/Curvature/";
-    String originalImageFile = "ConfigFiles/Circles.JPG";
+    String originalImageFile = XMLReader.getValue("curvatureEditorImage");
     BufferedImage imageFile;
     BufferedImage filteredImage;
+    int w = XMLReader.getIntValue("curvatureImageWidth");
+    int h = XMLReader.getIntValue("curvatureImageHeight");
 
     /**
      * Creates new form NewJFrame
@@ -70,7 +73,7 @@ public class CurvatureRF extends javax.swing.JFrame {
 
         try {
             BufferedImage bi = ImageIO.read(new File(originalImageFile));
-            imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 200, 200);
+            imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, w, h);
             imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
             originalImage.setIcon(new ImageIcon(imageFile));
             originalImage.setText("");
@@ -812,9 +815,9 @@ public class CurvatureRF extends javax.swing.JFrame {
         for (int i = 0; i < numberFilters; i++) {
             Core.add(composedFilter, concaveFilters[i], composedFilter);
         }
-        for (int i = 1; i < numberFilters; i++) {
+        /*for (int i = 1; i < numberFilters; i++) {
             Core.add(composedFilter, convexFilters[i], composedFilter);
-        }
+        }*/
     }
 
     /**

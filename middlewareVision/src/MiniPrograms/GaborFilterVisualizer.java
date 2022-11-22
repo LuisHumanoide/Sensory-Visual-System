@@ -24,13 +24,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
-import mapOpener.Convertor;
+import middlewareVision.config.XMLReader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_32F;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import utils.Convertor;
 import utils.FileUtils;
 import utils.Scalr;
 import utils.SpecialKernels;
@@ -47,11 +48,11 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
     int zoom = 1;
     Mat gaborFilter;
     String fileName = "ConfigFiles/GaborValues.txt";
-    String originalImageFile = "ConfigFiles/Paris.JPG";
+    String originalImageFile = XMLReader.getValue("filterEditorImage");
     BufferedImage imageFile;
     BufferedImage filteredImage;
-    int w=250;
-    int h=250;
+    int w = XMLReader.getIntValue("filterImageWidth");
+    int h = XMLReader.getIntValue("filterImageHeight");
 
     /**
      * Constructor
@@ -138,7 +139,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         Mat mImage = Convertor.bufferedImageToMat(imageFile);
         Mat fImage = new Mat();
         Imgproc.filter2D(mImage, fImage, CV_32F, gaborFilter);
-        filteredImage = Convertor.ConvertMat2Image2(fImage);
+        filteredImage = Convertor.Mat2Img2(fImage);
         convolvedImage.setIcon(new ImageIcon(filteredImage));
         saveValues();
     }
