@@ -43,7 +43,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="listPanel2" min="-2" pref="244" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="disparityPanel1" max="32767" attributes="0"/>
+              <Component id="plotFrame" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -60,7 +60,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="disparityPanel1" max="32767" attributes="0"/>
+                  <Component id="plotFrame" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -124,12 +124,16 @@
     </Component>
     <Component class="gui.components.ListPanel" name="listPanel2">
     </Component>
-    <Container class="gui.components.DisparityPanel" name="disparityPanel1">
+    <Container class="javax.swing.JInternalFrame" name="plotFrame">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Disparity plot"/>
+        <Property name="visible" type="boolean" value="true"/>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="566" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="564" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">

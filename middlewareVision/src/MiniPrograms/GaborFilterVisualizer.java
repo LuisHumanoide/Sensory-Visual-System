@@ -5,7 +5,6 @@
  */
 package MiniPrograms;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -16,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import static java.lang.Math.pow;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,13 +22,11 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 import matrix.matrix;
 import middlewareVision.config.XMLReader;
 import org.math.plot.Plot3DPanel;
-import org.math.plot.plots.Plot;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_32F;

@@ -97,7 +97,7 @@ public class V4Color extends Activity {
                 }
                 int[] colorLabel = {getConcentricCircleLabel(D, K), getAngleLabel(D, K), getHeightLabel(L)};
                 
-                float angle=(float) ((float)getAngleLabel(D, K)/(float)Config.NoRadialDivisions)-0.25f;
+                float angle=(float) ((float)getAngleLabel(D, K)/(float)Config.NoRadialDivisions)-0;
                 float radial=(float) ((float)getConcentricCircleLabel(D, K)/(float)Config.NoConcentricCircles);
                 float h=(float) ((float)getHeightLabel(L)/(float)Config.NoHeightDivisions);
                 

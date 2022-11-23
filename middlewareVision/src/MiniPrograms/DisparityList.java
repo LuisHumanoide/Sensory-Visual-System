@@ -4,25 +4,33 @@
  */
 package MiniPrograms;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import org.math.plot.Plot2DPanel;
 import utils.FileUtils;
+import utils.MathFunctions;
 
 /**
  * GUI for setting the absolute and relative disparity values
+ *
  * @author HumanoideFilms
  */
 public class DisparityList extends javax.swing.JFrame {
-
+    //2D plot panel
+    public Plot2DPanel plot;
+    //list of gaussians
+    public ArrayList<gaussian> glist;
     //absolute disparities
     String aDisparityName = "ConfigFiles/Disparities";
     //relative disprities
     String rDisparityName = "ConfigFiles/DisparityGaussians";
-    
+
     /**
      * Creates new form DisparityList
      */
     public DisparityList() {
         initComponents();
-        
+        glist = new ArrayList();
         listPanel1.setColumnNames("Disparity (pixels)");
         listPanel1.setFilePath(aDisparityName, "txt");
         listPanel1.disableEditButtons();
@@ -31,14 +39,32 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel2.setColumnNames("range", "center");
         listPanel2.setFilePath(rDisparityName, "txt");
         listPanel2.loadFile();
+        
+        
+        plot = new Plot2DPanel();
 
         minMax();
-        addGaussians();
-        disparityPanel1.repaint();
 
+        addGaussians();        
+        
+        /**
+         * reload the gaussians when the save button is pressed
+         */
         listPanel2.saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addGaussians();
+            }
+        });
+        
+        listPanel2.table.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                updateGaussians();
+            }
+        });
+        
+        listPanel2.removeButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                updateGaussians();
             }
         });
     }
@@ -73,8 +99,6 @@ public class DisparityList extends javax.swing.JFrame {
             min = temp;
         }
         setXpoints();
-        //set the x points to the disparity panel 
-        disparityPanel1.setXpoints(xpoints);
     }
 
     /**
@@ -91,18 +115,75 @@ public class DisparityList extends javax.swing.JFrame {
     }
 
     /**
-     * Add the gaussian values to the visualizer
+     * Update the plot of disparities
+     */
+    public void updatePlot() {
+        
+        plot.removeAllPlots();
+        int c = 0;
+        for (gaussian ga : glist) {
+            double f=(double)((double)c/(double)glist.size());
+            double xvalues[] = new double[xpoints.length];
+            double yvalues[] = new double[xpoints.length];
+
+            double sum = 0;
+
+            for (int i = 0; i < xpoints.length; i++) {
+                xvalues[i] = i;
+                yvalues[i] = (-MathFunctions.Gauss(ga.a, ga.b, 1, xpoints[i]));
+                sum = sum + MathFunctions.Gauss(ga.a, ga.b, ga.m, xpoints[i]);
+            }
+            //performs a normalization
+            for (int i = 0; i < xpoints.length; i++) {
+                yvalues[i] = MathFunctions.Gauss(ga.a, ga.b, (double) (1 / sum), xpoints[i]);
+            }
+            plot.addLinePlot("Plot " + c, new Color((int)(f*255),(int)(1.5*f*255)%255,255-(int)(f*255)),xvalues, yvalues);          
+            c++;
+        }
+        
+        plotFrame.setContentPane(plot);
+        plotFrame.repaint();
+
+    }
+
+    /**
+     * Add the gaussian filters to the glist, from the file
      */
     public void addGaussians() {
-        disparityPanel1.glist.clear();
+        glist.clear();
         String lines[] = FileUtils.fileLines(rDisparityName + ".txt");
         for (String line : lines) {
             String values[] = line.split(" ");
             double a = Double.parseDouble(values[0]);
             double b = Double.parseDouble(values[1]);
-            disparityPanel1.addGaussian(a, b);
+            addGaussian(a, b);
         }
-        disparityPanel1.repaint();
+        updatePlot();
+    }
+    
+    /**
+     * Add the gaussian filters to the glist, from the table
+     */
+    public void updateGaussians() {
+        glist.clear();
+        for (int i = 0; i < listPanel2.table.getRowCount(); i++) {
+            if (listPanel1.CompleteRow(i)) {
+                addGaussian(Double.parseDouble((String) listPanel2.table.getValueAt(i, 0)), Double.parseDouble((String) listPanel2.table.getValueAt(i, 1)));
+            }
+        }
+        updatePlot();
+    }
+
+
+
+    /**
+     * Add a gaussian that has 2 values
+     *
+     * @param a the deviation
+     * @param b the center
+     */
+    public void addGaussian(double a, double b) {
+        glist.add(new gaussian(a, b, 1));
     }
 
     /**
@@ -124,7 +205,7 @@ public class DisparityList extends javax.swing.JFrame {
         stepsField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         listPanel2 = new gui.components.ListPanel();
-        disparityPanel1 = new gui.components.DisparityPanel();
+        plotFrame = new javax.swing.JInternalFrame();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Disparity List");
@@ -144,14 +225,17 @@ public class DisparityList extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout disparityPanel1Layout = new javax.swing.GroupLayout(disparityPanel1);
-        disparityPanel1.setLayout(disparityPanel1Layout);
-        disparityPanel1Layout.setHorizontalGroup(
-            disparityPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 566, Short.MAX_VALUE)
+        plotFrame.setTitle("Disparity plot");
+        plotFrame.setVisible(true);
+
+        javax.swing.GroupLayout plotFrameLayout = new javax.swing.GroupLayout(plotFrame.getContentPane());
+        plotFrame.getContentPane().setLayout(plotFrameLayout);
+        plotFrameLayout.setHorizontalGroup(
+            plotFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 564, Short.MAX_VALUE)
         );
-        disparityPanel1Layout.setVerticalGroup(
-            disparityPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        plotFrameLayout.setVerticalGroup(
+            plotFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
@@ -176,7 +260,7 @@ public class DisparityList extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(listPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(disparityPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(plotFrame)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,7 +273,7 @@ public class DisparityList extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(disparityPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(plotFrame)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -215,7 +299,8 @@ public class DisparityList extends javax.swing.JFrame {
 
     /**
      * Generate the range of absolute disparities
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -242,7 +327,7 @@ public class DisparityList extends javax.swing.JFrame {
         listPanel1.save();
         //update the gaussian plot
         addGaussians();
-        disparityPanel1.repaint();
+        updatePlot();
         minMax();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -282,7 +367,6 @@ public class DisparityList extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.components.DisparityPanel disparityPanel1;
     private javax.swing.JTextField fromField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -291,7 +375,26 @@ public class DisparityList extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private gui.components.ListPanel listPanel1;
     private gui.components.ListPanel listPanel2;
+    private javax.swing.JInternalFrame plotFrame;
     private javax.swing.JTextField stepsField;
     private javax.swing.JTextField toField;
     // End of variables declaration//GEN-END:variables
+}
+
+class gaussian {
+
+    double a;
+    double b;
+    double m;
+    /**
+     * Make a abstraction of a gaussian
+     * @param a Amplitude
+     * @param b Center
+     * @param m 
+     */
+    public gaussian(double a, double b, double m) {
+        this.a = a;
+        this.b = b;
+        this.m = m;
+    }
 }

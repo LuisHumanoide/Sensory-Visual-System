@@ -77,6 +77,10 @@ public class GaussianFilter {
     public Mat makeFilter2(){
         return SpecialKernels.getAdvencedGauss(new Size(size,size), amp, -py+size/2, px+size/2, rx, ry, Math.toRadians(angle+90));
     }
+    
+    public String toString(){
+        return " "+rx+" "+ry+" "+px+" "+py+" "+amp+" "+comb;
+    }
 
     public double getRx() {
         return rx;

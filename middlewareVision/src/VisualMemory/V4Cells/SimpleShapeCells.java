@@ -60,7 +60,7 @@ public class SimpleShapeCells {
     }
 
     /**
-     * It creates a OpenCV Matriz from the list of Gaussian Filters
+     * It creates a OpenCV Matrix from the list of Gaussian Filters
      */
     void makeMatFilters() {
         ArrayList<GaussianFilter> filterList = new ArrayList();

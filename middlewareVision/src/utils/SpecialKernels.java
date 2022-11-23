@@ -6,6 +6,7 @@
 package utils;
 
 import MiniPrograms.RF;
+import VisualMemory.V4Cells.GaussianFilter;
 import java.io.File;
 import java.util.ArrayList;
 import org.opencv.core.Core;
@@ -31,6 +32,15 @@ public class SpecialKernels {
     static double valueMinus = -0.15;
     static double valueMax = 0.3;
     public static Mat v2Kernels[];
+    /*
+    LGN kernels
+     */
+    public static Mat LMM_L_kernel;
+    public static Mat LMM_M_kernel;
+    public static Mat LPM_L_kernel;
+    public static Mat LPM_M_kernel;
+    public static Mat SMLPM_LPM_kernel;
+    public static Mat SMLPM_M_kernel;
 
     /**
      * *************************************************************************
@@ -88,9 +98,11 @@ public class SpecialKernels {
         return getAdvencedGauss(new Size(rf.getSize(), rf.getSize()), rf.getIntensity(), -rf.getPy() + rf.getSize() / 2, rf.getPx() + rf.getSize() / 2, rf.getRx(), rf.getRy(), Math.toRadians(rf.getAngle() + 90));
     }
 
+
+   
     /**
      * Cargar los filtros de selectividad angular en V2<br>
-       The filter file is <b>angular.txt</b>.
+     * The filter file is <b>angular.txt</b>.
      */
     public static void loadV2Kernels() {
         v2Kernels = new Mat[Config.gaborOrientations * 2];
@@ -105,7 +117,8 @@ public class SpecialKernels {
     }
 
     /**
-     * Obtain the composite filter, product of the sum of Gaussians created in a file.
+     * Obtain the composite filter, product of the sum of Gaussians created in a
+     * file.
      *
      * @param path path of the file
      * @return an OpenCV mat corresponding to the filter
@@ -224,9 +237,10 @@ public class SpecialKernels {
     /**
      * Get Sine Kernel<br>
      * Not used in this software, but was included in Daniel program
+     *
      * @param s
      * @param frec
-     * @return 
+     * @return
      */
     public static Mat getSineKernel(Size s, double frec) {
         Mat m = new Mat(s, CvType.CV_32FC1);
@@ -243,9 +257,10 @@ public class SpecialKernels {
 
     /**
      * Get Cosine kernel, not used in this software
+     *
      * @param s
      * @param frec
-     * @return 
+     * @return
      */
     public static Mat getCosKernel(Size s, double frec) {
         Mat m = new Mat(s, CvType.CV_32FC1);
@@ -341,6 +356,7 @@ public class SpecialKernels {
      * Method for displacing an openCV matrix<br>
      * further information here: <br>
      * https://docs.opencv.org/3.4/d4/d61/tutorial_warp_affine.html
+     *
      * @param kernel is the original or source Mat
      * @param angle is angle at which the displacement is to be made
      * @param dis is the length to be displaced
@@ -371,6 +387,7 @@ public class SpecialKernels {
     /**
      * Rotate a OpenCV matrix in degrees<br>
      * the displacement is made from the center
+     *
      * @param kernel matrix to rotate
      * @param angle angle in degrees
      * @return a rotated OpenCV Mat
@@ -385,11 +402,12 @@ public class SpecialKernels {
     /**
      * Rotate a OpenCV matrix in degrees<br>
      * the displacement is done from a user-defined point
+     *
      * @param kernel matrix to rotate or source matrix
      * @param rx point in x
      * @param ry point in y
      * @param angle angle in degrees
-     * @return  a rotated OpenCV Mat
+     * @return a rotated OpenCV Mat
      */
     public static Mat rotateKernel(Mat kernel, int rx, int ry, double angle) {
         Mat rotationMat = Imgproc.getRotationMatrix2D(new Point(kernel.width() / 2 + rx, kernel.height() / 2 + ry), angle, 1);
@@ -401,6 +419,7 @@ public class SpecialKernels {
     /**
      * Rotate a OpenCV matrix in radians<br>
      * the displacement is made from the center
+     *
      * @param kernel matrix to rotate
      * @param angle angle in degrees
      * @return a rotated OpenCV Mat
@@ -410,14 +429,15 @@ public class SpecialKernels {
     }
 
     /**
-     * 
+     *
      * Rotate a OpenCV matrix in radians<br>
      * the displacement is done from a user-defined point
+     *
      * @param kernel matrix to rotate or source matrix
      * @param rx point in x
      * @param ry point in y
      * @param angle angle in degrees
-     * @return  a rotated OpenCV Mat
+     * @return a rotated OpenCV Mat
      */
     public static Mat rotateKernelRadians(Mat kernel, int rx, int ry, double angle) {
         return rotateKernel(kernel, rx, ry, Math.toDegrees(angle));

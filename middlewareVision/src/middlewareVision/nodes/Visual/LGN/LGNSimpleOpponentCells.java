@@ -13,6 +13,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
 import utils.Convertor;
+import utils.Functions;
 import utils.LongSpike;
 import utils.numSync;
 
@@ -22,21 +23,6 @@ import utils.numSync;
  */
 public class LGNSimpleOpponentCells extends Activity {
 
-    private static final int KERNEL_SIZE = 3;
-
-    private static final float UPPER_KERNEL_SIGMA = 0.25f;
-    private static final float LOWER_KERNEL_SIGMA = 1.25f;
-
-    private static final float LMM_ALPHA = 3.2f;
-    private static final float LMM_BETA = 3f;
-
-    private static final float SMLPM_ALPHA = 1.2f;
-    private static final float SMLPM_BETA = 1.4f;
-    private static final float SMLPM_GAMMA = 0.6f;
-    private static final float SMLPM_DELTA = 0.4f;
-
-    private static final float LPM_ALPHA = 0.6f;
-    private static final float LPM_BETA = 0.4f;
 
     Mat LMSConesL[];
     Mat LMSConesR[];
@@ -158,16 +144,13 @@ public class LGNSimpleOpponentCells extends Activity {
     private void LMM(Mat[] LMS, Mat dst) {
         int rows = LMS[0].rows();
         int cols = LMS[0].cols();
+        
         Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
         Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
-
-        Mat upperKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.UPPER_KERNEL_SIGMA);
-        Mat lowerKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.LOWER_KERNEL_SIGMA);
-
-        Imgproc.sepFilter2D(LMS[0], LG, -1, upperKernel, upperKernel);
-        Imgproc.sepFilter2D(LMS[1], MG, -1, lowerKernel, lowerKernel);
-
-        Core.addWeighted(LG, this.LMM_ALPHA, MG, -this.LMM_BETA, 0, dst);
+        
+        LG = Functions.filter2(LMS[0], LGNBank.LMM_L_kernel);
+        MG = Functions.filter2(LMS[1], LGNBank.LMM_M_kernel);
+        Core.add(LG, MG, dst);
     }
 
     /**
@@ -182,15 +165,17 @@ public class LGNSimpleOpponentCells extends Activity {
         Mat S = new Mat(rows, cols, CvType.CV_32FC1);
         Mat LPM = new Mat(rows, cols, CvType.CV_32FC1);
 
-        Mat upperKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.UPPER_KERNEL_SIGMA);
-        Mat lowerKernel = Imgproc.getGaussianKernel(this.KERNEL_SIZE, this.LOWER_KERNEL_SIGMA);
+        Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
+        Mat MG = new Mat(rows, cols, CvType.CV_32FC1);     
+        
+        LG = Functions.filter2(LMS[0], LGNBank.LPM_L_kernel);
+        MG = Functions.filter2(LMS[1], LGNBank.LPM_M_kernel);
+        Core.add(LG, MG, LPM);
 
-        Core.addWeighted(LMS[0], this.SMLPM_GAMMA, LMS[1], this.SMLPM_DELTA, 0, LPM);
-        Imgproc.sepFilter2D(LMS[2], S, -1, upperKernel, upperKernel);
+        S = Functions.filter2(LMS[2], LGNBank.SMLPM_S_kernel);
+        LPM = Functions.filter2(LPM, LGNBank.SMLPM_LPM_kernel);
+        Core.add(S, LPM, dst);
 
-        Imgproc.sepFilter2D(LPM, LPM, -1, lowerKernel, lowerKernel);
-
-        Core.addWeighted(S, this.SMLPM_ALPHA, LPM, -this.SMLPM_BETA, 0, dst);
     }
 
     /**
@@ -200,7 +185,13 @@ public class LGNSimpleOpponentCells extends Activity {
      * @param dst
      */
     private void LPM(Mat[] LMS, Mat dst) {
-        Core.addWeighted(LMS[0], this.LPM_ALPHA, LMS[1], this.LPM_BETA, 0, dst);
+        int rows = LMS[0].rows();
+        int cols = LMS[0].cols();
+        Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
+        Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
+        LG = Functions.filter2(LMS[0], LGNBank.LPM_L_kernel);
+        MG = Functions.filter2(LMS[1], LGNBank.LPM_M_kernel);
+        Core.add(LG, MG, dst);
     }
 
 }

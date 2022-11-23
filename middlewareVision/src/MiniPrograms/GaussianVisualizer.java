@@ -37,29 +37,39 @@ import utils.Scalr;
 import utils.SpecialKernels;
 
 /**
+ * Visualize a 3D Gaussian plot for designing receptive fields
  *
- * @author Laptop
+ * @author Parrasaurio
  */
 public class GaussianVisualizer extends javax.swing.JFrame {
 
     /**
      * Creates new form GaussianVisualizer
      */
+    //File where of the last values used in the program
     String fileName = "ConfigFiles/DoGValues.txt";
+    //get the example image
     String originalImageFile = XMLReader.getValue("filterEditorImage");
+    //array of text fields
     JTextField[] fields;
+    //This is the filter 
     Mat DoGFilter;
+    //image of the filter
     BufferedImage fImage;
+    //original image
     BufferedImage imageFile;
+    //filtered image
     BufferedImage filteredImage;
     double norm1 = 0;
     double sum1 = 0;
     double sum2 = 0;
     int w = XMLReader.getIntValue("filterImageWidth");
     int h = XMLReader.getIntValue("filterImageHeight");
-
+    //for the 3D plot
     public Plot3DPanel plot;
-
+    /*
+    Array values for the 3D plot
+     */
     double[] x;
     double[] y;
     double[][] z;
@@ -86,9 +96,9 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         visualize();
         convolution();
     }
-    
-        /**
-     * Create the double array with z values of the Gabor filter
+
+    /**
+     * Create the double array with z values of the Gaussians
      */
     public void makeZValues() {
         matrix m = Convertor.MatToMatrix(DoGFilter);
@@ -103,25 +113,30 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         }
         for (int i = 0; i < m.getWidth(); i++) {
             for (int j = 0; j < m.getHeight(); j++) {
-                z[j][i] = m.getValue(i, m.getHeight()-j-1);
+                z[j][i] = m.getValue(i, m.getHeight() - j - 1);
             }
         }
     }
 
     /**
-     * Update the Gabor 3D Plot
+     * Update the Gabor 3D Plot<br>
+     * first it make the Z values<br>
+     * then it removes all plots for setting the plot again
      */
     public void updatePlot() {
         makeZValues();
         plot.removeAllPlots();
         plot.addGridPlot("Gabor plot", x, y, z);
-        plot.setFixedBounds(2, -1/zZoom, 1/zZoom);
-        plot.setFixedBounds(0,0,DoGFilter.width());
-        plot.setFixedBounds(1,0,DoGFilter.height());
+        plot.setFixedBounds(2, -1 / zZoom, 1 / zZoom);
+        plot.setFixedBounds(0, 0, DoGFilter.width());
+        plot.setFixedBounds(1, 0, DoGFilter.height());
         framePlot.setContentPane(plot);
         framePlot.repaint();
     }
 
+    /**
+     * Method for paste an image using drag and drop
+     */
     public void modifyLabel() {
         TransferHandler th = new TransferHandler() {
 
@@ -144,6 +159,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                         convolution();
                     }
                 } catch (Exception e) {
+                    System.out.println("Exception importing the droped image");
                 }
                 return true;
             }
@@ -152,6 +168,13 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         originalImage.setTransferHandler(th);
     }
 
+    /**
+     * It converts the type of image because if not there is a error
+     *
+     * @param eleScreenshot droped image
+     * @param type the type
+     * @return
+     */
     private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
         BufferedImage bi = new BufferedImage(eleScreenshot.getWidth(), eleScreenshot.getHeight(), type);
         Graphics g = bi.getGraphics();
@@ -160,6 +183,10 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         return bi;
     }
 
+    /**
+     * Performs the convolution between the gaussian filter and the original
+     * image
+     */
     void convolution() {
         Mat mImage = Convertor.bufferedImageToMat(imageFile);
         Mat fImage = new Mat();
@@ -169,12 +196,19 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         saveValues();
     }
 
+    /**
+     * Performs the sum of the two gaussians
+     */
     void summation() {
         Double sum = Core.sumElems(DoGFilter).val[0];
         norm1 = sum;
         sumLabel.setText(String.format("%.3f", sum));
     }
 
+    /**
+     * Assign the text fields to an array of text field<br>
+     * in order to make easy work with them
+     */
     void loadFields() {
         fields = new JTextField[13];
         fields[0] = sizef;
@@ -193,6 +227,11 @@ public class GaussianVisualizer extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Load the values in the text fields
+     *
+     * @param values
+     */
     void loadFileValues(String[] values) {
         for (int i = 0; i < 13; i++) {
             fields[i].setText(values[i]);
@@ -610,6 +649,11 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Fill the second gaussian fields with 0s
+     *
+     * @param evt
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         for (int i = 7; i < 13; i++) {
@@ -619,6 +663,11 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Call the visualize() method manually
+     *
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         w = XMLReader.getIntValue("filterImageWidth");
@@ -629,6 +678,10 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Get all the values of the fields and generates the gaussian filter<br>
+     * then it updates the plots and makes the convolutions
+     */
     void visualize() {
         Mat Gauss1 = new Mat();
         Mat Gauss2 = new Mat();
@@ -666,8 +719,14 @@ public class GaussianVisualizer extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Increment or decrement the values when a UP or DOWN key is pressed
+     *
+     * @param field jtextfield to increment or decrement
+     * @param evt event
+     * @param inc increment value
+     */
     void incDec(JTextField field, KeyEvent evt, double inc) {
-        //df.setRoundingMode(RoundingMode.DOWN);
         double value;
         try {
             if (evt.getKeyCode() == KeyEvent.VK_UP) {
@@ -859,6 +918,13 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         saveValues();
     }//GEN-LAST:event_t2fKeyReleased
 
+    /**
+     * Performs a normalization, it means, make the first sum of all pixels of
+     * the first gaussian<br>
+     * to be 1. The Amplitude of the gaussian is modified
+     *
+     * @param evt
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         double A1 = Double.parseDouble(A1f.getText());
@@ -868,6 +934,12 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    /**
+     * Normalizes the second gaussian, it makes the sum of all pixels -1<br>
+     * the amplitude of the gaussian is modified
+     *
+     * @param evt
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         if (twoGauss) {
@@ -879,6 +951,11 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    /**
+     * Makes the difference of the two gaussians 0
+     *
+     * @param evt
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         double A1 = Double.parseDouble(A1f.getText());
@@ -887,8 +964,6 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         if (twoGauss) {
             double A2 = Double.parseDouble(A2f.getText());
             double Anorm2 = -A2 / sum2;
-            /*double Anorm1=A1/sum1;
-            double Anorm2=-A2/sum2;*/
             Double newA2 = Anorm2 * proportion;
             A2f.setText(String.format("%.3f", newA2));
         }
@@ -896,18 +971,26 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    /**
+     * switch for using one or two gaussians
+     */
     boolean twoGauss = true;
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
         change2GaussStatus();
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
+    /**
+     * paste values in the first gaussian
+     *
+     * @param evt
+     */
     private void paste1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paste1ActionPerformed
         // TODO add your handling code here:
-        paste1();
+        paste1(1);
     }//GEN-LAST:event_paste1ActionPerformed
 
-    public void paste1() {
+    public void paste1(int gNumber) {
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable t = cb.getContents(this);
 
@@ -918,8 +1001,15 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 String texto = (String) t.getTransferData(dataFlavorStringJava);
                 if (texto.contains("♦")) {
                     String values[] = texto.split(" ");
-                    for (int i = 0; i < 7; i++) {
-                        fields[i].setText(values[i + 1]);
+                    if (gNumber == 1) {
+                        for (int i = 0; i < 7; i++) {
+                            fields[i].setText(values[i + 1]);
+                        }
+                    }
+                    if (gNumber == 2) {
+                        for (int i = 0; i < 7; i++) {
+                            fields[i+7].setText(values[i + 2]);
+                        }
                     }
                 }
             }
@@ -948,26 +1038,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
 
     private void paste2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paste2ActionPerformed
         // TODO add your handling code here:
-        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-        Transferable t = cb.getContents(this);
-
-        DataFlavor dataFlavorStringJava;
-        try {
-            dataFlavorStringJava = new DataFlavor("application/x-java-serialized-object; class=java.lang.String");
-            if (t.isDataFlavorSupported(dataFlavorStringJava)) {
-                String texto = (String) t.getTransferData(dataFlavorStringJava);
-                if (texto.contains("♦")) {
-                    String values[] = texto.split(" ");
-                    for (int i = 0; i < 7; i++) {
-                        fields[i + 7].setText(values[i + 1]);
-                    }
-                }
-            }
-        } catch (Exception ex) {
-
-        }
-        visualize();
-        convolution();
+        paste1(2);
     }//GEN-LAST:event_paste2ActionPerformed
 
     private void copy2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copy2ActionPerformed
@@ -983,13 +1054,22 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_copy2ActionPerformed
 
-    double zZoom=1;
+    double zZoom = 1;
+
+    /**
+     * Modifies the z axis limits of the 3D plot
+     *
+     * @param evt
+     */
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged
         // TODO add your handling code here:
-        zZoom=jSlider1.getValue()*0.1;
+        zZoom = jSlider1.getValue() * 0.1;
         updatePlot();
     }//GEN-LAST:event_jSlider1MouseDragged
 
+    /**
+     * add the fields of the second gaussian
+     */
     public void change2GaussStatus() {
         twoGauss = jCheckBox1.isSelected();
         for (int i = 7; i < fields.length; i++) {
@@ -1005,6 +1085,9 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         convolution();
     }
 
+    /**
+     * Converts the gaussian filter into an image
+     */
     void loadImageFilter() {
         fImage = Convertor.ConvertMat2FilterImage(DoGFilter);
         fImage = Scalr.resize(fImage, (int) (Integer.parseInt(sizef.getText()) * zoom));
@@ -1012,6 +1095,10 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         filterImage.setIcon(new ImageIcon(fImage));
     }
 
+    /**
+     * Save the values in a file, when the program is open the next time, the
+     * values are preserved
+     */
     void saveValues() {
         String sValues = "";
         for (int i = 0; i < 12; i++) {
