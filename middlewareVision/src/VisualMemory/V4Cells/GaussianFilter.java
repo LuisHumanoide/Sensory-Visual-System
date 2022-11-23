@@ -5,6 +5,7 @@
  */
 package VisualMemory.V4Cells;
 
+import MiniPrograms.RF;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import utils.SpecialKernels;
@@ -44,6 +45,17 @@ public class GaussianFilter {
         this.angle = Double.parseDouble(angle);
         this.comb = comb;
         this.size = Integer.parseInt(size);
+    }
+    
+     public GaussianFilter(RF rf) {
+        this.rx = rf.rx;
+        this.ry = rf.ry;
+        this.px = rf.px;
+        this.py = rf.py;
+        this.amp = rf.intensity;
+        this.angle = rf.angle;
+        this.comb = rf.combination;
+        this.size = rf.size;
     }
 
     public GaussianFilter(String line) {

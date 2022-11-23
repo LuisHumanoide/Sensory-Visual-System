@@ -23,7 +23,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import matrix.matrix;
 import middlewareVision.config.XMLReader;
+import org.math.plot.Plot3DPanel;
 import org.opencv.core.Core;
 import static org.opencv.core.CvType.CV_32F;
 import org.opencv.core.Mat;
@@ -56,6 +58,12 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     int w = XMLReader.getIntValue("filterImageWidth");
     int h = XMLReader.getIntValue("filterImageHeight");
 
+    public Plot3DPanel plot;
+
+    double[] x;
+    double[] y;
+    double[][] z;
+
     public GaussianVisualizer() {
         initComponents();
         modifyLabel();
@@ -74,10 +82,45 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         }
         loadFields();
         loadFileValues(values);
+        plot = new Plot3DPanel();
         visualize();
         convolution();
     }
     
+        /**
+     * Create the double array with z values of the Gabor filter
+     */
+    public void makeZValues() {
+        matrix m = Convertor.MatToMatrix(DoGFilter);
+        x = new double[m.getWidth()];
+        y = new double[m.getHeight()];
+        z = new double[m.getWidth()][m.getHeight()];
+        for (int i = 0; i < x.length; i++) {
+            x[i] = i;
+        }
+        for (int i = 0; i < y.length; i++) {
+            y[i] = i;
+        }
+        for (int i = 0; i < m.getWidth(); i++) {
+            for (int j = 0; j < m.getHeight(); j++) {
+                z[j][i] = m.getValue(i, m.getHeight()-j-1);
+            }
+        }
+    }
+
+    /**
+     * Update the Gabor 3D Plot
+     */
+    public void updatePlot() {
+        makeZValues();
+        plot.removeAllPlots();
+        plot.addGridPlot("Gabor plot", x, y, z);
+        plot.setFixedBounds(2, -1/zZoom, 1/zZoom);
+        plot.setFixedBounds(0,0,DoGFilter.width());
+        plot.setFixedBounds(1,0,DoGFilter.height());
+        framePlot.setContentPane(plot);
+        framePlot.repaint();
+    }
 
     public void modifyLabel() {
         TransferHandler th = new TransferHandler() {
@@ -167,14 +210,16 @@ public class GaussianVisualizer extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
+        jScrollPane1 = new javax.swing.JScrollPane();
         filterImage = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        jInternalFrame2 = new javax.swing.JInternalFrame();
+        jScrollPane2 = new javax.swing.JScrollPane();
         originalImage = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
+        jInternalFrame3 = new javax.swing.JInternalFrame();
+        jScrollPane3 = new javax.swing.JScrollPane();
         convolvedImage = new javax.swing.JLabel();
+        framePlot = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
         sizef = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -211,6 +256,8 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         copy2 = new javax.swing.JButton();
         paste1 = new javax.swing.JButton();
         paste2 = new javax.swing.JButton();
+        jSlider1 = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -218,35 +265,53 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Filter:");
-        jPanel3.add(jLabel1);
+        jPanel3.setLayout(null);
+
+        jInternalFrame1.setResizable(true);
+        jInternalFrame1.setTitle("Filter image");
+        jInternalFrame1.setVisible(true);
 
         filterImage.setText("[]");
-        jPanel3.add(filterImage);
+        jScrollPane1.setViewportView(filterImage);
+
+        jInternalFrame1.getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jInternalFrame1);
+        jInternalFrame1.setBounds(0, 0, 210, 310);
+
+        jInternalFrame2.setResizable(true);
+        jInternalFrame2.setTitle("Original");
+        jInternalFrame2.setVisible(true);
+
+        originalImage.setText("[]");
+        jScrollPane2.setViewportView(originalImage);
+
+        jInternalFrame2.getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jInternalFrame2);
+        jInternalFrame2.setBounds(210, 0, 270, 310);
+
+        jInternalFrame3.setResizable(true);
+        jInternalFrame3.setTitle("Convolded Image");
+        jInternalFrame3.setVisible(true);
+
+        convolvedImage.setText("[]");
+        jScrollPane3.setViewportView(convolvedImage);
+
+        jInternalFrame3.getContentPane().add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jInternalFrame3);
+        jInternalFrame3.setBounds(480, 0, 290, 310);
+
+        framePlot.setResizable(true);
+        framePlot.setTitle("3D Gaussian Plot");
+        framePlot.setVisible(true);
+        jPanel3.add(framePlot);
+        framePlot.setBounds(770, 0, 320, 310);
 
         jPanel1.add(jPanel3);
 
-        jLabel12.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setText("Original:");
-        jPanel5.add(jLabel12);
-
-        originalImage.setText("[]");
-        jPanel5.add(originalImage);
-
-        jPanel1.add(jPanel5);
-
-        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel14.setText("Convolved:");
-        jPanel4.add(jLabel14);
-
-        convolvedImage.setText("[]");
-        jPanel4.add(convolvedImage);
-
-        jPanel1.add(jPanel4);
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 950, 310));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 310));
 
         jPanel2.setBackground(new java.awt.Color(59, 62, 65));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -526,7 +591,21 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         });
         jPanel2.add(paste2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, -1, 20));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 950, 140));
+        jSlider1.setMaximum(300);
+        jSlider1.setMinimum(10);
+        jSlider1.setValue(10);
+        jSlider1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jSlider1MouseDragged(evt);
+            }
+        });
+        jPanel2.add(jSlider1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 100, 320, -1));
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Z axis zoom:");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 100, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 1120, 140));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -583,6 +662,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         DoGFilter = DoG;
         summation();
         loadImageFilter();
+        updatePlot();
 
     }
 
@@ -903,6 +983,13 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_copy2ActionPerformed
 
+    double zZoom=1;
+    private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged
+        // TODO add your handling code here:
+        zZoom=jSlider1.getValue()*0.1;
+        updatePlot();
+    }//GEN-LAST:event_jSlider1MouseDragged
+
     public void change2GaussStatus() {
         twoGauss = jCheckBox1.isSelected();
         for (int i = 7; i < fields.length; i++) {
@@ -978,6 +1065,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     private javax.swing.JButton copy1;
     private javax.swing.JButton copy2;
     private javax.swing.JLabel filterImage;
+    private javax.swing.JInternalFrame framePlot;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -985,10 +1073,11 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     public javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JInternalFrame jInternalFrame2;
+    private javax.swing.JInternalFrame jInternalFrame3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1000,8 +1089,10 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSlider jSlider1;
     private javax.swing.JLabel originalImage;
     private javax.swing.JButton paste1;
     private javax.swing.JButton paste2;
