@@ -37,10 +37,20 @@ public class Visualizer {
     }
     
 
+    /**
+     * Add a limit, limits are values for the rows
+     * @param name
+     * @param value 
+     */
     public static void addLimit(String name, int value) {
         limits.put(name, value);
     }
 
+    /**
+     * Get the index of a row by name
+     * @param name name of the row
+     * @return 
+     */
     public static int getRow(String name) {
         if (limits.containsKey(name)) {
             return limits.get(name);
@@ -49,14 +59,35 @@ public class Visualizer {
         }
     }
 
+    /**
+     * Visualize an image
+     * @param image
+     * @param title
+     * @param index 
+     */
     public static void setImage(BufferedImage image, String title, int index) {
         vis.setImage(image, title, index);
     }
 
+    /**
+     * Visualize a image in a label
+     * @param image Image
+     * @param title title of the image
+     * @param col column
+     * @param row row of the image
+     */
     public static void setImage(BufferedImage image, String title, int col, int row) {
         vis.setImage(image, title, col * Config.h + row);
     }
 
+    /**
+     * Visualize an image adding a group, the group is useful for avoid calculating the row number
+     * @param image
+     * @param title
+     * @param col
+     * @param row
+     * @param group 
+     */
     public static void setImage(BufferedImage image, String title, int col, int row, String group) {
         vis.setImage(image, title, col * Config.h + row);
         if (!lockedLimits.contains(group)) {

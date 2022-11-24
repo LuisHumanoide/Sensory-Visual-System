@@ -11,17 +11,15 @@ import java.nio.ByteBuffer;
 import java.util.UnknownFormatConversionException;
 
 /**
- *
- *
- * @param <T, L, I> L: data type for the Location I: data type for the Intensity
- * T: data type for the Timing Note that all the type parameters must be
- * Serializable
- *
  * A Spike-class that encapsulates the info passed in Cuayollotl-AC Modality: it
  * represents the type of the stimulus being coded (General type of data, like
  * Visual, AttnSet, etc) Location: it represents the location of the stimulus
  * (Specification of data, like a spatial-point, spectrum range, memory cluster,
  * etc). Timing: it represents the time that the stimulus intensity is present.
+ * @author HumanoideFilms
+ * @param <L> data type for the Location
+ * @param <I> data type for the Intensity
+ * @param <T> data type for the Timing
  */
 public class LongSpike<  L extends Serializable, I extends Serializable, T extends Serializable> implements Serializable {
 

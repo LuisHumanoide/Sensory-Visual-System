@@ -9,10 +9,26 @@
 	<GaborOrientations>4</GaborOrientations>
 	<dimensions>200</dimensions>
 	<motionDimensions>70</motionDimensions>
+	<!--LGN CONFIG-->
+	<LGNMethod>1</LGNMethod>
+	<KERNEL_SIZE>3</KERNEL_SIZE>
+	<UPPER_KERNEL_SIGMA>0.25f</UPPER_KERNEL_SIGMA>
+	<LOWER_KERNEL_SIGMA>1.25f</LOWER_KERNEL_SIGMA>
+	<LMM_ALPHA>3.2f</LMM_ALPHA>
+	<LMM_BETA>3f</LMM_BETA>
+	<SMLPM_ALPHA>1.2f</SMLPM_ALPHA>
+	<SMLPM_BETA>1.4f</SMLPM_BETA>
+	<SMLPM_GAMMA>0.6f</SMLPM_GAMMA>
+	<SMLPM_DELTA>0.4f</SMLPM_DELTA>
+	<LPM_ALPHA>0.6f</LPM_ALPHA>
+	<LPM_BETA>0.4f</LPM_BETA>
 	<!--V4 COLOR-->
 	<NoConcentricCircles>10</NoConcentricCircles>
 	<NoRadialDivisions>10</NoRadialDivisions>
-	<NoHeightDivisions>10</NoHeightDivisions>
+	<NoHeightDivisions>20</NoHeightDivisions>
+	<!--MOTION-->
+	<V1MotionSubs>1</V1MotionSubs>
+	<MTMotionSubs>1</MTMotionSubs>
 	<!--MST RADIAL-->
 	<dxExpCont>4</dxExpCont>
 	<dtExpCont>1</dtExpCont>
@@ -25,4 +41,5 @@
 	<curvatureEditorImage>ConfigFiles/circles.JPG</curvatureEditorImage>
 	<curvatureImageWidth>200</curvatureImageWidth>
 	<curvatureImageHeight>200</curvatureImageHeight>
+
 </Configuration>

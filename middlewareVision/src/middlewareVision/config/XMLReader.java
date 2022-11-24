@@ -6,12 +6,16 @@
 package middlewareVision.config;
 
 import java.io.File;
+import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import utils.Config;
 
 /**
@@ -42,6 +46,8 @@ public class XMLReader {
                 int dimensions = Integer.parseInt(propertyElement.getElementsByTagName("dimensions").item(0).getTextContent());
                 int motionDimensions = Integer.parseInt(propertyElement.getElementsByTagName("motionDimensions").item(0).getTextContent());
 
+                int LGNMethod = Integer.parseInt(propertyElement.getElementsByTagName("LGNMethod").item(0).getTextContent());
+
                 int NoConcentricCircles = Integer.parseInt(propertyElement.getElementsByTagName("NoConcentricCircles").item(0).getTextContent());
                 int NoRadialDivisions = Integer.parseInt(propertyElement.getElementsByTagName("NoRadialDivisions").item(0).getTextContent());
                 int NoHeightDivisions = Integer.parseInt(propertyElement.getElementsByTagName("NoHeightDivisions").item(0).getTextContent());
@@ -50,6 +56,9 @@ public class XMLReader {
                 int dtExpCont = Integer.parseInt(propertyElement.getElementsByTagName("dtExpCont").item(0).getTextContent());
                 int dxRotation = Integer.parseInt(propertyElement.getElementsByTagName("dxRotation").item(0).getTextContent());
                 int dtRotation = Integer.parseInt(propertyElement.getElementsByTagName("dtRotation").item(0).getTextContent());
+
+                int V1MotionSubs = Integer.parseInt(propertyElement.getElementsByTagName("V1MotionSubs").item(0).getTextContent());
+                int MTMotionSubs = Integer.parseInt(propertyElement.getElementsByTagName("MTMotionSubs").item(0).getTextContent());
 
                 Config.port = Integer.parseInt(port);
                 Config.IP = IP;
@@ -60,6 +69,10 @@ public class XMLReader {
                 Config.heigth = dimensions;
                 Config.motionWidth = motionDimensions;
                 Config.motionHeight = motionDimensions;
+                Config.V1MotionSubs = V1MotionSubs;
+                Config.MTMotionSubs = MTMotionSubs;
+
+                Config.LGNmethod = LGNMethod;
 
                 Config.NoConcentricCircles = NoConcentricCircles;
                 Config.NoRadialDivisions = NoRadialDivisions;
@@ -71,12 +84,39 @@ public class XMLReader {
                 Config.dtRotation = dtRotation;
 
             }
-        } catch (Exception ex) {
+        } catch (IOException | NumberFormatException | ParserConfigurationException | DOMException | SAXException ex) {
         }
     }
-    
-    public static String getValue(String key){
-        String value="";
+
+    public static String[] getValuesFromXML(String... keys) {
+        String values[] = new String[keys.length];
+        File xmlFile = new File("ConfigFiles/Configuration.xml");
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(xmlFile);
+            doc.getDocumentElement();
+
+            NodeList GeneralConfiguration = doc.getElementsByTagName("Configuration");
+
+            Node property = GeneralConfiguration.item(0);
+            if (property.getNodeType() == Node.ELEMENT_NODE) {
+                Element propertyElement = (Element) property;
+                int i = 0;
+                for (String key : keys) {
+                    values[i] = propertyElement.getElementsByTagName("" + key).item(0).getTextContent();
+                    i++;
+                }
+
+            }
+        } catch (IOException | ParserConfigurationException | DOMException | SAXException ex) {
+
+        }
+        return values;
+    }
+
+    public static String getValue(String key) {
+        String value = "";
         File xmlFile = new File("ConfigFiles/Configuration.xml");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -91,16 +131,19 @@ public class XMLReader {
                 Element propertyElement = (Element) property;
 
                 value = propertyElement.getElementsByTagName(key).item(0).getTextContent();
-               
 
             }
         } catch (Exception ex) {
         }
         return value;
     }
-    
-    public static int getIntValue(String key){
+
+    public static int getIntValue(String key) {
         return Integer.parseInt(getValue(key));
+    }
+
+    public static float getFloatValue(String key) {
+        return Float.parseFloat(getValue(key));
     }
 
 }

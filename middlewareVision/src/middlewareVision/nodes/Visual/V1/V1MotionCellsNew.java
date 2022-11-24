@@ -93,8 +93,6 @@ public class V1MotionCellsNew extends Activity {
        
         
     }
-    //Boolean variable to perform the motion substraction
-    boolean subst=true;
     /**
      * Performs the motion detection, based on <b> Reichardt Detectors</b>
      * <ul>
@@ -111,7 +109,7 @@ public class V1MotionCellsNew extends Activity {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
                 MC[i1][i2].cells[i][j].cellMotionProcess(MC[i1][i2].cells[i][j % Config.gaborOrientations].previous[0].mat);
                 //performs the substraction 
-                if (subst) {
+                if (Config.V1MotionSubs==1) {
                     Core.subtract(MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat1st, MC[i1][i2].cells[i][(j + Config.gaborOrientations) % (Config.gaborOrientations * 2)].mat1st,
                             MC[i1][i2].cells[i][j % (Config.gaborOrientations * 2)].mat);
                 } else {

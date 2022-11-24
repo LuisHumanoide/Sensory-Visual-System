@@ -4,21 +4,17 @@ import VisualMemory.V1Cells.V1Bank;
 import generator.ProcessList;
 import gui.Visualizer;
 import java.awt.Color;
-import spike.Location;
 import kmiddle2.nodes.activities.Activity;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import matrix.labelMatrix;
 import matrix.matrix;
 import middlewareVision.config.AreaNames;
+import middlewareVision.config.XMLReader;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import spike.Modalities;
 import utils.Config;
 import utils.Convertor;
 import utils.LongSpike;
-import utils.Msg;
-import utils.numSync;
 
 /**
  *
@@ -96,16 +92,16 @@ public class V4Color extends Activity {
                     K = -1;
                 }
                 int[] colorLabel = {getConcentricCircleLabel(D, K), getAngleLabel(D, K), getHeightLabel(L)};
-                
-                float angle=(float) ((float)getAngleLabel(D, K)/(float)Config.NoRadialDivisions)-0;
+
+                float angle=(float) ((float)getAngleLabel(D, K)/(float)Config.NoRadialDivisions)-0.23f;
                 float radial=(float) ((float)getConcentricCircleLabel(D, K)/(float)Config.NoConcentricCircles);
                 float h=(float) ((float)getHeightLabel(L)/(float)Config.NoHeightDivisions);
                 
                 Color color = Color.getHSBColor(angle,radial,h);
-                
+
                 matLabel[eye].put(j, i, new byte[]{(byte) color.getRed(),
                     (byte) color.getGreen(), (byte) color.getBlue()});
-                
+
                 labels.setLabel(i, j, colorLabel);
             }
         }
@@ -174,7 +170,7 @@ public class V4Color extends Activity {
 
         g = X / Math.sqrt((X * X) + (Y * Y));
         g = Math.toDegrees(Math.acos(g));
-
+        
         if (Y < 0) {
             g = 360 - g;
         }

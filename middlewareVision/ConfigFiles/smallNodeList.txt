@@ -12,7 +12,7 @@ MSTPolarCells false
 V1SimpleCells true
 V1ComplexCells true
 MTPatternCells false
-V1HyperComplex false
+V1HyperComplex true
 V4SimpleShapeScaleInv false
 MSTTemplateCells false
 V2CornerMotion false

@@ -120,7 +120,6 @@ public class MTComponentCells extends Activity {
         mergeV1MotionCells(0);
         mergeV1MotionCells(1);
     }
-    boolean subst=true;
     /**
      * Performs the speed opponent process where the cells with the same
      * magnitude<br>
@@ -131,7 +130,7 @@ public class MTComponentCells extends Activity {
     public void opponentProcess(int eye) {
         for (int i = 0; i < MTCC[0].CCells.length; i++) {
             for (int j = 0; j < MTCC[0].CCells[0].length; j++) {
-                if(subst){
+                if(Config.MTMotionSubs==1){
                 Core.subtract(MTCC[eye].CCells[i][j % (Config.gaborOrientations * 2)].eMat,
                         MTCC[eye].CCells[i][(j + Config.gaborOrientations) % (Config.gaborOrientations * 2)].eMat,
                         MTCC[eye].CCells[i][j % (Config.gaborOrientations * 2)].mat);

@@ -310,8 +310,8 @@ public class RetinaPanel extends JPanel {
      * if the value is 1, it finds the next image<br>
      * if the value is -1 is moving to the previous image
      *
-     * @return
-     * @throws IOException
+     * @param move int value if the value is 1, it finds the next image, if the value is -1 is moving to the previous image
+     * @param send boolean for sending the image to the nodes, if is false the image will update only in the left visualizer
      */
     public void createImage(int move, boolean send) {
         Mat srcL;

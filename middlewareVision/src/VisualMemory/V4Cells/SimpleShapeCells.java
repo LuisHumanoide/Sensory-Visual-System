@@ -5,6 +5,7 @@
  */
 package VisualMemory.V4Cells;
 
+import utils.GaussianFilter;
 import VisualMemory.Cell;
 import java.util.ArrayList;
 import java.util.HashMap;

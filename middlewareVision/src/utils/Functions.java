@@ -337,9 +337,9 @@ public class Functions {
      * developed in Desmos app: <br>
      * https://www.desmos.com/calculator/vdh8bzudes
      *
-     * @param i1 is the intensity of the first vector
+     * @param r1 is the intensity of the first vector
      * @param a1 angle of the first vector
-     * @param i2 intensity of the second vector
+     * @param r2 intensity of the second vector
      * @param a2 angle of the second vector
      * @return an array of doubles [intensity, angle]
      */

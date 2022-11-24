@@ -6,23 +6,30 @@
 package VisualMemory.LGNCells;
 
 import VisualMemory.LGNCells.SimpleOpponentCells;
-import VisualMemory.V4Cells.GaussianFilter;
-import java.util.ArrayList;
+import utils.GaussianFilter;
+import middlewareVision.config.XMLReader;
 import org.opencv.core.Mat;
-import utils.FileUtils;
-import utils.MatrixUtils;
-import static utils.SpecialKernels.LMM_L_kernel;
-import static utils.SpecialKernels.LMM_M_kernel;
-import static utils.SpecialKernels.LPM_L_kernel;
-import static utils.SpecialKernels.LPM_M_kernel;
+import org.opencv.imgproc.Imgproc;
+import utils.FilterUtils;
 
 /**
  *
  * @author Laptop
  */
 public class LGNBank {
-    
-       /*
+
+    public static int KERNEL_SIZE = 0;
+    public static float UPPER_KERNEL_SIGMA = 0;
+    public static float LOWER_KERNEL_SIGMA = 0;
+    public static float LMM_ALPHA = 0;
+    public static float LMM_BETA = 0;
+    public static float SMLPM_ALPHA = 0;
+    public static float SMLPM_BETA = 0;
+    public static float SMLPM_GAMMA = 0;
+    public static float SMLPM_DELTA = 0;
+    public static float LPM_ALPHA = 0;
+    public static float LPM_BETA = 0;
+    /*
     LGN kernels
      */
     public static Mat LMM_L_kernel;
@@ -31,60 +38,62 @@ public class LGNBank {
     public static Mat LPM_M_kernel;
     public static Mat SMLPM_LPM_kernel;
     public static Mat SMLPM_S_kernel;
-    
-    static GaussianFilter[] filters;
+
+    public static Mat upperKernel;
+    public static Mat lowerKernel;
+
+    //static GaussianFilter[] filters;
 
     public static SimpleOpponentCells[][] SOC;
 
     public static void initializeCells(int scales) {
         loadLGNKernels();
+        loadLGNValues();
         SOC = new SimpleOpponentCells[scales][2];
 
         for (int i2 = 0; i2 < scales; i2++) {
             for (int i3 = 0; i3 < 2; i3++) {
                 SOC[i2][i3] = new SimpleOpponentCells(0, 3);
             }
-        }              
+        }
     }
-    
 
-    public static void loadLGNKernels() {      
-        GaussianFilter[] LMM = getGaussians("RFLGN/LMM.txt");
-        LMM_L_kernel=getFilterByLabel("L",LMM);
-        LMM_M_kernel=getFilterByLabel("M",LMM);
+    public static void loadLGNValues() {
+        String values[] = XMLReader.getValuesFromXML("KERNEL_SIZE", "UPPER_KERNEL_SIGMA", "LOWER_KERNEL_SIGMA", "LMM_ALPHA", "LMM_BETA",
+                "SMLPM_ALPHA", "SMLPM_BETA", "SMLPM_GAMMA", "SMLPM_DELTA", "LPM_ALPHA", "LPM_BETA");
         
-        GaussianFilter[] LPM = getGaussians("RFLGN/LPM.txt");
-        LPM_L_kernel=getFilterByLabel("L",LPM);
-        LPM_M_kernel=getFilterByLabel("M",LPM); 
-        
-        GaussianFilter[] SMLPM = getGaussians("RFLGN/SMLPM.txt");
-        SMLPM_LPM_kernel=getFilterByLabel("LPM",SMLPM);
-        SMLPM_S_kernel=getFilterByLabel("S",SMLPM); 
+        KERNEL_SIZE = Integer.parseInt(values[0]);
+        UPPER_KERNEL_SIGMA = Float.parseFloat(values[1]);
+        LOWER_KERNEL_SIGMA = Float.parseFloat(values[2]);
+        LMM_ALPHA = Float.parseFloat(values[3]);
+        LMM_BETA = Float.parseFloat(values[4]);
+        SMLPM_ALPHA = Float.parseFloat(values[5]);
+        SMLPM_BETA = Float.parseFloat(values[6]);
+        SMLPM_GAMMA = Float.parseFloat(values[7]);
+        SMLPM_DELTA = Float.parseFloat(values[8]);
+        LPM_ALPHA = Float.parseFloat(values[9]);
+        LPM_BETA = Float.parseFloat(values[10]);
+
+        upperKernel = Imgproc.getGaussianKernel(KERNEL_SIZE, UPPER_KERNEL_SIGMA);
+        lowerKernel = Imgproc.getGaussianKernel(KERNEL_SIZE, LOWER_KERNEL_SIGMA);
     }
 
-    public static Mat getFilterByLabel(String label, GaussianFilter g[]) {
-        ArrayList<GaussianFilter> glist = new ArrayList();
-        for (GaussianFilter gf : g) {
-            if(gf.getComb().equals(label))
-            {                
-                glist.add(gf);
-            }
-        }
-        Mat filterMats[]=new Mat[glist.size()];
-        int i=0;
-        for(GaussianFilter gf:glist){
-            filterMats[i]=gf.makeFilter2();
-        }
-        return MatrixUtils.sum(filterMats, 1, 0);
+    public static void loadLGNKernels() {
+        GaussianFilter[] LMM = FilterUtils.getGaussians("RFLGN/LMM.txt");
+        LMM_L_kernel = FilterUtils.getFilterByLabel("L", LMM);
+        LMM_M_kernel = FilterUtils.getFilterByLabel("M", LMM);
+
+        GaussianFilter[] LPM = FilterUtils.getGaussians("RFLGN/LPM.txt");
+        LPM_L_kernel = FilterUtils.getFilterByLabel("L", LPM);
+        LPM_M_kernel = FilterUtils.getFilterByLabel("M", LPM);
+
+        GaussianFilter[] SMLPM = FilterUtils.getGaussians("RFLGN/SMLPM.txt");
+        SMLPM_LPM_kernel = FilterUtils.getFilterByLabel("LPM", SMLPM);
+        SMLPM_S_kernel = FilterUtils.getFilterByLabel("S", SMLPM);
     }
 
-    public static GaussianFilter[] getGaussians(String file) {
-        String fileLines[] = FileUtils.fileLines(file);
-        filters = new GaussianFilter[fileLines.length];
-        for (int i = 0; i < fileLines.length; i++) {
-            filters[i] = new GaussianFilter(fileLines[i]);
-        }
-        return filters;
-    }
+
+
+
 
 }

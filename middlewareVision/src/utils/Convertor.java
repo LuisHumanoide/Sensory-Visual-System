@@ -133,8 +133,8 @@ public class Convertor {
     /**
      * convert double mat to bytes
      *
-     * @param src
-     * @return
+     * @param img a buffered image to convert
+     * @return the bytes of the image
      */
     public static byte[] imageToBytes(BufferedImage img) {
         return matToBytes(bufferedImageToMat2(img));
@@ -155,10 +155,11 @@ public class Convertor {
     }
 
     /**
-     * Convert a matrix to image  multiplying by 255
+     * Convert a OpenCV matrix to image by multiplying by 255,
+     * is used when the range of the matrix values are from 0 to 1
      *
-     * @param mat
-     * @return
+     * @param mat1 source matrix
+     * @return a Buffered Image with the matrix visualization
      */
     public static BufferedImage Mat2Img(Mat mat1) {
         Mat mat=mat1.clone();

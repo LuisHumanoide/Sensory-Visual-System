@@ -77,8 +77,7 @@ public class MatrixUtils {
 
     /**
      * Create a matrix with the maximum value from an ArrayList of OpenCV Mar
-     *
-     * @param mat is the ArrayList of OpenCV Mats
+     * @param matL array of OpenCV mats
      * @return an OpenCV Mat with the maximum values of each Mat
      */
     public static Mat maxSum(ArrayList<Mat> matL) {

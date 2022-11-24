@@ -99,9 +99,7 @@ public class AlertFrame extends javax.swing.JFrame {
         ap.sendAlertState(3);
     }//GEN-LAST:event_highAlertActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton highAlert;

@@ -89,9 +89,10 @@ public class RetinaProccess extends Activity {
     BufferedImage img;
 
     /**
-     * set the image in the frames
+     * Set two images to the retina
      *
-     * @throws IOException
+     * @param img left image
+     * @param img2 right image
      */
     public void setImage(BufferedImage img, BufferedImage img2) {
         //Visualize LMS activations

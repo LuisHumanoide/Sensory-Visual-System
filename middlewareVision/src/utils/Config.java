@@ -12,10 +12,12 @@ import java.io.File;
  * @author Humanoide
  */
 public class Config {
-
+    
     public static int port = 54321;
     public static String IP = "127.0.0.1";
     public static int device = 0;
+    
+    public static int LGNmethod=1;
 
     public static int tresh = 100;
     public static int blur = 1;
@@ -46,6 +48,10 @@ public class Config {
     public static int NoConcentricCircles = 0;
     public static int NoRadialDivisions = 0;
     public static int NoHeightDivisions = 0;
+    
+    //Motion
+    public static int V1MotionSubs=1;
+    public static int MTMotionSubs=1;
     
     //MST Polar Paremeters
     public static int dxExpCont=1;

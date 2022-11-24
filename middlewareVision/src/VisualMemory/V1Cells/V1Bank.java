@@ -15,6 +15,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import utils.Config;
 import utils.FileUtils;
+import utils.FilterUtils;
+import utils.GaussianFilter;
 import utils.SpecialKernels;
 import utils.filters.GaborFilter;
 
@@ -41,6 +43,13 @@ public class V1Bank {
     static String GaborFile = "RFV1//Gabor//filters.txt";
     static String DisparityFile = "ConfigFiles//Disparities.txt";
     static String HCfiles = "RFV1HC//";
+    static String DOfiles="RFDO//";
+    
+    //Double opponent kernels
+    public static Mat D1Kernel;
+    public static Mat D2Kernel;
+    public static Mat K1Kernel;
+    public static Mat K2Kernel;
 
     /**
      * Initialize all cells from V1
@@ -122,6 +131,7 @@ public class V1Bank {
         MTBank.initializeComponentCells(MC[0][0].cells.length, MC[0][0].cells[0].length, Config.motionWidth);
 
         loadGaborFilters(gaborLines, 2);
+        loadDOFilters();
         loadHCFilters(hcfiles);
     }
 
@@ -178,7 +188,7 @@ public class V1Bank {
         int i1 = HCC.length;
         int i2 = HCC[0].length;
         for (File fi : files) {
-            Mat filter = getRF(fi.getPath());
+            Mat filter = FilterUtils.getComposedFilter(fi.getPath());
 
             for (int x1 = 0; x1 < i1; x1++) {
                 for (int x2 = 0; x2 < i2; x2++) {
@@ -189,38 +199,17 @@ public class V1Bank {
             i++;
         }
     }
-
-    /**
-     * Obtain the composite filter from a file
-     *
-     * @param path
-     * @return
-     */
-    static Mat getRF(String path) {
-        String stList = FileUtils.readFile(new File(path));
-        String lines[] = stList.split("\\n");
-        ArrayList<Mat> kernelList = new ArrayList();
-        for (String st : lines) {
-            String values[] = st.split(" ");
-            RF rf = new RF(Double.parseDouble(values[0]),
-                    Double.parseDouble(values[1]),
-                    Integer.parseInt(values[2]),
-                    Integer.parseInt(values[3]),
-                    Double.parseDouble(values[4]),
-                    Double.parseDouble(values[5]),
-                    values[6],
-                    Integer.parseInt(values[7]));
-            Mat kernel = new Mat();
-            kernel = SpecialKernels.getAdvencedGauss(new Size(rf.size, rf.size), rf.intensity,
-                    -rf.py + rf.size / 2, rf.px + rf.size / 2, rf.rx, rf.ry,
-                    Math.toRadians(rf.angle + 90));
-            kernelList.add(kernel);
-        }
-        Mat compKernel = Mat.zeros(kernelList.get(0).size(), CvType.CV_32FC1);
-        for (Mat kn : kernelList) {
-            Core.add(compKernel, kn, compKernel);
-        }
-        return compKernel;
+    
+    public static void loadDOFilters(){
+        GaussianFilter[] OpponentD = FilterUtils.getGaussians("RFDO/OpponentD.txt");
+        D1Kernel = FilterUtils.getDoubleOpponentKernel("D1", OpponentD);
+        D2Kernel = FilterUtils.getDoubleOpponentKernel("D2", OpponentD);
+        
+        GaussianFilter[] OpponentK = FilterUtils.getGaussians("RFDO/OpponentK.txt");
+        K1Kernel = FilterUtils.getDoubleOpponentKernel("K1", OpponentK);
+        K2Kernel = FilterUtils.getDoubleOpponentKernel("K2", OpponentK);
     }
+
+   
 
 }

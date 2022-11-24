@@ -7,8 +7,11 @@ package VisualMemory.V2Cells;
 
 import VisualMemory.V2Cells.CurvatureCells;
 import VisualMemory.V2Cells.AngleCells;
+import org.opencv.core.Mat;
 import utils.Config;
 import utils.FileUtils;
+import utils.SpecialKernels;
+import static utils.SpecialKernels.getCompositeRF;
 
 /**
  *
@@ -20,9 +23,10 @@ public class V2Bank {
     public static AngleCells[][] AC;
     public static CurvatureCells[][] CurvC;
     public static CornerMotionCells[][] CMC;
+    public static Mat v2Kernels[];
 
     public static void initializeCells() {
-
+        loadV2Kernels();
         AC = new AngleCells[Config.gaborBanks][2];
         CurvC = new CurvatureCells[Config.gaborBanks][2];
         CMC = new CornerMotionCells[Config.gaborBanks][2];
@@ -38,5 +42,20 @@ public class V2Bank {
             }
         }
 
+    }
+    
+    /**
+     * Load the angular kernels
+     */
+    public static void loadV2Kernels() {
+        v2Kernels = new Mat[Config.gaborOrientations * 2];
+        String path = "RFV2";
+        String file = "angular";
+        Mat baseKernel = getCompositeRF(path + "/" + file + ".txt");
+        for (int i = 0; i < Config.gaborOrientations * 2; i++) {
+            double angle = (180 / Config.gaborOrientations) * i;
+            double rangle = -Math.toRadians(angle);
+            v2Kernels[i] = SpecialKernels.rotateKernelRadians(baseKernel, rangle);
+        }
     }
 }

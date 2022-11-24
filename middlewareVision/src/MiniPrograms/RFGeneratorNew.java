@@ -5,8 +5,9 @@
  */
 package MiniPrograms;
 
-import VisualMemory.V4Cells.GaussianFilter;
+import utils.GaussianFilter;
 import gui.components.VisPanel;
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -120,6 +121,9 @@ public class RFGeneratorNew extends javax.swing.JFrame {
             int i = 0;
             //for each receptive field
             for (RF rf : rfs) {
+                int comb = RFlist.combinations.indexOf(rf.combination)+1;
+                double frac=(double)comb/RFlist.combinations.size();
+                Color color=new Color((int)(frac*255),(int)(1.5*frac*255)%255,255-(int)(frac*255));
                 //create the abstraction of the gaussian filter
                 GaussianFilter filter = new GaussianFilter(rf);
                 //make the filter, it creates a OpenCV mat
@@ -128,7 +132,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
                     //convert the opencv mat to matrix
                     gaussians[i] = Convertor.MatToMatrix(filterMat[i]);
                     //graph an individual plot, with different colors
-                    graphOnePlot("Plot " + i, gaussians[i]);
+                    graphOnePlot("Plot " + i,color, gaussians[i]);
                 }
                 i++;
             }
@@ -138,7 +142,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
             if(jToggleButton2.isSelected()){
                 //sum all the filters
                 sumMat=MatrixUtils.sum(filterMat, 1, 0);
-                graphOnePlot("Plot ", Convertor.MatToMatrix(sumMat));
+                graphOnePlot("Plot ", Color.BLUE, Convertor.MatToMatrix(sumMat));
             }
             //fix the bounds
             plot.setFixedBounds(2, -1/zZoom, 1/zZoom);
@@ -152,7 +156,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
      * @param name name of the plot
      * @param m 2d matrix
      */
-    public void graphOnePlot(String name, matrix m) {
+    public void graphOnePlot(String name, Color color, matrix m) {
         double[] x;
         double[] y;
         double[][] z;
@@ -175,7 +179,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
                 z[j][i] = m.getValue((int) x[i], (int) y[y.length - j - 1]);
             }
         }
-        plot.addGridPlot(name, x, y, z);
+        plot.addGridPlot(name, color, x, y, z);
     }
 
     /**

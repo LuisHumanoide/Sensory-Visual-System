@@ -20,8 +20,10 @@ import utils.SpecialKernels;
 import utils.numSync;
 
 /**
- *
- *
+ * Class that performs the double opponent process<br>
+ * Information from the <b>LGN</b> is reunited in the double opponent cells where 
+ * the process is kind of a difference of gaussians<br>
+ * where the observable effect is the ennhacement of the contrast and color.
  */
 public class V1DoubleOpponent extends Activity {
 
@@ -32,19 +34,13 @@ public class V1DoubleOpponent extends Activity {
      */
     private final int KERNEL_SIZE = 5;
 
-    private final float LMM_ALPHA = 3.2f; // Red
+    private final float LMM_ALPHA = 3f; // Red
     private final float LMM_BETA = 3f; // Green
 
     private final float SMLPM_ALPHA = 2f; // Blue
-    private final float SMLPM_BETA = 2.2f; // Yellow
+    private final float SMLPM_BETA = 2f; // Yellow
 
-    int indexFrame = 8;
 
-    /*
-    ****************************************************************************
-    Constructor y metodos para recibir
-    ****************************************************************************
-     */
     public V1DoubleOpponent() {
         this.ID = AreaNames.V1DoubleOpponent;
         this.namer = AreaNames.class;
@@ -60,9 +56,9 @@ public class V1DoubleOpponent extends Activity {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);
-
+                
                 if (spike.getModality() == Modalities.VISUAL) {
-
+                    //Stores the LGN cells into the DKL ones
                     Mat DKL_L[] = {LGNBank.SOC[0][0].Cells[0].mat,
                         LGNBank.SOC[0][0].Cells[1].mat,
                         LGNBank.SOC[0][0].Cells[2].mat
@@ -71,9 +67,10 @@ public class V1DoubleOpponent extends Activity {
                         LGNBank.SOC[0][1].Cells[1].mat,
                         LGNBank.SOC[0][1].Cells[2].mat
                     };
-                    transduction(DKL_L, 0);
-                    transduction(DKL_R, 1);
-
+                    //Performs the double opponent process for both eyes
+                    DoubleOpponentProcess(DKL_L, 0);
+                    DoubleOpponentProcess(DKL_R, 1);
+                    //visualize the activations
                     for (int i = 0; i < 3; i++) {
                         Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
                         Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
@@ -91,64 +88,67 @@ public class V1DoubleOpponent extends Activity {
     }
 
     /**
-     * Perform the transduction process
+     * Perform the double opponent process
      *
      * @param DKL
      */
-    public void transduction(Mat[] DKL, int eye) {
-        V1Bank.DOC[0][eye].Cells[0].mat = LMM(DKL);
-        V1Bank.DOC[0][eye].Cells[1].mat = SMLPM(DKL);
+    public void DoubleOpponentProcess(Mat[] DKL, int eye) {
+        V1Bank.DOC[0][eye].Cells[0].mat = OpponentD(DKL);
+        V1Bank.DOC[0][eye].Cells[1].mat = OpponentK(DKL);
         V1Bank.DOC[0][eye].Cells[2].mat = LGNBank.SOC[0][eye].Cells[2].mat.clone();
     }
 
     /**
-     * Perform the LMM Process
-     *
-     * @param DKL
-     * @return
+     * Double Opponent process with D cells
+     * It performs a kind of difference of Gaussians between the activations D cells from the LGN
+     * @param DKL array of DKL mats from the LGN
+     * @return the activation of D'
      */
-    private Mat LMM(Mat[] DKL) {
-        Mat LKernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, 1, -0.5, 0.5, 0.5, 2);
-        Mat MKernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, -1, 0.5, 0.5, 0.5, 2);
+    private Mat OpponentD(Mat[] DKL) {
+        //old code
+       /* Mat D1Kernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, 1, -0.5, 0.5, 0.5, 2);
+        Mat D2Kernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, -1, 0.5, 0.5, 0.5, 2);*/
 
-        Mat L = new Mat(DKL[0].size(), CvType.CV_32FC1);
-        Mat M = new Mat(DKL[0].size(), CvType.CV_32FC1);
+        Mat D1 = new Mat(DKL[0].size(), CvType.CV_32FC1);
+        Mat D2 = new Mat(DKL[0].size(), CvType.CV_32FC1);
 
-        Core.multiply(DKL[0], Scalar.all(-1), M);
-        Imgproc.threshold(DKL[0], L, 0, 1, Imgproc.THRESH_TOZERO);
-        Imgproc.threshold(M, M, 0, 1, Imgproc.THRESH_TOZERO);
+        Core.multiply(DKL[0], Scalar.all(-1), D2);
+        Imgproc.threshold(DKL[0], D1, 0, 1, Imgproc.THRESH_TOZERO);
+        Imgproc.threshold(D2, D2, 0, 1, Imgproc.THRESH_TOZERO);
 
-        Imgproc.filter2D(L, L, -1, LKernel);
-        Imgproc.filter2D(M, M, -1, MKernel);
+        Imgproc.filter2D(D1, D1, -1, V1Bank.D1Kernel);
+        Imgproc.filter2D(D2, D2, -1, V1Bank.D2Kernel);
 
-        Core.addWeighted(L, LMM_ALPHA, M, LMM_BETA, 0, L);
+        Core.addWeighted(D1, LMM_ALPHA, D2, LMM_BETA, 0, D1);
 
-        return L;
+        return D1;
     }
 
     /**
-     * Perform SMPPM Process Read Madrigal Thesis for further details
+     * Double Opponent process with K cells
+     * It performs a kind of difference of Gaussians between the activations K cells from the LGN
      *
-     * @param DKL
-     * @return
+     * @param DKL array of DKL mats from the LGN
+     * @return the activation of K'
      */
-    private Mat SMLPM(Mat[] DKL) {
-        Mat SKernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, 1, -0.5, 0.5, 0.5, 5);
-        Mat LPMKernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, -1, 0.5, 0.5, 0.5, 5);
+    private Mat OpponentK(Mat[] DKL) {
+        //old code
+        /*Mat K1Kernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, 1, -0.5, 0.5, 0.5, 5);
+        Mat K2Kernel = SpecialKernels.getDoubleOpponentKernel(new Size(KERNEL_SIZE, KERNEL_SIZE), 1, 1, -1, 0.5, 0.5, 0.5, 5);*/
 
-        Mat S = new Mat(DKL[1].size(), CvType.CV_32FC1);
-        Mat LPM = new Mat(DKL[1].size(), CvType.CV_32FC1);
+        Mat K1 = new Mat(DKL[1].size(), CvType.CV_32FC1);
+        Mat K2 = new Mat(DKL[1].size(), CvType.CV_32FC1);
 
-        Core.multiply(DKL[1], Scalar.all(-1), LPM);
-        Imgproc.threshold(DKL[1], S, 0, 1, Imgproc.THRESH_TOZERO);
-        Imgproc.threshold(LPM, LPM, 0, 1, Imgproc.THRESH_TOZERO);
+        Core.multiply(DKL[1], Scalar.all(-1), K2);
+        Imgproc.threshold(DKL[1], K1, 0, 1, Imgproc.THRESH_TOZERO);
+        Imgproc.threshold(K2, K2, 0, 1, Imgproc.THRESH_TOZERO);
 
-        Imgproc.filter2D(S, S, -1, SKernel);
-        Imgproc.filter2D(LPM, LPM, -1, LPMKernel);
+        Imgproc.filter2D(K1, K1, -1, V1Bank.K1Kernel);
+        Imgproc.filter2D(K2, K2, -1, V1Bank.K2Kernel);
 
-        Core.addWeighted(S, SMLPM_ALPHA, LPM, SMLPM_BETA, 0, S);
+        Core.addWeighted(K1, SMLPM_ALPHA, K2, SMLPM_BETA, 0, K1);
 
-        return S;
+        return K1;
     }
 
 }

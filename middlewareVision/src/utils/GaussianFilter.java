@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VisualMemory.V4Cells;
+package utils;
 
 import MiniPrograms.RF;
 import org.opencv.core.Mat;
@@ -76,6 +76,10 @@ public class GaussianFilter {
     
     public Mat makeFilter2(){
         return SpecialKernels.getAdvencedGauss(new Size(size,size), amp, -py+size/2, px+size/2, rx, ry, Math.toRadians(angle+90));
+    }
+    
+    public Mat makeNormalizedFilter(){
+        return SpecialKernels.getNormalizedAdvencedGauss(new Size(size,size), amp, -py+size/2, px+size/2, rx, ry, Math.toRadians(angle+90));
     }
     
     public String toString(){

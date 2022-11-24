@@ -12,6 +12,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
+import utils.Config;
 import utils.Convertor;
 import utils.Functions;
 import utils.LongSpike;
@@ -22,7 +23,6 @@ import utils.numSync;
  *
  */
 public class LGNSimpleOpponentCells extends Activity {
-
 
     Mat LMSConesL[];
     Mat LMSConesR[];
@@ -144,13 +144,20 @@ public class LGNSimpleOpponentCells extends Activity {
     private void LMM(Mat[] LMS, Mat dst) {
         int rows = LMS[0].rows();
         int cols = LMS[0].cols();
-        
         Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
         Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
-        
-        LG = Functions.filter2(LMS[0], LGNBank.LMM_L_kernel);
-        MG = Functions.filter2(LMS[1], LGNBank.LMM_M_kernel);
-        Core.add(LG, MG, dst);
+
+        if (Config.LGNmethod == 1) {
+            LG = Functions.filter2(LMS[0], LGNBank.LMM_L_kernel);
+            MG = Functions.filter2(LMS[1], LGNBank.LMM_M_kernel);
+            Core.add(LG, MG, dst);
+        }
+        if (Config.LGNmethod == 2) {
+            Imgproc.sepFilter2D(LMS[0], LG, -1, LGNBank.upperKernel, LGNBank.upperKernel);
+            Imgproc.sepFilter2D(LMS[1], MG, -1, LGNBank.lowerKernel, LGNBank.lowerKernel);
+
+            Core.addWeighted(LG, LGNBank.LMM_ALPHA, MG, -LGNBank.LMM_BETA, 0, dst);
+        }
     }
 
     /**
@@ -165,16 +172,26 @@ public class LGNSimpleOpponentCells extends Activity {
         Mat S = new Mat(rows, cols, CvType.CV_32FC1);
         Mat LPM = new Mat(rows, cols, CvType.CV_32FC1);
 
-        Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
-        Mat MG = new Mat(rows, cols, CvType.CV_32FC1);     
-        
-        LG = Functions.filter2(LMS[0], LGNBank.LPM_L_kernel);
-        MG = Functions.filter2(LMS[1], LGNBank.LPM_M_kernel);
-        Core.add(LG, MG, LPM);
+        if (Config.LGNmethod == 1) {
+            Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
+            Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
 
-        S = Functions.filter2(LMS[2], LGNBank.SMLPM_S_kernel);
-        LPM = Functions.filter2(LPM, LGNBank.SMLPM_LPM_kernel);
-        Core.add(S, LPM, dst);
+            LG = Functions.filter2(LMS[0], LGNBank.LPM_L_kernel);
+            MG = Functions.filter2(LMS[1], LGNBank.LPM_M_kernel);
+            Core.add(LG, MG, LPM);
+
+            S = Functions.filter2(LMS[2], LGNBank.SMLPM_S_kernel);
+            LPM = Functions.filter2(LPM, LGNBank.SMLPM_LPM_kernel);
+            Core.add(S, LPM, dst);
+        }
+        if (Config.LGNmethod == 2) {
+            Core.addWeighted(LMS[0], LGNBank.SMLPM_GAMMA, LMS[1], LGNBank.SMLPM_DELTA, 0, LPM);
+            Imgproc.sepFilter2D(LMS[2], S, -1, LGNBank.upperKernel, LGNBank.upperKernel);
+
+            Imgproc.sepFilter2D(LPM, LPM, -1, LGNBank.lowerKernel, LGNBank.lowerKernel);
+
+            Core.addWeighted(S, LGNBank.SMLPM_ALPHA, LPM, -LGNBank.SMLPM_BETA, 0, dst);
+        }
 
     }
 
@@ -185,13 +202,18 @@ public class LGNSimpleOpponentCells extends Activity {
      * @param dst
      */
     private void LPM(Mat[] LMS, Mat dst) {
-        int rows = LMS[0].rows();
-        int cols = LMS[0].cols();
-        Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
-        Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
-        LG = Functions.filter2(LMS[0], LGNBank.LPM_L_kernel);
-        MG = Functions.filter2(LMS[1], LGNBank.LPM_M_kernel);
-        Core.add(LG, MG, dst);
+        if (Config.LGNmethod == 1) {
+            int rows = LMS[0].rows();
+            int cols = LMS[0].cols();
+            Mat LG = new Mat(rows, cols, CvType.CV_32FC1);
+            Mat MG = new Mat(rows, cols, CvType.CV_32FC1);
+            LG = Functions.filter2(LMS[0], LGNBank.LPM_L_kernel);
+            MG = Functions.filter2(LMS[1], LGNBank.LPM_M_kernel);
+            Core.add(LG, MG, dst);
+        }
+        if (Config.LGNmethod == 2) {
+            Core.addWeighted(LMS[0], LGNBank.LPM_ALPHA, LMS[1], LGNBank.LPM_BETA, 0, dst);
+        }
     }
 
 }

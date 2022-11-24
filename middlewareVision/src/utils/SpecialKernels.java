@@ -6,7 +6,6 @@
 package utils;
 
 import MiniPrograms.RF;
-import VisualMemory.V4Cells.GaussianFilter;
 import java.io.File;
 import java.util.ArrayList;
 import org.opencv.core.Core;
@@ -17,7 +16,6 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import static org.opencv.imgproc.Imgproc.getGaborKernel;
 
 /**
  *
@@ -31,16 +29,6 @@ public class SpecialKernels {
     public static Mat diag135;
     static double valueMinus = -0.15;
     static double valueMax = 0.3;
-    public static Mat v2Kernels[];
-    /*
-    LGN kernels
-     */
-    public static Mat LMM_L_kernel;
-    public static Mat LMM_M_kernel;
-    public static Mat LPM_L_kernel;
-    public static Mat LPM_M_kernel;
-    public static Mat SMLPM_LPM_kernel;
-    public static Mat SMLPM_M_kernel;
 
     /**
      * *************************************************************************
@@ -48,8 +36,7 @@ public class SpecialKernels {
      * *************************************************************************
      */
     public static void loadKernels() {
-        loadV2Kernels();
-//        V4CellStructure.loadV4Structure();
+
     }
 
     /**
@@ -99,23 +86,6 @@ public class SpecialKernels {
     }
 
 
-   
-    /**
-     * Cargar los filtros de selectividad angular en V2<br>
-     * The filter file is <b>angular.txt</b>.
-     */
-    public static void loadV2Kernels() {
-        v2Kernels = new Mat[Config.gaborOrientations * 2];
-        String path = "RFV2";
-        String file = "angular";
-        Mat baseKernel = getCompositeRF(path + "/" + file + ".txt");
-        for (int i = 0; i < Config.gaborOrientations * 2; i++) {
-            double angle = (180 / Config.gaborOrientations) * i;
-            double rangle = -Math.toRadians(angle);
-            v2Kernels[i] = SpecialKernels.rotateKernelRadians(baseKernel, rangle);
-        }
-    }
-
     /**
      * Obtain the composite filter, product of the sum of Gaussians created in a
      * file.
@@ -123,7 +93,7 @@ public class SpecialKernels {
      * @param path path of the file
      * @return an OpenCV mat corresponding to the filter
      */
-    static Mat getCompositeRF(String path) {
+    public static Mat getCompositeRF(String path) {
         String stList = FileUtils.readFile(new File(path));
         String lines[] = stList.split("\\n");
         ArrayList<Mat> kernelList = new ArrayList();
@@ -151,19 +121,23 @@ public class SpecialKernels {
     }
 
     /**
-     * Generate double opponent Kernel for color processing
+     * Generate a double opponent kernel for the double opponent process in V1, the filter generated is also normalized
      *
      * @param s size of the kernel
-     * @param sigma1 sigma (size) of the first Gaussian
-     * @param sigma2 sigma of the second Gaussian
+     * @param sigmaY1 width or deviation in Y of the Gaussian 1
+     * @param sigmaY2 width or deviation in Y of the Gaussian 2
      * @param height1 height of the first Gaussian
      * @param height2 height of the second Gaussian
-     * @param gamma1 gamma of the first Gaussian
-     * @param gamma2 gamma of the second Gaussian
-     * @param dX displacement of the seconD Gaussian
+     * @param sigmaX1 width or deviation in X of the Gaussian 1
+     * @param sigmaX2 width or deviation in X of the Gaussian 2
+     * @param dX1 X Displacement of the first Gaussian
+     * @param dX2 X Displacement of the second Gaussian
+     * @param dY1 Y Displacement of the first Gaussian
+     * @param dY2 X Displacement of the second Gaussian
+     * 
      * @return an OpenCV matrix with the difference of Gaussian filter
      */
-    public static Mat getDoubleOpponentKernel(Size s, double sigma1, double sigma2, double height1, double height2, double gamma1, double gamma2, double dX) {
+    public static Mat getDoubleOpponentKernel(Size s, double sigmaY1, double sigmaY2, double height1, double height2, double sigmaX1, double sigmaX2, double dX1, double dX2, double dY1, double dY2) {
         Mat m = new Mat(s, CvType.CV_32FC1);
 
         double[] kernel = new double[(int) (s.height * s.width)];
@@ -175,8 +149,8 @@ public class SpecialKernels {
 
         for (int i = 0; i < s.height; i++) {
             for (int j = 0; j < s.width; j++) {
-                kernel[p] = height1 * Math.exp(-((Math.pow(j - cX + dX, 2) + (Math.pow(gamma1, 2) * Math.pow(i - cY, 2))) / (2 * Math.pow(sigma1, 2))));
-                kernel[p] += height2 * Math.exp(-((Math.pow(j - cX - dX, 2) + (Math.pow(gamma2, 2) * Math.pow(i - cY, 2))) / (2 * Math.pow(sigma2, 2))));
+                kernel[p] = height1 * Math.exp(-((Math.pow(j - cX + dX1, 2) + (Math.pow(sigmaX1, 2) * Math.pow(i - cY + dY1, 2))) / (2 * Math.pow(sigmaY1, 2))));
+                kernel[p] += height2 * Math.exp(-((Math.pow(j - cX + dX2, 2) + (Math.pow(sigmaX2, 2) * Math.pow(i - cY + dY2, 2))) / (2 * Math.pow(sigmaY2, 2))));
                 div += Math.abs(kernel[p]);
                 p++;
             }
@@ -349,6 +323,44 @@ public class SpecialKernels {
             }
         }
         m.put(0, 0, kernel);
+        return m;
+    }
+    
+     /**
+     * Get a 2D Gaussian with the complete parameters
+     *
+     * @param s size of the kernel
+     * @param A intensity or amplitude
+     * @param x0 center x
+     * @param y0 center y
+     * @param sigmax width x
+     * @param sigmay width y
+     * @param theta angle of rotation
+     * @return a new Gaussian kernel
+     */
+    public static Mat getNormalizedAdvencedGauss(Size s, double A, double x0, double y0, double sigmax, double sigmay, double theta) {
+        Mat m = new Mat(s, CvType.CV_32FC1);
+        double[] kernel = new double[(int) (s.height * s.width)];
+        double div = 0;
+        double a = to2(Math.cos(theta)) / (2 * to2(sigmax)) + to2(Math.sin(theta)) / (2 * to2(sigmay));
+        double b = -Math.sin(2 * theta) / (4 * to2(sigmax)) + Math.sin(2 * theta) / (4 * to2(sigmay));
+        double c = to2(Math.sin(theta)) / (2 * to2(sigmax)) + to2(Math.cos(theta)) / (2 * to2(sigmay));
+        double s1 = 0;
+        double s2 = 0;
+        double cc = 0;
+        int p = 0;
+        for (int x = 0; x < s.height; x++) {
+            for (int y = 0; y < s.width; y++) {
+                s1 = (x - x0);
+                s2 = (y - y0);
+                cc = a * to2(s1) + 2 * b * s1 * s2 + c * to2(s2);
+                kernel[p] = A * Math.exp(-cc);
+                div += Math.abs(kernel[p]);
+                p++;
+            }
+        }
+        m.put(0, 0, kernel);
+        Core.divide(m, Scalar.all(div), m);
         return m;
     }
 

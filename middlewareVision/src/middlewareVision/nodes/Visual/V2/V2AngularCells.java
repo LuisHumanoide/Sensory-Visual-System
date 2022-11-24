@@ -160,7 +160,7 @@ public class V2AngularCells extends Activity {
             filtered[i + Config.gaborOrientations] = ors[i].mat.clone();
         }
         for (int i = 0; i < Config.gaborOrientations * 2; i++) {
-            Imgproc.filter2D(filtered[i], filtered[i], CV_32F, SpecialKernels.v2Kernels[i]);
+            Imgproc.filter2D(filtered[i], filtered[i], CV_32F, V2Bank.v2Kernels[i]);
             Imgproc.threshold(filtered[i], filtered[i], 0, 1, Imgproc.THRESH_TOZERO);
         }
         return filtered;

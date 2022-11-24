@@ -34,9 +34,9 @@ import matrix.matrix;
 public class FileUtils {
 
     /**
-     * read the file and return a string
+     * Read a file and return a string with the file content
      *
-     * @param path
+     * @param file path of the file + file + extension
      * @return the content of the file
      */
     public static String readFile(File file) {

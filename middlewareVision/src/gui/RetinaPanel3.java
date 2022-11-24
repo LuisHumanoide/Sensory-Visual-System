@@ -146,10 +146,9 @@ public class RetinaPanel3 extends javax.swing.JPanel {
     public Mat src;
 
     /**
-     * put the image on the retina
+     * Creates the image and put in the left visualizer
      *
-     * @return
-     * @throws IOException
+     * @param move int for moving to the next or previous image next=1, previous=-1
      */
     public void createImage(int move) {
         String path = getImageName(folder, move);
