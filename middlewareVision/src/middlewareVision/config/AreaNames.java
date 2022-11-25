@@ -29,8 +29,7 @@ public class AreaNames {
 	public static int V4Contour = IDHelper.generateID("V4", 1, 0);
         public static int V4ShapeActivationNode = IDHelper.generateID("V4", 3 , 0);
         /****************************************************************************/
-        public static int Retina =          IDHelper.generateID("Retina", 0, 0);
-        
+        public static int Retina =          IDHelper.generateID("Retina", 0, 0);       
         /****************************************************************************/
         public static int RetinaProccess =  IDHelper.generateID("Retina", 1, 0);
         public static int BasicMotion = IDHelper.generateID("Retina", 2 , 0);
