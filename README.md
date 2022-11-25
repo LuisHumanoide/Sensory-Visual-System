@@ -4,6 +4,8 @@ This is the implementation of the Sensory Visual System. The article that descri
 
 [Computational framework of the visual sensory system based on neuroscientific evidence of the ventral pathway](https://www.researchgate.net/publication/364745655_Computational_framework_of_the_visual_sensory_system_based_on_neuroscientific_evidence_of_the_ventral_pathway)
 
+Also, you can go to the **wiki** to see the documentation: [Wiki](https://github.com/LuisHumanoide/Sensory-Visual-System/wiki)
+
 # Requeriments
 •	Windows
 
