@@ -8,7 +8,9 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.event.KeyEvent;
@@ -101,7 +103,8 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
         labels[index].setIcon(new ImageIcon(image));
         strings[index] = title;
         maxLabelIndex(index);
-        repaint();
+
+        //repaint();
     }
 
     void maxLabelIndex(int index) {
@@ -109,18 +112,20 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
             maxLabel = index;
         }
     }
+    int lindex = -1;
 
     public void methodListener(int index) {
         positionx = labels[index].getX();
         positiony = labels[index].getY();
         text = strings[index];
+        lindex = index;
         if (labels[index].getIcon() != null) {
             isInLabel = true;
             repaint();
         } else {
             isInLabel = false;
+
         }
-        //repaint();
     }
 
     public void next() {
@@ -185,6 +190,7 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
     String text = "";
     boolean isInLabel = false;
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         if (isInLabel) {
@@ -196,7 +202,6 @@ public class VisualizerFrame extends javax.swing.JFrame implements KeyListener {
             g.setColor(Color.WHITE);
             g.drawString(text, positionx + 10, positiony + Config.heigth + 50);
         }
-
     }
 
     public void update(Graphics g) {

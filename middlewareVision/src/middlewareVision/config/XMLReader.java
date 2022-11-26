@@ -48,6 +48,7 @@ public class XMLReader {
 
                 int LGNMethod = Integer.parseInt(propertyElement.getElementsByTagName("LGNMethod").item(0).getTextContent());
 
+                float HueShift=Float.parseFloat(propertyElement.getElementsByTagName("HueShift").item(0).getTextContent());
                 int NoConcentricCircles = Integer.parseInt(propertyElement.getElementsByTagName("NoConcentricCircles").item(0).getTextContent());
                 int NoRadialDivisions = Integer.parseInt(propertyElement.getElementsByTagName("NoRadialDivisions").item(0).getTextContent());
                 int NoHeightDivisions = Integer.parseInt(propertyElement.getElementsByTagName("NoHeightDivisions").item(0).getTextContent());
@@ -77,6 +78,7 @@ public class XMLReader {
                 Config.NoConcentricCircles = NoConcentricCircles;
                 Config.NoRadialDivisions = NoRadialDivisions;
                 Config.NoHeightDivisions = NoHeightDivisions;
+                Config.HueShift=HueShift;
 
                 Config.dxExpCont = dxExpCont;
                 Config.dtExpCont = dtExpCont;

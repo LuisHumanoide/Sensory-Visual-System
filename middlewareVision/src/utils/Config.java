@@ -45,6 +45,7 @@ public class Config {
     public static int v = 100;
 
     //V4 Color parameters
+    public static float HueShift=0;
     public static int NoConcentricCircles = 0;
     public static int NoRadialDivisions = 0;
     public static int NoHeightDivisions = 0;

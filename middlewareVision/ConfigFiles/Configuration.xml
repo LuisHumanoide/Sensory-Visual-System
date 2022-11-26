@@ -22,7 +22,13 @@
 	<SMLPM_DELTA>0.4f</SMLPM_DELTA>
 	<LPM_ALPHA>0.6f</LPM_ALPHA>
 	<LPM_BETA>0.4f</LPM_BETA>
+	<!--DOUBLE OPPONENT CONFIGURATION-->
+	<D_ALPHA>3f</D_ALPHA>
+	<D_BETA>3f</D_BETA>
+	<K_ALPHA>2f</K_ALPHA>
+	<K_BETA>2f</K_BETA>
 	<!--V4 COLOR-->
+	<HueShift>0.20f</HueShift>
 	<NoConcentricCircles>10</NoConcentricCircles>
 	<NoRadialDivisions>10</NoRadialDivisions>
 	<NoHeightDivisions>20</NoHeightDivisions>

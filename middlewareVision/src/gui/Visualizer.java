@@ -77,7 +77,7 @@ public class Visualizer {
      * @param row row of the image
      */
     public static void setImage(BufferedImage image, String title, int col, int row) {
-        vis.setImage(image, title, col * Config.h + row);
+        vis.setImage(image, title , col * Config.h + row);
     }
 
     /**

@@ -48,7 +48,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         gvis.jCheckBox1.setSelected(false);
         gvis.change2GaussStatus();
         
-        listPanel1.setColumnNames("σx", "σy", "x", "y", "A", "θ", "comb", "size");
+        listPanel1.setColumnNames("σx", "σy", "x0", "y0", "A", "θ", "comb", "size");
         //change the copy paste orders for using in the visualizer
         changeCopyPasteOrders();
         //keyword for the clipboard

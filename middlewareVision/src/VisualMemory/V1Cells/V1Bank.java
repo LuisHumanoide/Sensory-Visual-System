@@ -5,19 +5,14 @@
  */
 package VisualMemory.V1Cells;
 
-import MiniPrograms.RF;
 import VisualMemory.MTCells.MTBank;
 import java.io.File;
-import java.util.ArrayList;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
+import middlewareVision.config.XMLReader;
 import org.opencv.core.Mat;
-import org.opencv.core.Size;
 import utils.Config;
 import utils.FileUtils;
 import utils.FilterUtils;
 import utils.GaussianFilter;
-import utils.SpecialKernels;
 import utils.filters.GaborFilter;
 
 /**
@@ -43,14 +38,18 @@ public class V1Bank {
     static String GaborFile = "RFV1//Gabor//filters.txt";
     static String DisparityFile = "ConfigFiles//Disparities.txt";
     static String HCfiles = "RFV1HC//";
-    static String DOfiles="RFDO//";
-    
+    static String DOfiles = "RFDO//";
+
     //Double opponent kernels
     public static Mat D1Kernel;
     public static Mat D2Kernel;
     public static Mat K1Kernel;
     public static Mat K2Kernel;
 
+    public static float D_ALPHA=3f; 
+    public static float D_BETA=3f; 
+    public static float K_ALPHA=2f; 
+    public static float K_BETA=2f; 
     /**
      * Initialize all cells from V1
      */
@@ -67,7 +66,7 @@ public class V1Bank {
         File hcfolder = new File(HCfiles);
         //read each hypercomplex filter template
         File hcfiles[] = hcfolder.listFiles();
-        
+
         //set the values in the config class
         Config.HCfilters = hcfiles.length;
         Config.nDisparities = disparities.length;
@@ -78,7 +77,7 @@ public class V1Bank {
         //[number of gabor filter types][number of eyes]
         SC = new SimpleCells[gaborLines.length][2];
         CC = new ComplexCells[gaborLines.length][2];
-        HCC = new HypercomplexCells[gaborLines.length][2];    
+        HCC = new HypercomplexCells[gaborLines.length][2];
         MC = new MotionCellsV1[gaborLines.length][2];
 
         //reserve memory for stereoscopic cell banks
@@ -166,7 +165,7 @@ public class V1Bank {
                     double angle = (Math.PI / (double) Config.gaborOrientations) * k;
                     SC[i][j].evenFilter[k] = evenFilter.makeFilter(angle);
                     SC[i][j].oddFilter[k] = oddFilter.makeFilter(angle);
-                    
+
                     SC[i][j].geven = evenFilter;
                     SC[i][j].godd = oddFilter;
 
@@ -199,17 +198,28 @@ public class V1Bank {
             i++;
         }
     }
-    
-    public static void loadDOFilters(){
+
+    /**
+     * Load the Gaussians corresponding to the Double Opponent Cells <br>
+     * the Gaussians are edited in the Receptive Field List and are stored in
+     * the folder <b> RFDO </b>. <br>
+     * It also load the values corresponding to <br>
+     * <code>D_ALPHA, D_BETA, K_ALPHA, K_BETA</code>
+     */
+    public static void loadDOFilters() {
         GaussianFilter[] OpponentD = FilterUtils.getGaussians("RFDO/OpponentD.txt");
         D1Kernel = FilterUtils.getDoubleOpponentKernel("D1", OpponentD);
         D2Kernel = FilterUtils.getDoubleOpponentKernel("D2", OpponentD);
-        
+
         GaussianFilter[] OpponentK = FilterUtils.getGaussians("RFDO/OpponentK.txt");
         K1Kernel = FilterUtils.getDoubleOpponentKernel("K1", OpponentK);
         K2Kernel = FilterUtils.getDoubleOpponentKernel("K2", OpponentK);
-    }
 
-   
+        String values[] = XMLReader.getValuesFromXML("D_ALPHA", "D_BETA", "K_ALPHA", "K_BETA");
+        D_ALPHA = Float.parseFloat(values[0]);
+        D_BETA = Float.parseFloat(values[1]);
+        K_ALPHA = Float.parseFloat(values[2]);
+        K_BETA = Float.parseFloat(values[3]);
+    }
 
 }

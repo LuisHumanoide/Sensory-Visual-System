@@ -29,6 +29,7 @@ public class LGNSimpleOpponentCells extends Activity {
     Mat DKL_L[];
     Mat DKL_R[];
     int indexFrame = 4;
+    String labels[]={"D=L-M","K=S-(L+M)","L=L+M"};
 
     public LGNSimpleOpponentCells() {
         this.ID = AreaNames.LGNSimpleOpponentCells;
@@ -94,8 +95,8 @@ public class LGNSimpleOpponentCells extends Activity {
                         display the processed images
                      */
                     for (int i = 0; i < LMSConesL.length; i++) {
-                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "DKL Left" + i, 2, i);
-                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "DKL Right" + i, 3, i);
+                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][0].Cells[i].mat), "Simple Opponent "+labels[i]+" Left" , 2, i);
+                        Visualizer.setImage(Convertor.Mat2Img(LGNBank.SOC[0][1].Cells[i].mat), "Simple Opponent "+labels[i]+" Right" , 3, i);
 
                     }
                     //send the output spikes to the single and double opponent cells of V1

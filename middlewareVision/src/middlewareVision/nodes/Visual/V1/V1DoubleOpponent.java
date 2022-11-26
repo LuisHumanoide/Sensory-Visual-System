@@ -27,19 +27,6 @@ import utils.numSync;
  */
 public class V1DoubleOpponent extends Activity {
 
-    /*
-    ****************************************************************************
-    Constants
-    ****************************************************************************
-     */
-    private final int KERNEL_SIZE = 5;
-
-    private final float LMM_ALPHA = 3f; // Red
-    private final float LMM_BETA = 3f; // Green
-
-    private final float SMLPM_ALPHA = 2f; // Blue
-    private final float SMLPM_BETA = 2f; // Yellow
-
 
     public V1DoubleOpponent() {
         this.ID = AreaNames.V1DoubleOpponent;
@@ -50,7 +37,8 @@ public class V1DoubleOpponent extends Activity {
     @Override
     public void init() {
     }
-
+    
+    String labels[]={"Double Opponent D'","Double Opponent K'","Double Opponent L'"};
     @Override
     public void receive(int nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
@@ -72,8 +60,8 @@ public class V1DoubleOpponent extends Activity {
                     DoubleOpponentProcess(DKL_R, 1);
                     //visualize the activations
                     for (int i = 0; i < 3; i++) {
-                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), "dkl' L", 4, i);
-                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), "dkl' R", 5, i);
+                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][0].Cells[i].mat), labels[i]+" ... Left", 4, i);
+                        Visualizer.setImage(Convertor.Mat2Img(V1Bank.DOC[0][1].Cells[i].mat), labels[i]+" ... Right", 5, i);
                     }
 
                     LongSpike sendSpike = new LongSpike(Modalities.VISUAL, new Location(0), 0, 0);
@@ -119,7 +107,7 @@ public class V1DoubleOpponent extends Activity {
         Imgproc.filter2D(D1, D1, -1, V1Bank.D1Kernel);
         Imgproc.filter2D(D2, D2, -1, V1Bank.D2Kernel);
 
-        Core.addWeighted(D1, LMM_ALPHA, D2, LMM_BETA, 0, D1);
+        Core.addWeighted(D1, V1Bank.D_ALPHA, D2, V1Bank.D_BETA, 0, D1);
 
         return D1;
     }
@@ -146,7 +134,7 @@ public class V1DoubleOpponent extends Activity {
         Imgproc.filter2D(K1, K1, -1, V1Bank.K1Kernel);
         Imgproc.filter2D(K2, K2, -1, V1Bank.K2Kernel);
 
-        Core.addWeighted(K1, SMLPM_ALPHA, K2, SMLPM_BETA, 0, K1);
+        Core.addWeighted(K1, V1Bank.K_ALPHA, K2, V1Bank.K_BETA, 0, K1);
 
         return K1;
     }
