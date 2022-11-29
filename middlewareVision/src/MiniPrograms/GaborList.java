@@ -20,7 +20,7 @@ public class GaborList extends javax.swing.JFrame {
     GaborFilterVisualizer vis;
     public GaborList() {
         initComponents();
-        listPanel1.setColumnNames("kSize","sigma","lambda","gamma","psi(even)","theta");
+        listPanel1.setColumnNames("kSize","σ:","λ","γ","Φ_2","θ");
         //listPanel1.defaultVectorNull();
         listPanel1.setClipboardString("♦♣♠");
         listPanel1.setFilePath("RFV1//Gabor//filters", "txt");

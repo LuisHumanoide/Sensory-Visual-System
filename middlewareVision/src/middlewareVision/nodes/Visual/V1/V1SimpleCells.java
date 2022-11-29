@@ -173,20 +173,28 @@ public class V1SimpleCells extends Activity {
     }
 
     /**
-     * Obtain a filtered matrix
+     * Obtain a filtered matrix<br>
+     * It performs a convolution between <code>img</code> and <code>filter</code><br>
+     * then the values are divided by <code> max </code> for keeping the activations under than 1<br>
+     * and finally a threshold is applied where <code>thresh</code> is the threshold value
+     * 
      * @param img source matrix
      * @param filter filter
      * @param thresh threshold value
      * @return a filtered matrix
      */
     Mat filterV1(Mat img, Mat filter, double thresh) {
+        //initialize the filter Matrix
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
         img.convertTo(img.clone(), CV_32F);
+        //perform the convolution
         Imgproc.filter2D(img, filt, CV_32F, filter);
+        //Block for keeping the activations under than 1
         double max = Core.minMaxLoc(filt).maxVal;
         if (max > 1) {
             Core.divide(filt, Scalar.all(max), filt);
         }
+        //Aplying a threshold, where thresh<=x<=1
         Imgproc.threshold(filt, filt, thresh, 1, Imgproc.THRESH_TOZERO);
         return filt;
     }

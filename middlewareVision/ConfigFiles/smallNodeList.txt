@@ -6,7 +6,7 @@ V1BinocularMergeProcess false
 RetinaProccess true
 BasicMotion false
 V1BinocularComplexCells false
-V1MotionCellsNew false
+V1MotionCellsNew true
 LGNSimpleOpponentCells true
 MSTPolarCells false
 V1SimpleCells true

@@ -167,6 +167,9 @@ public class CurvatureRF extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -185,58 +188,91 @@ public class CurvatureRF extends javax.swing.JFrame {
         radiusf = new javax.swing.JTextField();
         anglef = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         jLabel12 = new javax.swing.JLabel();
         namef = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        filterImage = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
-        jLabel15 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         nfiltersf = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jLabel16 = new javax.swing.JLabel();
-        originalImage = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        convolvedImage = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         mulf = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        filterImage = new javax.swing.JLabel();
+        jInternalFrame2 = new javax.swing.JInternalFrame();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        originalImage = new javax.swing.JLabel();
+        jInternalFrame3 = new javax.swing.JInternalFrame();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        convolvedImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Curvature editor");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(86, 83, 83));
+        jPanel1.setLayout(null);
+
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Gabor filter");
+        jPanel1.add(jLabel11);
+        jLabel11.setBounds(20, 10, 63, 16);
+
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Curvature parameters");
+        jPanel1.add(jLabel10);
+        jLabel10.setBounds(350, 10, 126, 16);
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Size");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(20, 40, 24, 16);
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("kernel rotation");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, -1, -1));
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(470, 40, 83, 16);
 
-        jLabel3.setText("sigma");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, -1));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("σ");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(70, 40, 8, 16);
 
-        jLabel4.setText("lambda");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 40, -1, -1));
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("λ");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(120, 40, 7, 16);
 
-        jLabel5.setText("gamma");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, -1, -1));
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("γ");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(170, 40, 7, 16);
 
-        jLabel6.setText("psi");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, -1, -1));
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Φ");
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(220, 40, 30, 16);
 
-        jLabel7.setText("theta");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("θ");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(270, 40, 29, 16);
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("radius");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, -1, -1));
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(350, 40, 36, 16);
 
         rotf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -246,7 +282,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 rotfKeyReleased(evt);
             }
         });
-        getContentPane().add(rotf, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 80, -1));
+        jPanel1.add(rotf);
+        rotf.setBounds(470, 60, 80, 24);
 
         sizef.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -256,7 +293,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 sizefKeyReleased(evt);
             }
         });
-        getContentPane().add(sizef, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, -1));
+        jPanel1.add(sizef);
+        sizef.setBounds(20, 60, 50, 24);
 
         sigmaf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -266,7 +304,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 sigmafKeyReleased(evt);
             }
         });
-        getContentPane().add(sigmaf, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 50, -1));
+        jPanel1.add(sigmaf);
+        sigmaf.setBounds(70, 60, 50, 24);
 
         lambdaf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -276,7 +315,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 lambdafKeyReleased(evt);
             }
         });
-        getContentPane().add(lambdaf, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 50, -1));
+        jPanel1.add(lambdaf);
+        lambdaf.setBounds(120, 60, 50, 24);
 
         gammaf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -286,7 +326,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 gammafKeyReleased(evt);
             }
         });
-        getContentPane().add(gammaf, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, 50, -1));
+        jPanel1.add(gammaf);
+        gammaf.setBounds(170, 60, 50, 24);
 
         psif.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -296,7 +337,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 psifKeyReleased(evt);
             }
         });
-        getContentPane().add(psif, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, 50, -1));
+        jPanel1.add(psif);
+        psif.setBounds(220, 60, 50, 24);
 
         thetaf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -306,7 +348,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 thetafKeyReleased(evt);
             }
         });
-        getContentPane().add(thetaf, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 50, -1));
+        jPanel1.add(thetaf);
+        thetaf.setBounds(270, 60, 50, 24);
 
         radiusf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -316,7 +359,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 radiusfKeyReleased(evt);
             }
         });
-        getContentPane().add(radiusf, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 50, -1));
+        jPanel1.add(radiusf);
+        radiusf.setBounds(350, 60, 50, 24);
 
         anglef.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -326,16 +370,13 @@ public class CurvatureRF extends javax.swing.JFrame {
                 anglefKeyReleased(evt);
             }
         });
-        getContentPane().add(anglef, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, 60, -1));
+        jPanel1.add(anglef);
+        anglef.setBounds(400, 60, 60, 24);
 
-        jLabel9.setText("angle disp");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, -1, -1));
-
-        jLabel10.setText("Curvature parameters");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
-
-        jLabel11.setText("Gabor filter");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Δθ");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(400, 40, 15, 16);
 
         jButton1.setText("Generate");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -343,20 +384,15 @@ public class CurvatureRF extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 60, 80, -1));
+        jPanel1.add(jButton1);
+        jButton1.setBounds(710, 60, 80, 32);
 
-        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jList1);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 100, 250));
-
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Name:");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
-        getContentPane().add(namef, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 100, -1));
+        jPanel1.add(jLabel12);
+        jLabel12.setBounds(140, 100, 36, 16);
+        jPanel1.add(namef);
+        namef.setBounds(190, 100, 130, 24);
 
         jButton2.setText("Save");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -364,7 +400,8 @@ public class CurvatureRF extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
+        jPanel1.add(jButton2);
+        jButton2.setBounds(350, 100, 110, 32);
 
         jButton3.setText("Paste");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -372,22 +409,19 @@ public class CurvatureRF extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 100, 80, -1));
+        jPanel1.add(jButton3);
+        jButton3.setBounds(710, 100, 80, 32);
+        jPanel1.add(jSeparator1);
+        jSeparator1.setBounds(20, 90, 770, 10);
+        jPanel1.add(jSeparator2);
+        jSeparator2.setBounds(10, 30, 780, 10);
+        jPanel1.add(jSeparator3);
+        jSeparator3.setBounds(130, 130, 660, 10);
 
-        jLabel13.setText("Filter image:");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, -1, -1));
-
-        filterImage.setText("[]");
-        getContentPane().add(filterImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, -1));
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 770, 10));
-        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 780, 10));
-        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 660, 10));
-
-        jLabel15.setText("Files");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
-
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("n filters");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, -1));
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(570, 40, 43, 16);
 
         nfiltersf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -397,38 +431,13 @@ public class CurvatureRF extends javax.swing.JFrame {
                 nfiltersfKeyReleased(evt);
             }
         });
-        getContentPane().add(nfiltersf, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 70, -1));
+        jPanel1.add(nfiltersf);
+        nfiltersf.setBounds(570, 60, 70, 24);
 
-        jButton4.setText("Delete");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 100, -1));
-
-        jButton5.setText("Open Folder");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 100, -1));
-
-        jLabel16.setText("Original image");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, -1, -1));
-
-        originalImage.setText("[]");
-        getContentPane().add(originalImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, -1, -1));
-
-        jLabel17.setText("Convolved Image");
-        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 140, -1, -1));
-
-        convolvedImage.setText("[]");
-        getContentPane().add(convolvedImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, -1, -1));
-
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("mul factor");
-        getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, -1));
+        jPanel1.add(jLabel18);
+        jLabel18.setBounds(650, 40, 58, 16);
 
         mulf.setText("1");
         mulf.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -439,7 +448,86 @@ public class CurvatureRF extends javax.swing.JFrame {
                 mulfKeyReleased(evt);
             }
         });
-        getContentPane().add(mulf, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 60, 50, -1));
+        jPanel1.add(mulf);
+        mulf.setBounds(650, 60, 50, 24);
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, 820, 150));
+
+        jPanel2.setBackground(new java.awt.Color(73, 71, 71));
+        jPanel2.setLayout(null);
+
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Files");
+        jPanel2.add(jLabel15);
+        jLabel15.setBounds(10, 20, 60, 16);
+
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jPanel2.add(jScrollPane1);
+        jScrollPane1.setBounds(10, 40, 120, 300);
+
+        jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton4);
+        jButton4.setBounds(10, 350, 100, 32);
+
+        jButton5.setText("Open Folder");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton5);
+        jButton5.setBounds(10, 390, 100, 32);
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 450));
+
+        jPanel3.setBackground(new java.awt.Color(108, 108, 108));
+        jPanel3.setLayout(null);
+
+        jInternalFrame1.setTitle("Filter");
+        jInternalFrame1.setVisible(true);
+
+        filterImage.setText("[]");
+        jScrollPane2.setViewportView(filterImage);
+
+        jInternalFrame1.getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jInternalFrame1);
+        jInternalFrame1.setBounds(0, 0, 160, 150);
+
+        jInternalFrame2.setTitle("Original Image");
+        jInternalFrame2.setVisible(true);
+
+        originalImage.setText("[]");
+        jScrollPane3.setViewportView(originalImage);
+
+        jInternalFrame2.getContentPane().add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jInternalFrame2);
+        jInternalFrame2.setBounds(180, 0, 290, 290);
+
+        jInternalFrame3.setTitle("Convolved Image");
+        jInternalFrame3.setVisible(true);
+
+        convolvedImage.setText("[]");
+        jScrollPane4.setViewportView(convolvedImage);
+
+        jInternalFrame3.getContentPane().add(jScrollPane4, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jInternalFrame3);
+        jInternalFrame3.setBounds(490, 0, 290, 290);
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 820, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -896,15 +984,15 @@ public class CurvatureRF extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JInternalFrame jInternalFrame2;
+    private javax.swing.JInternalFrame jInternalFrame3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -915,7 +1003,13 @@ public class CurvatureRF extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

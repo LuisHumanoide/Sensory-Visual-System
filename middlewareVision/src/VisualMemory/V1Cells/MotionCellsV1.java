@@ -8,6 +8,7 @@ package VisualMemory.V1Cells;
 import VisualMemory.MotionCell;
 import VisualMemory.Cell;
 import java.io.File;
+import javax.swing.JOptionPane;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import utils.Config;
@@ -54,7 +55,7 @@ public class MotionCellsV1 {
                 }
             }
         } else {
-            utils.Msg.print("there are no speeds for loading");
+            JOptionPane.showMessageDialog(null, "There are no velocities in the list");
         }
     }
 

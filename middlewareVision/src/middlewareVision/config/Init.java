@@ -36,32 +36,32 @@ public class Init extends Igniter {
             Retina.class.getName(),
             LGN.class.getName(),
             V1.class.getName(),
-            V2.class.getName(), 
+            V2.class.getName(),
             V4.class.getName(),
             TestAttention.class.getName(),
             MT.class.getName(),
-            MST.class.getName(), 
+            MST.class.getName(),
             Alert.class.getName(),
-	    V3.class.getName(),
-		//@addNodes
+            V3.class.getName(), //@addNodes
         };
-        
+
         configuration.setLocal(true);
         configuration.setDebug(false);
         configuration.setUDP();
         configuration.setEntityID(ENTITY_ID);
+        
         Init.restart();
         setAreas(areaNames);
         run();
         ProcessList.saveProcessList();
 
     }
-
+    
     public static void restart() {
         XMLReader.readXML();
         ProcessList.openList();
         InitCellMemory.initCellMemory();
-        Visualizer.initVisualizer(Config.h*Config.v);
+        Visualizer.initVisualizer(Config.h * Config.v);
         Visualizer.addLimit("zero", 0);
         MSTPolarCells.getVrow();
         SpecialKernels.loadKernels();

@@ -100,7 +100,6 @@ public class Functions {
 
         Core.add(r1, r2, r3);
         
-
         Imgproc.threshold(r3, r3, 1, 0, Imgproc.THRESH_TRUNC);
 
         return r3;
@@ -327,7 +326,7 @@ public class Functions {
             T[i] = SpecialKernels.displaceKernel(T[i], -angle, dx);
         }
         result = MatrixUtils.multiply(T);
-        result = SpecialKernels.displaceKernel(result, -angle, (int) (-dx * (T.length / 2)));
+        //result = SpecialKernels.displaceKernel(result, -angle, (int) (-dx * (T.length)));
         //Core.multiply(result, V1Bank.motionDiff, result);
         return result;
     }
