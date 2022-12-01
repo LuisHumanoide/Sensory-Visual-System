@@ -9,7 +9,7 @@ import VisualMemory.Cell;
 import org.opencv.core.Mat;
 import utils.Config;
 import utils.Functions;
-import utils.filters.GaborFilter;
+import utils.GaborFilter;
 
 /**
  *

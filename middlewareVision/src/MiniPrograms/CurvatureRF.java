@@ -35,7 +35,7 @@ import utils.Functions;
 import utils.MatrixUtils;
 import utils.Scalr;
 import utils.SpecialKernels;
-import utils.filters.GaborFilter;
+import utils.GaborFilter;
 
 /**
  *

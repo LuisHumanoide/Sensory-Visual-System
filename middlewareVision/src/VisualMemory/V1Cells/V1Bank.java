@@ -13,7 +13,7 @@ import utils.Config;
 import utils.FileUtils;
 import utils.FilterUtils;
 import utils.GaussianFilter;
-import utils.filters.GaborFilter;
+import utils.GaborFilter;
 
 /**
  *

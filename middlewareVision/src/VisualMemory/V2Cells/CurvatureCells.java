@@ -10,7 +10,7 @@ import java.io.File;
 import org.opencv.core.Mat;
 import utils.FileUtils;
 import utils.Functions;
-import utils.filters.CurvatureFilter;
+import utils.CurvatureFilter;
 
 /**
  * Set of specified curvature cells with certain curvature (Radius, angle)
