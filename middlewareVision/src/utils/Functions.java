@@ -211,43 +211,6 @@ public class Functions {
         return result;
     }
 
-    /**
-     *
-     * @param src1
-     * @param src2
-     * @param l3
-     * @return
-     */
-    public static Mat V2Activation(Mat src1, Mat src2, double l3) {
-        Mat dst = new Mat();
-        Mat vlvr = new Mat();
-        Mat vlpvr = new Mat();
-        Mat num = new Mat();
-        Mat den = new Mat();
-        Mat h = new Mat();
-
-        Scalar dl3 = new Scalar((double) 1 / l3);
-        Scalar d2l3 = new Scalar((double) 2 / l3);
-        Scalar dl3_2 = new Scalar((double) 1 / (l3 * l3));
-
-        Core.multiply(src1, src2, vlvr);
-
-        Core.add(src1, src2, vlpvr);
-        Core.add(vlpvr, d2l3, num);
-
-        Core.multiply(vlpvr, dl3, den);
-
-        Core.add(den, vlpvr, den);
-        Core.add(den, dl3_2, den);
-
-        Core.divide(num, den, h);
-
-        Core.multiply(vlvr, h, dst);
-
-        Imgproc.threshold(dst, dst, 1, 0, Imgproc.THRESH_TRUNC);
-
-        return dst;
-    }
 
     /**
      * Performs the max summation with Cells <br>

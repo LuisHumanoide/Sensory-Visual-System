@@ -15,8 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import kmiddle2.nodes.activities.Activity;
 import middlewareVision.config.AreaNames;
+import org.opencv.core.Core;
 import static org.opencv.core.CvType.CV_32F;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import spike.Modalities;
 import utils.Config;
@@ -79,7 +81,7 @@ public class V2AngularCells extends Activity {
                 if (spike.getModality() == Modalities.ATTENTION) {
                     Location l = (Location) spike.getLocation();
                     if (l.getValues()[0] == 0) {
-                        
+
                     }
                     LongSpike sendSpike2 = new LongSpike(Modalities.ATTENTION, new Location(1), 0, 0);
                     send(AreaNames.V1HyperComplex, sendSpike2.getByteArray());
@@ -122,7 +124,7 @@ public class V2AngularCells extends Activity {
             }
         }
     }
-    
+
     /**
      * Process to perform angular activation for all V2 cells.
      */
@@ -172,12 +174,20 @@ public class V2AngularCells extends Activity {
     double l3 = 1000;
 
     /**
-     * multiply the matrixes for generating the activation map
+     * Performs the angular activation process where the angular activation function 
+     * is performed in each pair of filtered matrices <br>
+     * then, a label is asigned for each obtained matrix (for performing the 
+     * simple shape process in V4)<br>
+     * and finally, the activations are merged for obtained the rotation invariance
+     * 
+     * @param x1 index of the type of Gabor filter
+     * @param x2 index of the eye
+     * @param filtered array of filtered matrix
      */
     public void angularActivation(int x1, int x2, Mat[] filtered) {
         for (int i = 0; i < Config.gaborOrientations; i++) {
             for (int j = 0; j < Config.gaborOrientations * 2; j++) {
-                V2Bank.AC[x1][x2].Cells[i][j].mat = Functions.V2Activation(filtered[j], filtered[(i + j + 1) % (Config.gaborOrientations * 2)], l3);
+                V2Bank.AC[x1][x2].Cells[i][j].mat = angularActivation(filtered[j], filtered[(i + j + 1) % (Config.gaborOrientations * 2)], l3);
 
                 if (x2 == 0) {
                     V2Bank.AC[x1][x2].Cells[i][j].setLabel("a" + x1 + "-" + i + "" + j, 0);
@@ -191,6 +201,56 @@ public class V2AngularCells extends Activity {
                         V1Bank.HCC[x1][x2].mergedCells[((i + j + 1) % (Config.gaborOrientations * 2)) % 4]);
             }
         }
+    }
+
+    /**
+     * <pre class="tab">
+     * Obtain the matrix produced by the activation function:<br>
+     * 
+     *                           (2/l + M1 + M2)         <br>
+     * f(M1,M2)=(M1 M2) -------------------------------- <br>
+     *                    (1/l² + (1/l)(M1+M2) + (M1 M2)) <br>
+     * 
+     * Where <b>l</b> controls the behavior of the activation function<br>
+     * when <code>l=1</code> the function behavior is like the multiplication of
+     * M1 and M2<br>
+     * when l is big, the behavior is like the multiplication.
+     *
+     * @param M1 source matrix 1
+     * @param M2 source matrix 2
+     * @param l is a value that controls the behavior of the function
+     * @return the matrix that represents the activation of corners with a
+     * specific angle and direction
+     */
+    public Mat angularActivation(Mat M1, Mat M2, double l) {
+        Mat dst = new Mat();
+        Mat vlvr = new Mat();
+        Mat vlpvr = new Mat();
+        Mat num = new Mat();
+        Mat den = new Mat();
+        Mat h = new Mat();
+
+        Scalar dl3 = new Scalar((double) 1 / l);
+        Scalar d2l3 = new Scalar((double) 2 / l);
+        Scalar dl3_2 = new Scalar((double) 1 / (l * l));
+
+        Core.multiply(M1, M2, vlvr);
+
+        Core.add(M1, M2, vlpvr);
+        Core.add(vlpvr, d2l3, num);
+
+        Core.multiply(vlpvr, dl3, den);
+
+        Core.add(den, vlpvr, den);
+        Core.add(den, dl3_2, den);
+
+        Core.divide(num, den, h);
+
+        Core.multiply(vlvr, h, dst);
+
+        Imgproc.threshold(dst, dst, 1, 0, Imgproc.THRESH_TRUNC);
+
+        return dst;
     }
 
 }
