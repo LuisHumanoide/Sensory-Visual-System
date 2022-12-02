@@ -7,7 +7,7 @@ import VisualMemory.V1Cells.V1Bank;
 import spike.Location;
 import generator.ProcessList;
 import gui.Visualizer;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -23,7 +23,7 @@ import utils.MatrixUtils;
  *
  * 
  */
-public class V1BinocularComplexCells extends Activity {
+public class V1BinocularComplexCells extends Process {
 
 
     public V1BinocularComplexCells() {
@@ -39,7 +39,7 @@ public class V1BinocularComplexCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

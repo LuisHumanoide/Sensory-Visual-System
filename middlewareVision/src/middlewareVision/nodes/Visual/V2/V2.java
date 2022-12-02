@@ -5,7 +5,7 @@
  */
 package middlewareVision.nodes.Visual.V2;
 
-import kmiddle2.nodes.areas.Area;
+import cFramework.nodes.area.Area;
 import middlewareVision.config.AreaNames;
 
 /**
@@ -28,7 +28,7 @@ public class V2 extends Area{
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         send(AreaNames.V2AngularCells, data);
 	send(AreaNames.V2CurvatureCells,data);	
 	send(AreaNames.V2CornerMotion,data);	

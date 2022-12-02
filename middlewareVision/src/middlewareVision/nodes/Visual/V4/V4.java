@@ -6,7 +6,7 @@
 package middlewareVision.nodes.Visual.V4;
 
 
-import kmiddle2.nodes.areas.Area;
+import cFramework.nodes.area.Area;
 import middlewareVision.config.AreaNames;
 
 
@@ -32,7 +32,7 @@ public class V4 extends Area{
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         send(AreaNames.V4Color,data);	
 	send(AreaNames.V4SimpleShapeCells,data);	
 	send(AreaNames.V4SimpleShapeScaleInv,data);	

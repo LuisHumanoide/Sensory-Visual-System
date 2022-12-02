@@ -5,7 +5,7 @@ import VisualMemory.V1Cells.V1Bank;
 import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import middlewareVision.config.AreaNames;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -25,7 +25,7 @@ import utils.numSync;
  * the process is kind of a difference of gaussians<br>
  * where the observable effect is the ennhacement of the contrast and color.
  */
-public class V1DoubleOpponent extends Activity {
+public class V1DoubleOpponent extends Process {
 
 
     public V1DoubleOpponent() {
@@ -40,7 +40,7 @@ public class V1DoubleOpponent extends Activity {
     
     String labels[]={"Double Opponent D'","Double Opponent K'","Double Opponent L'"};
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

@@ -5,7 +5,7 @@
  */
 package middlewareVision.nodes.Visual.V1;
 
-import kmiddle2.nodes.areas.Area;
+import cFramework.nodes.area.Area;
 import middlewareVision.config.AreaNames;
 
 /**
@@ -32,7 +32,7 @@ public class V1 extends Area{
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
 	send(AreaNames.V1SimpleCells,data);
 	send(AreaNames.V1ComplexCells,data);
 	send(AreaNames.V1DoubleOpponent,data);

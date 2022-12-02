@@ -9,7 +9,7 @@ import generator.ProcessList;
 import gui.Visualizer;
 import java.util.ArrayList;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import middlewareVision.config.AreaNames;
 import org.opencv.core.Mat;
 import spike.Modalities;
@@ -24,7 +24,7 @@ import utils.SpecialKernels;
  *
  *
  */
-public class V1HyperComplex extends Activity {
+public class V1HyperComplex extends Process {
 
     float sigma = 0.47f * 2f;
     float inc = (float) (Math.PI / 4);
@@ -41,7 +41,7 @@ public class V1HyperComplex extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

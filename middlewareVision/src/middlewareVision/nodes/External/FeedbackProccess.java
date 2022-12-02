@@ -6,7 +6,7 @@ import VisualMemory.V2Cells.V2Bank;
 import generator.ProcessList;
 import java.io.IOException;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -23,7 +23,7 @@ import utils.LongSpike;
  * a matrix that multiplies to the output <br> 
  * and another matrix that adds values
  */
-public class FeedbackProccess extends Activity {
+public class FeedbackProccess extends Process {
 
     AttentionTrigger trigger;
 
@@ -51,7 +51,7 @@ public class FeedbackProccess extends Activity {
      * @param data 
      */
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         try {
             LongSpike spike = new LongSpike(data);
             //send();

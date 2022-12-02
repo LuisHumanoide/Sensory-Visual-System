@@ -1,6 +1,5 @@
 package middlewareVision.nodes.Visual.V1;
 
-import gui.FrameActivity;
 import spike.Location;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,13 +17,14 @@ import utils.Config;
 import utils.Convertor;
 import utils.LongSpike;
 import utils.MotionLabelIndex;
+import cFramework.nodes.process.Process;
 import utils.SpecialKernels;
 
 /**
  *
  *
  */
-public class V1MotionCells2 extends FrameActivity {
+public class V1MotionCells2 extends Process {
 
     /**
      * *************************************************************************
@@ -46,7 +46,6 @@ public class V1MotionCells2 extends FrameActivity {
     public V1MotionCells2() {
         this.ID = AreaNames.V1MotionCells2;
         this.namer = AreaNames.class;
-        initFrames(4, 12+12);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class V1MotionCells2 extends FrameActivity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         try {
             LongSpike spike = new LongSpike(data);
             Location l = (Location) spike.getLocation();
@@ -125,7 +124,6 @@ public class V1MotionCells2 extends FrameActivity {
         }
         mat2 = matLabel.clone();
         Imgproc.resize(mat2, mat2, new Size(Config.width, Config.heigth));
-        frame[index].setImage(Convertor.Mat2Img2(mat2), "motion labels");
         
     }
     

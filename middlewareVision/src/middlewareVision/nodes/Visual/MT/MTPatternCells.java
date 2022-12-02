@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -29,7 +29,7 @@ import utils.MatrixUtils;
  * MT Pattern Cells combines the signals from MT Component Cells<br>
  * the velocity is obtained with a geometric method named <b> Intersection of Constrains</b>
  */
-public class MTPatternCells extends Activity {
+public class MTPatternCells extends Process {
 
     Mat mul, blur, sum, m;
 
@@ -54,7 +54,7 @@ public class MTPatternCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

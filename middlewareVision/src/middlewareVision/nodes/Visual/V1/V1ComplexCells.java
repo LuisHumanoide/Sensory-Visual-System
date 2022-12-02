@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import gui.Visualizer;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -23,7 +23,7 @@ import utils.LongSpike;
  *
  *
  */
-public class V1ComplexCells extends Activity {
+public class V1ComplexCells extends Process {
 
     public V1ComplexCells() {
         this.ID = AreaNames.V1ComplexCells;
@@ -36,7 +36,7 @@ public class V1ComplexCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

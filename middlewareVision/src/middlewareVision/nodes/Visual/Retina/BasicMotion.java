@@ -4,7 +4,7 @@ import VisualMemory.V1Cells.V1Bank;
 import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import matrix.matrix;
@@ -24,7 +24,7 @@ import utils.numSync;
  *
  *
  */
-public class BasicMotion extends Activity {
+public class BasicMotion extends Process {
 
     public BasicMotion() {
         this.ID = AreaNames.BasicMotion;
@@ -56,7 +56,7 @@ public class BasicMotion extends Activity {
     numSync sync = new numSync(3);
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

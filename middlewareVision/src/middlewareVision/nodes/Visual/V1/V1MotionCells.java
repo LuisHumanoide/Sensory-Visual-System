@@ -3,7 +3,7 @@ package middlewareVision.nodes.Visual.V1;
 import generator.ProcessList;
 import java.io.IOException;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import matrix.ArrayMatrix;
@@ -21,7 +21,7 @@ import utils.LongSpike;
  *
  *
  */
-public class V1MotionCells extends Activity {
+public class V1MotionCells extends Process {
 
     matrix[][] mats;
     static final int numOfMatrixes = 3;
@@ -48,7 +48,7 @@ public class V1MotionCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

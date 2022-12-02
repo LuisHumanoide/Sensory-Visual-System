@@ -16,7 +16,7 @@ import middlewareVision.config.AreaNames;
 import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import org.opencv.calib3d.StereoBM;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -25,7 +25,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import spike.Location;
 import spike.Modalities;
-import utils.Config;
 import utils.Convertor;
 import utils.LongSpike;
 
@@ -33,7 +32,7 @@ import utils.LongSpike;
  *
  * @author Luis Humanoide D Madrigal
  */
-public class RetinaProccess extends Activity {
+public class RetinaProccess extends Process {
 
     private static final float[][] BGR_TO_LMS = {{0.4275f, 0.4990f, 0.0472f},
     {0.2206f, 0.7030f, 0.0918f},
@@ -45,21 +44,26 @@ public class RetinaProccess extends Activity {
     private boolean start = false;
 
     GUI gui;
+    static boolean guiStarted = false;
 
     public RetinaProccess() {
         this.ID = AreaNames.RetinaProccess;
         this.namer = AreaNames.class;
         ProcessList.addProcess(this.getClass().getSimpleName(), true);
 
-        gui = new GUI(this);
-        gui.setVisible(true);
-        thread.start();
+        if (!guiStarted) {
+            gui = new GUI(this);
+            gui.setVisible(true);
+            thread.start();
+            guiStarted = true;
+        }
     }
-    
+
     boolean ready = false;
-    
+
     Thread thread = new Thread() {
         public void run() {
+            gui.setVisible(true);
             ready = true;
             gui.ret.createImage(0, true);
             try {
@@ -71,7 +75,7 @@ public class RetinaProccess extends Activity {
     };
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
 
     }
 
@@ -211,6 +215,5 @@ public class RetinaProccess extends Activity {
 
         dest.put(0, 0, dstData);
     }
-
 
 }

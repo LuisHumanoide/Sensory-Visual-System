@@ -2,7 +2,7 @@ package middlewareVision.nodes.Visual.LGN;
 
 
 
-import kmiddle2.nodes.areas.Area;
+import cFramework.nodes.area.Area;
 import middlewareVision.config.AreaNames;
 
 /**
@@ -22,7 +22,7 @@ public class LGN extends Area{
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         send(AreaNames.LGNSimpleOpponentCells,data);
 	
 //@SendProcess

@@ -5,7 +5,7 @@ import VisualMemory.V3Cells.V3Bank;
 import generator.ProcessList;
 import gui.Visualizer;
 import java.util.ArrayList;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -21,7 +21,7 @@ import utils.MatrixUtils;
  *
  *
  */
-public class V3DisparityRange extends Activity {
+public class V3DisparityRange extends Process {
 
     public V3DisparityRange() {
         this.ID = AreaNames.V3DisparityRange;
@@ -37,7 +37,7 @@ public class V3DisparityRange extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

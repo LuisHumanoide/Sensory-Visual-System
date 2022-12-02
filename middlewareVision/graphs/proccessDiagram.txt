@@ -1,0 +1,133 @@
+digraph G{
+rankdir="LR"
+newrank="true" 
+AlertProcess [ shape="rectangle" ] 
+FeedbackProccess [ shape="rectangle" ] 
+LGNSimpleOpponentCells [ shape="rectangle" ] 
+MSTPolarCells [ shape="rectangle" ] 
+MSTTemplateCells [ shape="rectangle" ] 
+MTComponentCells [ shape="rectangle" ] 
+MTPatternCells [ shape="rectangle" ] 
+BasicMotion [ shape="rectangle" ] 
+RetinaProccess [ shape="rectangle" ] 
+V1BinocularComplexCells [ shape="rectangle" ] 
+V1BinocularMergeProcess [ shape="rectangle" ] 
+V1BinocularSimpleCells [ shape="rectangle" ] 
+V1ComplexCells [ shape="rectangle" ] 
+V1DoubleOpponent [ shape="rectangle" ] 
+V1HyperComplex [ shape="rectangle" ] 
+V1MotionCellsNew [ shape="rectangle" ] 
+V1SimpleCells [ shape="rectangle" ] 
+V2AngularCells [ shape="rectangle" ] 
+V2CornerMotion [ shape="rectangle" ] 
+V2CurvatureCells [ shape="rectangle" ] 
+V3DisparityRange [ shape="rectangle" ] 
+V4Color [ shape="rectangle" ] 
+V4SimpleShapeCells [ shape="rectangle" ] 
+V4SimpleShapeScaleInv [ shape="rectangle" ] 
+
+
+AlertProcess -> RetinaProccess 
+FeedbackProccess -> V1ComplexCells 
+FeedbackProccess -> V1HyperComplex 
+FeedbackProccess -> V2AngularCells 
+FeedbackProccess -> V1SimpleCells 
+LGNSimpleOpponentCells -> V1DoubleOpponent 
+LGNSimpleOpponentCells -> MSTPolarCells 
+MTComponentCells -> MTPatternCells 
+RetinaProccess -> BasicMotion 
+RetinaProccess -> LGNSimpleOpponentCells 
+V1BinocularComplexCells -> V1BinocularMergeProcess 
+V1BinocularMergeProcess -> V3DisparityRange 
+V1BinocularSimpleCells -> V1BinocularComplexCells 
+V1ComplexCells -> V1HyperComplex 
+V1ComplexCells -> V1MotionCellsNew 
+V1ComplexCells -> V1SimpleCells 
+V1DoubleOpponent -> V4Color 
+V1DoubleOpponent -> V1SimpleCells 
+V1HyperComplex -> V2CurvatureCells 
+V1HyperComplex -> V1ComplexCells 
+V1HyperComplex -> V2AngularCells 
+V1MotionCellsNew -> MTComponentCells 
+V1SimpleCells -> V1ComplexCells 
+V1SimpleCells -> V1BinocularSimpleCells 
+V2AngularCells -> V1HyperComplex 
+V2AngularCells -> V2CornerMotion 
+V2AngularCells -> V4SimpleShapeCells 
+V4SimpleShapeCells -> V4SimpleShapeScaleInv 
+
+subgraph clusterAlert {
+ label="Alert"
+rank="same"
+AlertProcess
+}
+
+subgraph clusterTestAttention {
+ label="TestAttention"
+rank="same"
+FeedbackProccess
+}
+
+subgraph clusterLGN {
+ label="LGN"
+rank="same"
+LGNSimpleOpponentCells
+}
+
+subgraph clusterMST {
+ label="MST"
+rank="same"
+MSTPolarCells
+MSTTemplateCells
+}
+
+subgraph clusterMT {
+ label="MT"
+rank="same"
+MTComponentCells
+MTPatternCells
+}
+
+subgraph clusterRetina {
+ label="Retina"
+rank="same"
+RetinaProccess
+BasicMotion
+}
+
+subgraph clusterV1 {
+ label="V1"
+rank="same"
+V1SimpleCells
+V1ComplexCells
+V1DoubleOpponent
+V1HyperComplex
+V1MotionCellsNew
+V1BinocularSimpleCells
+V1BinocularComplexCells
+V1BinocularMergeProcess
+}
+
+subgraph clusterV2 {
+ label="V2"
+rank="same"
+V2AngularCells
+V2CurvatureCells
+V2CornerMotion
+}
+
+subgraph clusterV3 {
+ label="V3"
+rank="same"
+V3DisparityRange
+}
+
+subgraph clusterV4 {
+ label="V4"
+rank="same"
+V4Color
+V4SimpleShapeCells
+V4SimpleShapeScaleInv
+}
+
+}

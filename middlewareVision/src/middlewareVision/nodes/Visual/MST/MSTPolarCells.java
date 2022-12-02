@@ -6,7 +6,7 @@ import VisualMemory.MotionCell;
 import spike.Location;
 import generator.ProcessList;
 import gui.Visualizer;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -27,7 +27,7 @@ import utils.SpecialKernels;
  *
  *
  */
-public class MSTPolarCells extends Activity {
+public class MSTPolarCells extends Process {
 
     Mat logM;
     //variable used in the visualizer
@@ -101,7 +101,7 @@ public class MSTPolarCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

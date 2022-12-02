@@ -1,7 +1,7 @@
 package middlewareVision.nodes.External;
 
+import cFramework.nodes.process.Process;
 import generator.ProcessList;
-import kmiddle2.nodes.activities.Activity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -12,7 +12,7 @@ import utils.LongSpike;
  *
  *
  */
-public class AlertProcess extends Activity {
+public class AlertProcess extends Process {
 
     AlertFrame frame;
     
@@ -31,7 +31,7 @@ public class AlertProcess extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

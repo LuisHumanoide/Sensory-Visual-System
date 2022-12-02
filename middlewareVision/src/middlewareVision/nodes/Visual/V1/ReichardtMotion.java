@@ -3,7 +3,7 @@ package middlewareVision.nodes.Visual.V1;
 import VisualMemory.V1Cells.V1Bank;
 import gui.Visualizer;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -22,7 +22,7 @@ import utils.numSync;
  *
  */
 
-public class ReichardtMotion extends Activity {
+public class ReichardtMotion extends Process {
 
     public ReichardtMotion() {
         this.ID = AreaNames.ReichardtMotion;
@@ -48,7 +48,7 @@ public class ReichardtMotion extends Activity {
     numSync sync = new numSync(4);
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         try {
             LongSpike spike = new LongSpike(data);
             Location l = (Location) spike.getLocation();

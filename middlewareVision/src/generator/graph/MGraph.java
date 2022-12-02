@@ -26,13 +26,12 @@ public class MGraph {
     static ArrayList<GArea> areas=new ArrayList();;
     static ArrayList<GSmallNode> nodes=new ArrayList();;
     static HashSet<String> allSmallNodes=new HashSet();;
-    static String path = "src/middlewareVision/nodes";
     
-    public static void generateGraphs(){
+    public static void generateGraphs(String path){
         areas.clear();
         nodes.clear();
         allSmallNodes.clear();
-        walkin(new File(path));
+        walkin(new File(path+"/nodes"));
         generateNodeGraph();
         generateProcessGraph();
     }
@@ -65,11 +64,11 @@ public class MGraph {
                 }
             }
         }
-        if (file.replaceAll(" ", "").contains("extendsActivity")) {
+        if (file.replaceAll(" ", "").contains("extendsProcess")) {
             String[] ar = file.split("\n");
             for (String cad : ar) {
                 if (cad.contains("public class")) {
-                    String nodeName = cad.replaceAll(" ", "").replace("publicclass", "").replace("extendsActivity{", "");
+                    String nodeName = cad.replaceAll(" ", "").replace("publicclass", "").replace("extendsProcess{", "");
                     nodes.add(new GSmallNode(nodeName, addNext(file)));
                 }
             }
@@ -112,8 +111,8 @@ public class MGraph {
 
     static void generateNodeGraph() {
         String c = "graph G{\n";
-        String l1 = "[ label=\"@name\" "+FileUtils.readFile(new File("style/styleNodeDiagram_Area.txt"))+" ]";
-        String l2 = "[ label=\"@name\" "+FileUtils.readFile(new File("style/styleNodeDiagram_Process.txt"))+" ]";
+        String l1 = "[ label=\"@name\" shape=\"circle\" ]";
+        String l2 = "[ label=\"@name\" shape=\"octagon\" ]";
         for (GArea ga : areas) {
             c = c + ga.name + " " + l1.replace("@name", ga.name) + "\n";
             for (String nodes : ga.smallNodes) {
@@ -129,8 +128,8 @@ public class MGraph {
         }
         c = c + "}";
         
-        FileUtils.write("nodeDiagram", c, "txt");
-        generateImg("nodeDiagram","png","circo");
+        FileUtils.write("graphs/nodeDiagram", c, "txt");
+        generateImg("graphs/nodeDiagram","png","circo");
         
     }
     
@@ -142,7 +141,7 @@ public class MGraph {
         c = c + "rankdir=\"LR\"" + "\nnewrank=\"true\" \n";
         for (GSmallNode n : nodes) {
             if (allSmallNodes.contains(n.name)) {
-                c = c + n.name + " [ "+FileUtils.readFile(new File("style/styleProcessDiagram_Process.txt"))+" ] \n";
+                c = c + n.name + " [ shape=\"rectangle\" ] \n";
             }
         }
         c = c + "\n\n";
@@ -155,8 +154,7 @@ public class MGraph {
         }
 
         for (GArea ga : areas) {
-            c = c + "\nsubgraph cluster" + ga.name + " {\n label=\"" + ga.name + "\"\nrank=\"same\"\n"+
-                    FileUtils.readFile(new File("style/styleProcessDiagram_Area.txt"))+"\n";
+            c = c + "\nsubgraph cluster" + ga.name + " {\n label=\"" + ga.name + "\"\nrank=\"same\"\n";
             for (String nodes : ga.smallNodes) {
                 c = c + nodes + "\n";
             }
@@ -165,17 +163,17 @@ public class MGraph {
 
         c = c + "\n}";
 
-        FileUtils.write("proccessDiagram", c, "txt");
-        generateImg("proccessDiagram","png","dot");
+        FileUtils.write("graphs/proccessDiagram", c, "txt");
+        generateImg("graphs/proccessDiagram","png","dot");
 
     }
-    static Runtime run = Runtime.getRuntime();
+    
     static void generateImg(String fileName, String format, String engine) {
         try {
-            String cmd = "bin\\"+engine+".exe" + " -T " + format + " " +  fileName + ".txt "
+            String cmd = "bin\\"+engine+".exe" + " -T" + format + " " +  fileName + ".txt "
                     + "-o " + fileName + "." + format;
-            run.exec(cmd);
-        } catch (Exception ioe) {
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException ioe) {
             System.out.println(ioe);
         }
     }

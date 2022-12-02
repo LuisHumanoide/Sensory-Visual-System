@@ -3,9 +3,9 @@ package middlewareVision.nodes.Visual.LGN;
 import VisualMemory.LGNCells.LGNBank;
 import generator.ProcessList;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
 import matrix.matrix;
 import middlewareVision.config.AreaNames;
+import cFramework.nodes.process.Process;
 import gui.Visualizer;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -22,7 +22,7 @@ import utils.numSync;
  *
  *
  */
-public class LGNSimpleOpponentCells extends Activity {
+public class LGNSimpleOpponentCells extends Process {
 
     Mat LMSConesL[];
     Mat LMSConesR[];
@@ -58,7 +58,7 @@ public class LGNSimpleOpponentCells extends Activity {
      * @param data
      */
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 //input spike

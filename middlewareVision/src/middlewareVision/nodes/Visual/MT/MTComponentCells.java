@@ -7,7 +7,7 @@ import generator.ProcessList;
 import gui.Visualizer;
 import java.util.ArrayList;
 import spike.Location;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
@@ -25,7 +25,7 @@ import static utils.Msg.print;
  * of motion
  *
  */
-public class MTComponentCells extends Activity {
+public class MTComponentCells extends Process {
 
     public MTComponentCells() {
         this.ID = AreaNames.MTComponentCells;
@@ -41,7 +41,7 @@ public class MTComponentCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {
                 LongSpike spike = new LongSpike(data);

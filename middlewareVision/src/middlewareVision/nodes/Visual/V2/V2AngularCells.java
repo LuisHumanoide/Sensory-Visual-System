@@ -13,7 +13,7 @@ import spike.Location;
 import gui.Visualizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import middlewareVision.config.AreaNames;
 import org.opencv.core.Core;
 import static org.opencv.core.CvType.CV_32F;
@@ -31,7 +31,7 @@ import utils.SpecialKernels;
  *
  * @author HumanoideFilms
  */
-public class V2AngularCells extends Activity {
+public class V2AngularCells extends Process {
 
     /**
      * Initial arrays
@@ -58,7 +58,7 @@ public class V2AngularCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         LongSpike spike;
         if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
             try {

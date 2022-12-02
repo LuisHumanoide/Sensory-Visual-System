@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
 import gui.Visualizer;
-import kmiddle2.nodes.activities.Activity;
+import cFramework.nodes.process.Process;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import static org.opencv.core.CvType.CV_32F;
@@ -28,7 +28,7 @@ import utils.numSync;
  *
  *
  */
-public class V1SimpleCells extends Activity {
+public class V1SimpleCells extends Process {
 
     /**
      * *************************************************************************
@@ -56,7 +56,7 @@ public class V1SimpleCells extends Activity {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         try {
             if ((boolean) ProcessList.ProcessMap.get(this.getClass().getSimpleName())) {
                 /*

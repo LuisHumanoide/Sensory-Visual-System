@@ -5,7 +5,7 @@
  */
 package middlewareVision.nodes.Visual.Retina;
 
-import kmiddle2.nodes.areas.Area;
+import cFramework.nodes.area.Area;
 import middlewareVision.config.AreaNames;
 
 /**
@@ -29,7 +29,7 @@ public class Retina extends Area {
     }
 
     @Override
-    public void receive(int nodeID, byte[] data) {
+    public void receive(long nodeID, byte[] data) {
         send(AreaNames.RetinaProccess, data);
         send(AreaNames.BasicMotion, data);
         //@SendProcess
