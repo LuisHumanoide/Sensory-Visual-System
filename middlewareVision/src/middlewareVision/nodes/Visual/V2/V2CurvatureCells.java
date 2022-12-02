@@ -1,5 +1,6 @@
 package middlewareVision.nodes.Visual.V2;
 
+import VisualMemory.LGNCells.LGNBank;
 import VisualMemory.V1Cells.V1Bank;
 import VisualMemory.V2Cells.V2Bank;
 import generator.ProcessList;
@@ -9,10 +10,14 @@ import kmiddle2.nodes.activities.Activity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import middlewareVision.config.AreaNames;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import spike.Modalities;
+import utils.CurvatureFilter;
 import utils.Functions;
 import utils.LongSpike;
+import utils.SpecialKernels;
 
 /**
  *
@@ -43,8 +48,6 @@ public class V2CurvatureCells extends Activity {
 
                     visualize();
                     Visualizer.lockLimit("Curv");
-
-                    //send(AreaNames.V4ShapeActivationNode, null);
 
                 }
             } catch (Exception ex) {
@@ -93,7 +96,7 @@ public class V2CurvatureCells extends Activity {
     void filterCurvatureCells(int x1, int x2, Mat src) {
         for (int i = 0; i < V2Bank.CurvC[x1][x2].getnCurvatures(); i++) {
             for (int j = 0; j < V2Bank.CurvC[x1][x2].getnAngleDivisions(); j++) {
-                V2Bank.CurvC[x1][x2].cells[i][j].mat = Functions.curvatureFiltering(src, V2Bank.CurvC[x1][x2].filters[i][j], false);
+                V2Bank.CurvC[x1][x2].cells[i][j].mat = curvatureFiltering(src, V2Bank.CurvC[x1][x2].filters[i][j]);
                 if (x2 == 0) {
                     V2Bank.CurvC[x1][x2].cells[i][j].setLabel("c" + x1 + "-" + i + "" + j, 0);
                 }
@@ -104,6 +107,41 @@ public class V2CurvatureCells extends Activity {
             }
             V2Bank.CurvC[x1][x2].composedCells[i].mat = Functions.maxSum(V2Bank.CurvC[x1][x2].cells[i]);
         }
+    }
+    
+        /**
+     * Perform the curvature filtering <br>
+     * the model can be seen in the paper <br>
+     * <i>10.3389/fncom.2013.00067 </i><br><br>
+     *
+     * It consist in Gabor Filters arranged in a curvature trajectory<br>
+     * there is a convex and concave trajectory<br>
+     * the activations of the filters are multiplied and <br>
+     * there is a difference between the concave and convex results
+     *
+     * @param src the original image to filter
+     * @param cFilter the curvature filter class
+     * @param convex if it's necessary to subtract the convex result
+     * @return the activation matrix corresponding to an specific curvature in
+     * an specific orientation
+     */
+    public static Mat curvatureFiltering(Mat src, CurvatureFilter cFilter) {
+
+        Mat concaveFiltered[];
+
+        concaveFiltered = new Mat[cFilter.n];
+
+        Mat concaveResult = Mat.zeros(src.rows(), src.cols(), src.type());
+
+        Core.add(concaveResult, Scalar.all(1), concaveResult);
+
+        for (int i = 0; i < cFilter.n; i++) {
+            concaveFiltered[i] = Functions.filter2(src, SpecialKernels.rotateKernelRadians(cFilter.concaveFilters[i], cFilter.angle));
+            Core.multiply(concaveFiltered[i], Scalar.all(cFilter.mul), concaveFiltered[i]);
+            concaveResult = concaveResult.mul(concaveFiltered[i]);
+
+        }
+        return concaveResult;
     }
 
 }

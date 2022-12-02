@@ -514,6 +514,7 @@
       <SubComponents>
         <Container class="javax.swing.JInternalFrame" name="jInternalFrame1">
           <Properties>
+            <Property name="resizable" type="boolean" value="true"/>
             <Property name="title" type="java.lang.String" value="Filter"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>
@@ -545,6 +546,7 @@
         </Container>
         <Container class="javax.swing.JInternalFrame" name="jInternalFrame2">
           <Properties>
+            <Property name="resizable" type="boolean" value="true"/>
             <Property name="title" type="java.lang.String" value="Original Image"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>
@@ -576,6 +578,7 @@
         </Container>
         <Container class="javax.swing.JInternalFrame" name="jInternalFrame3">
           <Properties>
+            <Property name="resizable" type="boolean" value="true"/>
             <Property name="title" type="java.lang.String" value="Convolved Image"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>

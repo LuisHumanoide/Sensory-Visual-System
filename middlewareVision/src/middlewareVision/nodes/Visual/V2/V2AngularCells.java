@@ -104,10 +104,13 @@ public class V2AngularCells extends Activity {
                 Visualizer.setImage(V2Bank.AC[x0][1].mergedAC[i], "Angular Cells R", Visualizer.getRow("HC") + 2, i, "AC");
             }
         }
-        /* for (int i = 0; i < V2Bank.AC[0][0].Cells[0].length; i++) {
-                Visualizer.setImage(V2Bank.AC[0][0].Cells[3][i].mat, "Angular Cells L", Visualizer.getRow("HC")+1, i, "AC");
-                //Visualizer.setImage(V2Bank.AC[0][1].mergedAC[i], "Angular Cells R", Visualizer.getRow("HC")+2, i, "AC");
-            }*/
+        //Uncomment for visualizing the activations of only one aperture and different directions
+        /*
+        int angularIndex=3;
+        for (int i = 0; i < V2Bank.AC[0][0].Cells[0].length; i++) {
+                Visualizer.setImage(V2Bank.AC[0][0].Cells[angularIndex][i].mat, "Angular Cells L", Visualizer.getRow("HC")+1, i, "AC");
+                Visualizer.setImage(V2Bank.AC[0][1].Cells[angularIndex][i].mat, "Angular Cells R", Visualizer.getRow("HC")+1, i, "AC");
+        }*/
     }
 
     /**

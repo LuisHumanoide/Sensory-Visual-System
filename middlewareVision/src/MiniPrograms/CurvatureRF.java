@@ -494,6 +494,7 @@ public class CurvatureRF extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(108, 108, 108));
         jPanel3.setLayout(null);
 
+        jInternalFrame1.setResizable(true);
         jInternalFrame1.setTitle("Filter");
         jInternalFrame1.setVisible(true);
 
@@ -505,6 +506,7 @@ public class CurvatureRF extends javax.swing.JFrame {
         jPanel3.add(jInternalFrame1);
         jInternalFrame1.setBounds(0, 0, 160, 150);
 
+        jInternalFrame2.setResizable(true);
         jInternalFrame2.setTitle("Original Image");
         jInternalFrame2.setVisible(true);
 
@@ -516,6 +518,7 @@ public class CurvatureRF extends javax.swing.JFrame {
         jPanel3.add(jInternalFrame2);
         jInternalFrame2.setBounds(180, 0, 290, 290);
 
+        jInternalFrame3.setResizable(true);
         jInternalFrame3.setTitle("Convolved Image");
         jInternalFrame3.setVisible(true);
 
