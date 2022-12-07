@@ -2,7 +2,6 @@ package middlewareVision.config;
 
 import cFramework.nodes.service.Igniter;
 import VisualMemory.InitCellMemory;
-import com.sun.media.jfxmedia.logging.Logger;
 import generator.ProcessList;
 import gui.Visualizer;
 import middlewareVision.nodes.Visual.V1.V1;

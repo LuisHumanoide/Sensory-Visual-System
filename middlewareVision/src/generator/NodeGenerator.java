@@ -5,7 +5,6 @@
  */
 package generator;
 
-import static com.sun.glass.ui.Application.run;
 import generator.graph.MGraph;
 import java.io.File;
 import java.io.IOException;
