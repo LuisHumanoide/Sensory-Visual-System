@@ -7,7 +7,7 @@ package gui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
+
 import javax.swing.JLabel;
 
 /**
@@ -54,4 +54,6 @@ public class Listener implements MouseListener{
         frame.isInLabel=false;
         frame.repaint();
     }
+
+
 }

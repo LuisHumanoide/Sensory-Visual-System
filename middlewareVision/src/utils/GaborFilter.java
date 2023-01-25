@@ -52,6 +52,10 @@ public class GaborFilter {
         return Imgproc.getGaborKernel(new Size(kernelSize, kernelSize), sigma, theta, lambda, gamma, psi, CvType.CV_32F);
     }
     
+    public Mat makeFilter2(double theta){
+        return SpecialKernels.rotateKernelRadians(Imgproc.getGaborKernel(new Size(kernelSize, kernelSize), sigma, 0, lambda, gamma, psi, CvType.CV_32F),-theta);
+    }
+    
     public String getString(){
         return " ksize: "+kernelSize+" sigma:"+sigma+" lambda:"+lambda+" gamma:"+gamma+" psi:"+psi+" theta"+theta;
     }

@@ -150,13 +150,13 @@ public class ControlsPanel extends javax.swing.JPanel {
 
     private void brightSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brightSliderMouseReleased
         // TODO add your handling code here:
-        rp.createImage(0, true);
+        rp.createImage(0, !rp.sendManually);
     }//GEN-LAST:event_brightSliderMouseReleased
 
     private void jSlider1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseReleased
         // TODO add your handling code here:
         Config.sccn=jSlider1.getValue();
-        rp.createImage(0, true);
+        rp.createImage(0, !rp.sendManually);
     }//GEN-LAST:event_jSlider1MouseReleased
 
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged

@@ -36,9 +36,9 @@
 	<V1MotionSubs>1</V1MotionSubs>
 	<MTMotionSubs>1</MTMotionSubs>
 	<!--MST RADIAL-->
-	<dxExpCont>4</dxExpCont>
+	<dxExpCont>7</dxExpCont>
 	<dtExpCont>1</dtExpCont>
-	<dxRotation>1</dxRotation>
+	<dxRotation>3</dxRotation>
 	<dtRotation>1</dtRotation>
 	<!--DEFAULT IMAGES OF THE FILTER EDITORS-->
 	<filterEditorImage>ConfigFiles/Paris.JPG</filterEditorImage>

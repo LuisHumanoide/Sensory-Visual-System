@@ -195,7 +195,7 @@ public class V1SimpleCells extends Process {
             Core.divide(filt, Scalar.all(max), filt);
         }
         //Aplying a threshold, where thresh<=x<=1
-        Imgproc.threshold(filt, filt, thresh, 1, Imgproc.THRESH_TOZERO);
+        //Imgproc.threshold(filt, filt, thresh, 1, Imgproc.THRESH_TOZERO);
         return filt;
     }
 

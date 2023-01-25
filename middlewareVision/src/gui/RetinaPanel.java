@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -38,10 +37,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import middlewareVision.nodes.Visual.Retina.RetinaProccess;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import utils.Config;
@@ -73,6 +70,8 @@ public class RetinaPanel extends JPanel {
     //flag of stereo image, when there is only one eye, the flag is false
     boolean stereo = false;
 
+    boolean sendManually = false;
+
     //variables for listing the image folders
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
@@ -85,7 +84,7 @@ public class RetinaPanel extends JPanel {
             if (play) {
                 c++;
                 if (c >= Config.rate) {
-                    createImage(d, true);
+                    createImage(d, !sendManually );
                     c = 0;
                 }
             }
@@ -118,7 +117,7 @@ public class RetinaPanel extends JPanel {
         modifyLabel();
         updateTree();
         renderTree();
-        createImage(1, true);
+        createImage(1, !sendManually);
     }
 
     /**
@@ -186,7 +185,7 @@ public class RetinaPanel extends JPanel {
             playButton.setText("▶");
 
         } catch (IOException ex) {
-            
+
         }
         return img2;
     }
@@ -310,8 +309,10 @@ public class RetinaPanel extends JPanel {
      * if the value is 1, it finds the next image<br>
      * if the value is -1 is moving to the previous image
      *
-     * @param move int value if the value is 1, it finds the next image, if the value is -1 is moving to the previous image
-     * @param send boolean for sending the image to the nodes, if is false the image will update only in the left visualizer
+     * @param move int value if the value is 1, it finds the next image, if the
+     * value is -1 is moving to the previous image
+     * @param send boolean for sending the image to the nodes, if is false the
+     * image will update only in the left visualizer
      */
     public void createImage(int move, boolean send) {
         Mat srcL;
@@ -335,12 +336,11 @@ public class RetinaPanel extends JPanel {
             Imgproc.resize(srcR, srcR, new Size(Config.width, Config.heigth));
             BufferedImage img2L = Convertor.Mat2Img2(srcL);
             BufferedImage img2R = Convertor.Mat2Img2(srcR);
-            setImage(img2L, img2R, send);
+            setImage(img2L, img2R, send );
         } catch (Exception ex) {
             //Logger.getLogger(RetinaPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     int count = -1;
     String lastFolder = "";
@@ -437,6 +437,7 @@ public class RetinaPanel extends JPanel {
         playButton = new javax.swing.JButton();
         playButtonBack = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        sendButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSlider1 = new javax.swing.JSlider();
         jLabel3 = new javax.swing.JLabel();
@@ -477,6 +478,14 @@ public class RetinaPanel extends JPanel {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        sendButton.setText("send");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonActionPerformed(evt);
+            }
+        });
+        sendButton.setEnabled(false);
 
         jSlider1.setMaximum(50);
         jSlider1.setMinimum(1);
@@ -546,6 +555,8 @@ public class RetinaPanel extends JPanel {
         bPanel.add(playButton);
         bPanel.add(Box.createRigidArea(new Dimension(30, 0)));
         bPanel.add(jButton2);
+        bPanel.add(Box.createRigidArea(new Dimension(30, 0)));
+        bPanel.add(sendButton);
 
         this.add(bPanel);
         check3d = new JCheckBox("Stereo", false);
@@ -557,9 +568,19 @@ public class RetinaPanel extends JPanel {
                 itemChanged();
             }
         });
+        checkSend = new JCheckBox("Send image manually", false);
+        checkSend.setForeground(Color.white);
+        checkSend.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        checkSend.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                itemChanged2();
+            }
+        });
 
         this.add(Box.createRigidArea(new Dimension(15, 15)));
         this.add(check3d);
+        this.add(checkSend);
         this.add(Box.createRigidArea(new Dimension(15, 30)));
         jLabel3.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -598,7 +619,19 @@ public class RetinaPanel extends JPanel {
             stereo = false;
             jLabel2.setIcon(null);
         }
-        createImage(0, true);
+        createImage(0, !sendManually );
+    }
+
+    /**
+     * if checkSend check change
+     */
+    public void itemChanged2() {
+        if (checkSend.isSelected()) {
+            sendManually = true;
+        } else {
+            sendManually = false;
+        }
+        sendButton.setEnabled(sendManually);
     }
 
     /**
@@ -646,7 +679,7 @@ public class RetinaPanel extends JPanel {
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        createImage(1, true);
+        createImage(1, !sendManually);
     }
 
     /**
@@ -656,7 +689,13 @@ public class RetinaPanel extends JPanel {
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:}
-        createImage(-1, true);
+        createImage(-1, !sendManually );
+    }
+
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:}
+        createImage(0, sendManually);
+
     }
 
     /**
@@ -673,7 +712,7 @@ public class RetinaPanel extends JPanel {
         // TODO add your handling code here:
         folder = evt.getPath().getLastPathComponent().toString();
         count = -1;
-        createImage(1, true);
+        createImage(1,!sendManually );
         enableTimeline(true);
     }
 
@@ -686,7 +725,7 @@ public class RetinaPanel extends JPanel {
         // TODO add your handling code here:
         if (timelineEnabled) {
             count = timeline.getValue();
-            createImage(0, true);
+            createImage(0, !sendManually );
         }
     }
     public boolean play = false;
@@ -695,6 +734,7 @@ public class RetinaPanel extends JPanel {
     ToolsJPanel tools;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton sendButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -702,6 +742,7 @@ public class RetinaPanel extends JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     JCheckBox check3d;
+    JCheckBox checkSend;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JTree jTree1;
     private javax.swing.JButton playButton;

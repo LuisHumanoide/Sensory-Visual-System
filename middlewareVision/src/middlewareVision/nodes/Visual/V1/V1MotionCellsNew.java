@@ -2,6 +2,8 @@ package middlewareVision.nodes.Visual.V1;
 
 import VisualMemory.V1Cells.V1Bank;
 import static VisualMemory.V1Cells.V1Bank.MC;
+import static VisualMemory.V1Cells.V1Bank.MCΦ1;
+import static VisualMemory.V1Cells.V1Bank.MCΦ2;
 import generator.ProcessList;
 import gui.Visualizer;
 import spike.Location;
@@ -13,6 +15,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Scalar;
 import spike.Modalities;
 import utils.Config;
+import utils.Functions;
 import utils.LongSpike;
 
 /**

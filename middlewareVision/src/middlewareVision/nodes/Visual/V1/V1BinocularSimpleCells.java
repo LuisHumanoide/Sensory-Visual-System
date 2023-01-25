@@ -55,8 +55,8 @@ public class V1BinocularSimpleCells extends Process {
     int bankIndex=0;
     void visualize() {
         for(int i=0;i<Config.nDisparities;i++){
-            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedEvenCell.mat, "Simple Even Cell", i, 10);
-            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedEvenCell.mat, "Odd Even Cell", i, 11);
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedEvenCell.mat, "Simple Even Cell " + i, i, 10);
+            Visualizer.setImage(V1Bank.SSC[bankIndex][i].composedOddCell.mat, "Odd Even Cell "+ i, i, 11);
         }
     }
 

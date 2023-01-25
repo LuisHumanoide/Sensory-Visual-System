@@ -28,6 +28,8 @@ public class V1Bank {
     public static HypercomplexCells[][] HCC;
     public static DoubleOpponentCells[][] DOC;
     public static MotionCellsV1[][] MC;
+    public static MotionCellsV1[][] MCΦ1;
+    public static MotionCellsV1[][] MCΦ2;
 
     //[frequency][disparity index]
     public static StereoscopicCells[][] SSC;
@@ -79,6 +81,8 @@ public class V1Bank {
         CC = new ComplexCells[gaborLines.length][2];
         HCC = new HypercomplexCells[gaborLines.length][2];
         MC = new MotionCellsV1[gaborLines.length][2];
+        MCΦ1= new MotionCellsV1[gaborLines.length][2];
+        MCΦ2= new MotionCellsV1[gaborLines.length][2];
 
         //reserve memory for stereoscopic cell banks
         //[number of gabor filter types][number of disparities]
@@ -112,10 +116,14 @@ public class V1Bank {
                 HCC[i2][i3] = new HypercomplexCells(Config.HCfilters, Config.gaborOrientations);
                 //Load the speeds file
                 MC[i2][i3] = new MotionCellsV1("ConfigFiles/speeds.txt");
+                MCΦ1[i2][i3]= new MotionCellsV1("ConfigFiles/speeds.txt");
+                MCΦ2[i2][i3]= new MotionCellsV1("ConfigFiles/speeds.txt");
                 //set the complex cells previous cells
                 CC[i2][i3].setSimpleCells(SC[i2][i3]);
                 //set the previous cells of the motion cells
-                MC[i2][i3].setPrevious(CC[i2][i3].Cells);
+                MC[i2][i3].setPrevious(CC[i2][i3].Cells);              
+                MCΦ1[i2][i3].setPrevious(SC[i2][i3].Even);
+                MCΦ2[i2][i3].setPrevious(SC[i2][i3].Odd);
             }
             //for each absolute disparity
             for (int i = 0; i < disparities.length; i++) {

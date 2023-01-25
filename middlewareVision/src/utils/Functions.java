@@ -28,9 +28,11 @@ public class Functions {
 
     /**
      * this process performs a filtering with a matrix and a kernel.
+     *
      * @param img original matrix to filter
      * @param filter kernel or filter
-     * @return the result of the convolution between the original matrix and a filter
+     * @return the result of the convolution between the original matrix and a
+     * filter
      */
     public static Mat filter(Mat img, Mat filter) {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
@@ -43,9 +45,8 @@ public class Functions {
         Imgproc.threshold(filt, filt, 1, 0, Imgproc.THRESH_TRUNC);
         return filt;
     }
-    
-    
-    public static Mat filter2(Mat img, Mat filter){
+
+    public static Mat filter2(Mat img, Mat filter) {
         Mat filt = Mat.zeros(img.rows(), img.cols(), CvType.CV_32FC1);
         img.convertTo(img.clone(), CV_32FC1);
         Imgproc.filter2D(img, filt, CV_32FC1, filter);
@@ -54,7 +55,9 @@ public class Functions {
 
     /**
      * Energy process<br>
-     * a squared sum of the matrices is performed, but at the end the root of the activation is taken.
+     * a squared sum of the matrices is performed, but at the end the root of
+     * the activation is taken.
+     *
      * @param mat1 matrix 1
      * @param mat2 matrix 2
      * @return the energy matrix
@@ -73,8 +76,8 @@ public class Functions {
         Core.add(r1, r2, r1);
 
         Core.sqrt(r1, energy);
-        
-        energy=r1.clone();
+
+        energy = r1.clone();
 
         Imgproc.threshold(energy, energy, 1, 0, Imgproc.THRESH_TRUNC);
 
@@ -82,11 +85,13 @@ public class Functions {
     }
 
     /**
-     * Similar to the energy process, in this process 2 matrices are squared, and then summed, without performing a square root.
+     * Similar to the energy process, in this process 2 matrices are squared,
+     * and then summed, without performing a square root.
+     *
      * @param mat1 matrix 1
      * @param mat2 matrix 2
      * @param pow pow
-     * @return  the summation matrix
+     * @return the summation matrix
      */
     public static Mat sumPowProcess(Mat mat1, Mat mat2, int pow) {
         Mat r1, r2, r3;
@@ -98,14 +103,16 @@ public class Functions {
         Core.pow(r2, pow, r2);
 
         Core.add(r1, r2, r3);
-        
+
         Imgproc.threshold(r3, r3, 1, 0, Imgproc.THRESH_TRUNC);
 
         return r3;
     }
 
     /**
-     * This method implements the summation of energies where the input is the monocular inputs
+     * This method implements the summation of energies where the input is the
+     * monocular inputs
+     *
      * @param L Left matrix
      * @param R Right matrix
      * @param disparity disparity index
@@ -116,8 +123,9 @@ public class Functions {
     }
 
     /**
-     * 
-     * This method implements the sum of disparities to obtain the activation of the single cells, the method is described in the following paper <br>
+     *
+     * This method implements the sum of disparities to obtain the activation of
+     * the single cells, the method is described in the following paper <br>
      * DOI:10.1007/978-3-540-74690-4_79
      *
      * @param L Left matrix
@@ -157,7 +165,12 @@ public class Functions {
         Mat L1 = L.clone();
         Mat R1 = R.clone();
 
-        Core.multiply(SpecialKernels.displaceKernel(L1, 0, -disparity / 2), SpecialKernels.displaceKernel(R1, 0, disparity / 2), dst);
+        if (disparity % 2 == 0) {
+            Core.multiply(SpecialKernels.displaceKernel(L1, 0, -(disparity / 2)), SpecialKernels.displaceKernel(R1, 0, (disparity/2)), dst);
+        }
+        else{
+            Core.multiply(SpecialKernels.displaceKernel(L1, 0, -(disparity/2)), SpecialKernels.displaceKernel(R1, 0, (disparity/2 +1 )), dst);
+        }
 
         return dst;
     }
@@ -207,10 +220,9 @@ public class Functions {
         }
         result = MatrixUtils.sum(matArray, (double) (1 / (double) Config.gaborBanks), 0);
         Core.pow(result, pow, result);
-        
+
         return result;
     }
-
 
     /**
      * Performs the max summation with Cells <br>
@@ -287,9 +299,13 @@ public class Functions {
             Core.patchNaNs(T[i], 0.0);
             T[i] = SpecialKernels.displaceKernel(T[i], -angle, dx);
         }
+
         result = MatrixUtils.multiply(T);
-        //result = SpecialKernels.displaceKernel(result, -angle, (int) (-dx * (T.length)));
-        //Core.multiply(result, V1Bank.motionDiff, result);
+        result = SpecialKernels.displaceKernel(result, -angle, (int) -dx);
+        double max = Core.minMaxLoc(result).maxVal;
+        if (max > 1) {
+            Core.divide(result, Scalar.all(max), result);
+        }
         return result;
     }
 
