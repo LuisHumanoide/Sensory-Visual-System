@@ -8,6 +8,7 @@ package MiniPrograms;
 import utils.GaussianFilter;
 import gui.components.VisPanel;
 import java.awt.Color;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -28,6 +29,7 @@ import utils.MatrixUtils;
  */
 public class RFGeneratorNew extends javax.swing.JFrame {
 
+    AngularCombinations combFrame;
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
     VisPanel visPanel1;
@@ -41,13 +43,14 @@ public class RFGeneratorNew extends javax.swing.JFrame {
      */
     public RFGeneratorNew() {
         initComponents();
-        
+        combFrame = new AngularCombinations(this);
+        combFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         gvis = new GaussianVisualizer();
         gvis.setVisible(false);
         gvis.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         gvis.jCheckBox1.setSelected(false);
         gvis.change2GaussStatus();
-        
+
         listPanel1.setColumnNames("σx", "σy", "x0", "y0", "A", "θ", "comb", "size");
         //change the copy paste orders for using in the visualizer
         changeCopyPasteOrders();
@@ -58,10 +61,10 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         //default values
         listPanel1.setDefaultVector(new Object[]{null, null, null, null, null, null, null, null});
         listPanel1.disableSaveButton();
-        
+
         //for the file explorer
         root = new DefaultMutableTreeNode("RFs", true);
-        
+
         //visualization panel
         visPanel1 = new VisPanel();
         visPanel1.setVisible(true);
@@ -74,7 +77,40 @@ public class RFGeneratorNew extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 generate();
                 updateVisualization();
+                updateOval();
             }
+        });
+        listPanel1.table.addMouseListener(new java.awt.event.MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //hrow new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if (RFlist.folder.equals("RFV4")) {
+                    combFrame.setComb("" + listPanel1.table.getValueAt(listPanel1.table.getSelectedRow(), 6));
+                }
+                updateOval();
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
         });
         listPanel1.removeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +130,26 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         updateTree();
         RFlist.initList();
     }
-    
+
+    void addComb(String comb) {
+        listPanel1.table.setValueAt(comb, listPanel1.table.getSelectedRow(), 6);
+        generate();
+        updateVisualization();
+        updateOval();
+    }
+
+    void updateOval() {
+        try {
+            visPanel1.setSelectionOval(Integer.parseInt("" + listPanel1.table.getValueAt(listPanel1.table.getSelectedRow(), 2)),
+                    Integer.parseInt("" + listPanel1.table.getValueAt(listPanel1.table.getSelectedRow(), 3)),
+                    Double.parseDouble("" + listPanel1.table.getValueAt(listPanel1.table.getSelectedRow(), 0)) + 2,
+                    Double.parseDouble("" + listPanel1.table.getValueAt(listPanel1.table.getSelectedRow(), 1)) + 2, Color.lightGray);
+            visPanel1.repaint();
+        } catch (Exception ex) {
+            visPanel1.hideOval();
+        }
+    }
+
     /**
      * Update the plots
      */
@@ -121,9 +176,9 @@ public class RFGeneratorNew extends javax.swing.JFrame {
             int i = 0;
             //for each receptive field
             for (RF rf : rfs) {
-                int comb = RFlist.combinations.indexOf(rf.combination)+1;
-                double frac=(double)comb/RFlist.combinations.size();
-                Color color=new Color((int)(frac*255),(int)(1.5*frac*255)%255,255-(int)(frac*255));
+                int comb = RFlist.combinations.indexOf(rf.combination) + 1;
+                double frac = (double) comb / RFlist.combinations.size();
+                Color color = new Color((int) (frac * 255), (int) (1.5 * frac * 255) % 255, 255 - (int) (frac * 255));
                 //create the abstraction of the gaussian filter
                 GaussianFilter filter = new GaussianFilter(rf);
                 //make the filter, it creates a OpenCV mat
@@ -132,20 +187,20 @@ public class RFGeneratorNew extends javax.swing.JFrame {
                     //convert the opencv mat to matrix
                     gaussians[i] = Convertor.MatToMatrix(filterMat[i]);
                     //graph an individual plot, with different colors
-                    graphOnePlot("Plot " + i,color, gaussians[i]);
+                    graphOnePlot("Plot " + i, color, gaussians[i]);
                 }
                 i++;
             }
             /**
              * Plot the sum of Gaussians
              */
-            if(jToggleButton2.isSelected()){
+            if (jToggleButton2.isSelected()) {
                 //sum all the filters
-                sumMat=MatrixUtils.sum(filterMat, 1, 0);
+                sumMat = MatrixUtils.sum(filterMat, 1, 0);
                 graphOnePlot("Plot ", Color.BLUE, Convertor.MatToMatrix(sumMat));
             }
             //fix the bounds
-            plot.setFixedBounds(2, -1/zZoom, 1/zZoom);
+            plot.setFixedBounds(2, -1 / zZoom, 1 / zZoom);
             jInternalFrame1.setContentPane(plot);
             jInternalFrame1.repaint();
         }
@@ -153,6 +208,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * Adding one plot to the 3D plot
+     *
      * @param name name of the plot
      * @param m 2d matrix
      */
@@ -206,8 +262,9 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * Get the file list
-     * @param node 
-     * @param f 
+     *
+     * @param node
+     * @param f
      */
     public void getList(DefaultMutableTreeNode node, File f) {
         File fList[] = f.listFiles();
@@ -251,7 +308,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         generateField = new javax.swing.JButton();
         jSlider1 = new javax.swing.JSlider();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        aButton = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton3 = new javax.swing.JButton();
         jInternalFrame1 = new javax.swing.JInternalFrame();
@@ -259,9 +316,11 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         jSlider2 = new javax.swing.JSlider();
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(61, 61, 61));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -350,14 +409,14 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         jLabel4.setText("Scale:");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 410, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
-        jButton1.setText("Open Gaussian Visualizer");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        aButton.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
+        aButton.setText("Edit angular combination");
+        aButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                aButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 440, -1, -1));
+        jPanel2.add(aButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 460, 130, -1));
 
         jCheckBox1.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         jCheckBox1.setText("Copy/Paste for the visualizer");
@@ -366,7 +425,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
                 jCheckBox1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, -1, -1));
+        jPanel2.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, -1, -1));
 
         jButton3.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
         jButton3.setText("Copy to visualizer");
@@ -375,7 +434,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 440, 123, -1));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 420, 120, -1));
 
         jInternalFrame1.setVisible(true);
 
@@ -424,6 +483,15 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         });
         jPanel2.add(jToggleButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1014, 380, -1, -1));
 
+        jButton4.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
+        jButton4.setText("Open Gaussian Visualizer");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 420, 130, -1));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1170, 510));
 
         pack();
@@ -432,12 +500,20 @@ public class RFGeneratorNew extends javax.swing.JFrame {
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
         RFlist.folder = jComboBox1.getSelectedItem().toString();
+        if (RFlist.folder.equals("RFV4")) {
+            aButton.setVisible(true);
+        } else {
+            aButton.setVisible(false);
+        }
         updateTree();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
     String filename;
+
     /**
-     * Load the receptive field information when a click is done in the left list
-     * @param evt 
+     * Load the receptive field information when a click is done in the left
+     * list
+     *
+     * @param evt
      */
     private void jTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseClicked
         // TODO add your handling code here:
@@ -455,12 +531,17 @@ public class RFGeneratorNew extends javax.swing.JFrame {
             RFlist.loadList(node);
             fillList(node);
             updateVisualization();
+            visPanel1.hideOval();
+            if (RFlist.folder.equals("RFV4")) {
+                combFrame.setComb("" + listPanel1.table.getValueAt(listPanel1.table.getSelectedRow(), 6));
+            }
         }
     }//GEN-LAST:event_jTree1MouseClicked
 
     /**
      * Delete the selected file
-     * @param evt 
+     *
+     * @param evt
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
@@ -471,7 +552,8 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * Generate the plot manually
-     * @param evt 
+     *
+     * @param evt
      */
     private void generateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateFieldActionPerformed
         // TODO add your handling code here:
@@ -482,7 +564,8 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * Change the scale of the 2D plot
-     * @param evt 
+     *
+     * @param evt
      */
     private void jSlider1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider1MouseDragged
         // TODO add your handling code here:
@@ -492,7 +575,8 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * Save different receptive fields when different scales are introduced
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -515,18 +599,19 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * make the gaussian visualizer visible
-     * @param evt 
+     *
+     * @param evt
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void aButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aButtonActionPerformed
         // TODO add your handling code here:
-        gvisVisible = true;
-        jCheckBox1.setSelected(true);
-        gvis.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        combFrame.setVisible(true);
+        combFrame.setLocation(this.getWidth()/2-combFrame.getWidth()/2+this.getX(), this.getHeight()/2+this.getY());
+    }//GEN-LAST:event_aButtonActionPerformed
 
     /**
      * if the checkbox is selected the copy paste orders changes
-     * @param evt 
+     *
+     * @param evt
      */
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
@@ -536,7 +621,8 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * copy the values to the visualizer
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -547,20 +633,23 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         gvis.paste1(1);
         gvis.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
-    double zZoom=1;
+    double zZoom = 1;
+
     /**
      * Change the Z axis min and max value
-     * @param evt 
+     *
+     * @param evt
      */
     private void jSlider2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSlider2MouseDragged
         // TODO add your handling code here:
-        zZoom=(double)jSlider2.getValue()/20;
+        zZoom = (double) jSlider2.getValue() / 20;
         updateVisualization();
     }//GEN-LAST:event_jSlider2MouseDragged
 
     /**
      * Toggle between the 2D plot and the 2D plot
-     * @param evt 
+     *
+     * @param evt
      */
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
@@ -584,8 +673,10 @@ public class RFGeneratorNew extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
-     * Toggle between show the composite gaussians or the sum of gaussians when the 3D plot is active
-     * @param evt 
+     * Toggle between show the composite gaussians or the sum of gaussians when
+     * the 3D plot is active
+     *
+     * @param evt
      */
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         // TODO add your handling code here:
@@ -596,6 +687,13 @@ public class RFGeneratorNew extends javax.swing.JFrame {
         }
         updateVisualization();
     }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        gvisVisible = true;
+        jCheckBox1.setSelected(true);
+        gvis.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * Add each value of the table into the RFlist
@@ -612,7 +710,8 @@ public class RFGeneratorNew extends javax.swing.JFrame {
 
     /**
      * Fill the RF list from a file
-     * @param filename 
+     *
+     * @param filename
      */
     public void fillList(String filename) {
         listPanel1.setFilePath(filename.replace(".txt", ""), "txt");
@@ -656,11 +755,12 @@ public class RFGeneratorNew extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton generateField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JInternalFrame jInternalFrame1;

@@ -21,6 +21,11 @@ public class VisPanel extends javax.swing.JPanel {
     /**
      * Creates new form VisPanel
      */
+    int ovalw = 0;
+    int ovalh = 0;
+    int ovalx = -50;
+    int ovaly = -50;
+
     public VisPanel() {
         initComponents();
         setBackground(Color.BLACK);
@@ -48,6 +53,33 @@ public class VisPanel extends javax.swing.JPanel {
         g2d.rotate(Math.toRadians(-angle), tx(x, 0), ty(y, 0));
     }
 
+    public void Oval2(Graphics g, int x, int y, int w, int h, Color color) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(color);
+        g2d.setStroke(new BasicStroke(1));
+        g2d.rotate(Math.toRadians(0), tx(x, 0), ty(y, 0));
+        g.drawOval(tx(x, 2 * w), ty(y, 2 * h), 2 * w, 2 * h);
+        g2d.rotate(Math.toRadians(-0), tx(x, 0), ty(y, 0));
+    }
+
+    public void setSelectionOval(int x, int y, double w, double h, Color color) {
+        ovalw = (int) w;
+        ovalh = (int) h;
+        ovalx = x;
+        ovaly = y;
+        ovalColor = color;
+        showOval = true;
+    }
+
+    boolean showOval = false;
+
+    public void hideOval() {
+        showOval = false;
+        repaint();
+    }
+
+    Color ovalColor = Color.black;
+
     public void dString(Graphics g, String string, int x, int y) {
         g.drawString(string, tx(x, 0), ty(y, 0));
     }
@@ -67,13 +99,17 @@ public class VisPanel extends javax.swing.JPanel {
             int sizeRect = RFlist.RFs.get(0).size;
             g.drawRect(tx(0, (int) (sizeRect * RFlist.scale)), ty(0, (int) (sizeRect * RFlist.scale)), (int) (sizeRect * RFlist.scale), (int) (sizeRect * RFlist.scale));
             for (RF rf : RFlist.RFs) {
-                int comb = RFlist.combinations.indexOf(rf.combination)+1;
-                double frac=(double)comb/RFlist.combinations.size();
-                g.setColor(new Color((int)(frac*255),(int)(1.5*frac*255)%255,255-(int)(frac*255)));
+                int comb = RFlist.combinations.indexOf(rf.combination) + 1;
+                double frac = (double) comb / RFlist.combinations.size();
+                g.setColor(new Color((int) (frac * 255), (int) (1.5 * frac * 255) % 255, 255 - (int) (frac * 255)));
                 dString(g, "" + rf.combination, (int) (rf.px * RFlist.scale), (int) (rf.py * RFlist.scale));
                 Oval(g, (int) (rf.px * RFlist.scale), (int) (rf.py * RFlist.scale), (int) (rf.rx * RFlist.scale), (int) (rf.ry * RFlist.scale), rf.angle);
             }
+            if (showOval) {
+                Oval2(g, (int) (ovalx * RFlist.scale), (int) (ovaly * RFlist.scale), (int) (ovalw * RFlist.scale), (int) (ovalh * RFlist.scale), ovalColor);
+            }
         }
+
     }
 
     /**
