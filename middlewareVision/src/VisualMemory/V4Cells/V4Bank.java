@@ -8,6 +8,7 @@ package VisualMemory.V4Cells;
 import VisualMemory.Cell;
 import java.util.ArrayList;
 import java.util.HashSet;
+import org.opencv.core.Mat;
 import utils.FileUtils;
 
 /**
@@ -21,11 +22,15 @@ public class V4Bank {
     public static ScaleMergeCells[][] SMC;
     static HashSet<String> names;
     static String folder = "RFV4";
+    public static Mat colorLabelL;
+    public static Mat colorLabelR;
 
     /**
      * Initialize the cells of V4
      */
     public static void initializeCells() {
+        colorLabelL=new Mat();
+        colorLabelR=new Mat();
         //read the files of the receptive fields
         String[] files = FileUtils.getFiles(folder);
         //assign memory to Simple Shape Cells

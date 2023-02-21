@@ -1,6 +1,7 @@
 package middlewareVision.nodes.Visual.V4;
 
 import VisualMemory.V1Cells.V1Bank;
+import VisualMemory.V4Cells.V4Bank;
 import generator.ProcessList;
 import gui.Visualizer;
 import java.awt.Color;
@@ -49,6 +50,9 @@ public class V4Color extends Process {
                     }
                     generateLabelMatrix(DKL_L, 0);
                     generateLabelMatrix(DKL_R, 1);
+                    
+                    V4Bank.colorLabelL=matLabel[0].clone();
+                    V4Bank.colorLabelR=matLabel[1].clone();
 
                     Visualizer.setImage(Convertor.Mat2Img2(matLabel[0]), "color labels L", 4, 3);
                     Visualizer.setImage(Convertor.Mat2Img2(matLabel[1]), "color labels R", 5, 3);

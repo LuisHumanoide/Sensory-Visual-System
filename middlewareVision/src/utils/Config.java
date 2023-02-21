@@ -21,6 +21,8 @@ public class Config {
 
     public static int tresh = 100;
     public static int blur = 1;
+    
+    public static boolean stereo=false;
 
     public static int gaborOrientations = 4;
     public static int HCfilters = 1;

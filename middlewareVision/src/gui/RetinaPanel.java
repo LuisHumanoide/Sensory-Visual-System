@@ -48,7 +48,7 @@ import utils.FileUtils;
 /**
  * This class was programmed manually without a graphical editor
  */
-public class RetinaPanel extends JPanel {
+public class RetinaPanel extends javax.swing.JPanel {
 
     //Index of the image
     int index;
@@ -401,6 +401,7 @@ public class RetinaPanel extends JPanel {
             if (name.contains(leftKeyword)) {
                 isStereo = true;
                 stereo = true;
+                Config.stereo=true;
                 check3d.setSelected(true);
                 break;
             }
@@ -419,6 +420,7 @@ public class RetinaPanel extends JPanel {
         if (!isStereo) {
             stereo = false;
             check3d.setSelected(false);
+            Config.stereo=false;
             jLabel2.setIcon(null);
             return newList = list;
         }
@@ -442,6 +444,7 @@ public class RetinaPanel extends JPanel {
         jSlider1 = new javax.swing.JSlider();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -600,10 +603,13 @@ public class RetinaPanel extends JPanel {
         pTree.setBackground(jTree1.getBackground());
         controls = new ControlsPanel(this);
         tools = new ToolsJPanel(this);
+        savePanel=new SavePanel(this);
         tabbed = new JTabbedPane();
+        jScrollPane2.setViewportView(savePanel);
         tabbed.add("Folders", scroll);
         tabbed.add("Controls", controls);
         tabbed.add("Tools", tools);
+        tabbed.add("Save",jScrollPane2);
         this.add(tabbed);
         this.add(Box.createRigidArea(new Dimension(15, 50)));
 
@@ -732,6 +738,7 @@ public class RetinaPanel extends JPanel {
 
     ControlsPanel controls;
     ToolsJPanel tools;
+    SavePanel savePanel;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton sendButton;
@@ -741,6 +748,7 @@ public class RetinaPanel extends JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     JCheckBox check3d;
     JCheckBox checkSend;
     private javax.swing.JSlider jSlider1;

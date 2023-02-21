@@ -5,6 +5,7 @@
  */
 package middlewareVision.nodes.Visual.Retina;
 
+import VisualMemory.LGNCells.LGNBank;
 import generator.ProcessList;
 import gui.Frame;
 import gui.GUI;
@@ -105,6 +106,9 @@ public class RetinaProccess extends Process {
         Visualizer.setImage(Convertor.Mat2Img(transMat[0]), "L L", 0, 0);
         Visualizer.setImage(Convertor.Mat2Img(transMat[1]), "M L", 0, 1);
         Visualizer.setImage(Convertor.Mat2Img(transMat[2]), "S L", 0, 2);
+        LGNBank.matL_L = transMat[0].clone();
+        LGNBank.matM_L = transMat[1].clone();
+        LGNBank.matS_L = transMat[2].clone();
         Visualizer.setImage(img, "Original L", 0, 3);
 
         //RIGHT
@@ -112,6 +116,9 @@ public class RetinaProccess extends Process {
         Visualizer.setImage(Convertor.Mat2Img(transMat2[0]), "L R", 1, 0);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[1]), "M R", 1, 1);
         Visualizer.setImage(Convertor.Mat2Img(transMat2[2]), "S R", 1, 2);
+        LGNBank.matL_R = transMat2[0].clone();
+        LGNBank.matM_R = transMat2[1].clone();
+        LGNBank.matS_R = transMat2[2].clone();
         Visualizer.setImage(img2, "Original R", 1, 3);
 
         //Mat of stereo difference

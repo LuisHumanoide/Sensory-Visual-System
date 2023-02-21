@@ -24,8 +24,11 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import matrix.matrix;
+import org.opencv.core.Mat;
 
 /**
  *
@@ -101,8 +104,25 @@ public class FileUtils {
         }
     }
 
+    public static void saveImage(Mat src, String path, String name) {
+        createDir(path);
+        File f = new File(path + "\\" + name + ".jpg");
+        try {
+            ImageIO.write(Convertor.Mat2Img(src), "JPEG", f);
+        } catch (IOException ex) {
+            utils.Msg.print(ex);
+        }
+    }
 
-
+    public static void saveImage2(Mat src, String path, String name) {
+        createDir(path);
+        File f = new File(path + "\\" + name + ".jpg");
+        try {
+            ImageIO.write(Convertor.Mat2Img2(src), "JPEG", f);
+        } catch (IOException ex) {
+            utils.Msg.print(ex);
+        }
+    }
 
     public static void WriteObjectToFile(Object serObj, String filepath) {
         try {
@@ -115,8 +135,6 @@ public class FileUtils {
             ex.printStackTrace();
         }
     }
-
-
 
     /**
      * get the list of files from a folder
@@ -152,23 +170,25 @@ public class FileUtils {
 
         return arr_res;
     }
-    
+
     /**
      * Return the number of lines from a file
+     *
      * @param file
-     * @return 
+     * @return
      */
-    public static int numberFileLines(String file){
+    public static int numberFileLines(String file) {
         return FileUtils.readFile(new File(file)).split("\\n").length;
     }
-    
+
     /**
      * Return a string array from a file
+     *
      * @param file
-     * @return 
+     * @return
      */
-    public static String[] fileLines(String file){
-        return FileUtils.readFile(new File(file)).split("\\n"); 
+    public static String[] fileLines(String file) {
+        return FileUtils.readFile(new File(file)).split("\\n");
     }
 
     /**

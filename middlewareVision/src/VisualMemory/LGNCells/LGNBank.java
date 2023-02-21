@@ -43,6 +43,14 @@ public class LGNBank {
     public static Mat lowerKernel;
 
     //static GaussianFilter[] filters;
+    
+    public static Mat matL_L;
+    public static Mat matM_L;
+    public static Mat matS_L;
+    
+    public static Mat matL_R;
+    public static Mat matM_R;
+    public static Mat matS_R;
 
     public static SimpleOpponentCells[][] SOC;
 

@@ -172,6 +172,7 @@ public class ToolsJPanel extends javax.swing.JPanel {
         Visualizer.vis.restartLabels();
         Init.restart();
         ret.createImage(0, true);
+        ret.savePanel.getMap();
     }//GEN-LAST:event_b5ActionPerformed
 
     private void b6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b6ActionPerformed

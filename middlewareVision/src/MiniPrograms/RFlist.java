@@ -28,7 +28,7 @@ public class RFlist {
     }
 
     static String[] initFolderList() {
-        String folders[] = FileUtils.readFile(new File("FolderRFS.txt")).split("\\n");
+        String folders[] = FileUtils.readFile(new File("folderRFS.txt")).split("\\n");
         return folders;
     }
 
