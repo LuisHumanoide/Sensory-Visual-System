@@ -14,7 +14,9 @@ import VisualMemory.V1Cells.V1Bank;
  */
 public class ComponentCells {
 
-    //[speed][orientation]
+    /**
+     * [speed][orientation]
+     * */
     public Cell CCells[][];
 
     int sizeComponent = 0;

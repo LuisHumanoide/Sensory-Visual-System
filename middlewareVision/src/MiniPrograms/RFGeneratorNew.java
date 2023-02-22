@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -268,9 +269,23 @@ public class RFGeneratorNew extends javax.swing.JFrame {
      */
     public void getList(DefaultMutableTreeNode node, File f) {
         File fList[] = f.listFiles();
+        String names[] = new String[fList.length];
+        //NEW
+        int i=0;
         for (File fi : fList) {
-            node.add(new DefaultMutableTreeNode(fi));
+            names[i]=fi.getPath();
+            i++;
         }
+        Arrays.sort(names);
+        for(int j=0;j<names.length;j++){
+            node.add(new DefaultMutableTreeNode(new File(names[j])));
+        }
+        //OLD
+        
+       /*for (File fi : fList) {
+            node.add(new DefaultMutableTreeNode(fi));
+            System.out.println(fi.getPath());
+        }*/
     }
 
     /**
@@ -605,7 +620,7 @@ public class RFGeneratorNew extends javax.swing.JFrame {
     private void aButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aButtonActionPerformed
         // TODO add your handling code here:
         combFrame.setVisible(true);
-        combFrame.setLocation(this.getWidth()/2-combFrame.getWidth()/2+this.getX(), this.getHeight()/2+this.getY());
+        combFrame.setLocation(this.getWidth() / 2 - combFrame.getWidth() / 2 + this.getX(), this.getHeight() / 2 + this.getY());
     }//GEN-LAST:event_aButtonActionPerformed
 
     /**

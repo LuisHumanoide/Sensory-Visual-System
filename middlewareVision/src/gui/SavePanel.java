@@ -7,8 +7,12 @@ package gui;
 
 import generator.ProcessList;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -24,26 +28,57 @@ public class SavePanel extends javax.swing.JPanel {
 
     String savePath;
     RetinaPanel rp;
+    int checkSelected[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    JCheckBox checkArray[];
+    
 
     /**
      * Creates new form SavePanel
      */
     public SavePanel(RetinaPanel panel) {
         initComponents();
+        setCheckArray();
+        openChecks();
         rp = panel;
         savePath = FileUtils.readFile(new File("ConfigFiles/savePath.txt")).trim();
         pathField.setText(savePath);
-
+        
         getMap();
 
     }
 
     public void getMap() {
-        activateChecks();
+        
+        activateChecks();      
         ProcessList.openList();
         TreeMap<String, Object> tmap = new TreeMap();
         tmap.putAll(ProcessList.ProcessMap);
         deactivateChecks(tmap);
+        
+    }
+    
+    void saveSelectedChecks(){
+        String s="";
+        setCheckSelectedArray();
+        for(int i=0;i<20;i++){
+            s=s+checkSelected[i]+"\n";
+        }
+        FileUtils.write("ConfigFiles\\checks", s, "txt");
+    }
+    
+    void openChecks(){
+        String s[];
+        try {
+            s = FileUtils.fileLinesEx("ConfigFiles\\checks.txt");
+            for(int i=0;i<20;i++){
+            checkSelected[i]=Integer.parseInt(s[i]);
+        }
+        selectChecks();
+        } catch (Exception ex) {
+            saveSelectedChecks();
+            openChecks();
+        }
+        
     }
 
     void deactivateCheck(JCheckBox box) {
@@ -54,23 +89,62 @@ public class SavePanel extends javax.swing.JPanel {
     void activateCheck(JCheckBox box) {
         box.setEnabled(true);
     }
+    
+    void setCheckArray(){
+        checkArray=new JCheckBox[20];
+        for(int i=0;i<20;i++){
+            checkArray[i]=new JCheckBox();
+        }
+        checkArray[0]=jCheckBox1;
+        checkArray[1]=jCheckBox2;
+        checkArray[2]=jCheckBox3;
+        checkArray[3]=jCheckBox4;
+        checkArray[4]=jCheckBox5;
+        checkArray[5]=jCheckBox6;
+        checkArray[6]=jCheckBox8;
+        checkArray[7]=jCheckBox10;
+        checkArray[8]=jCheckBox9;
+        checkArray[9]=jCheckBox11;
+        checkArray[10]=jCheckBox12;
+        checkArray[11]=jCheckBox13;
+        checkArray[12]=jCheckBox14;
+        checkArray[13]=jCheckBox15;
+        checkArray[14]=jCheckBox16;
+        checkArray[15]=jCheckBox17;
+        checkArray[16]=jCheckBox18;
+        checkArray[17]=jCheckBox19;
+        checkArray[18]=jCheckBox20;
+        checkArray[19]=jCheckBox21;
+    }
 
     void activateChecks() {
-        activateCheck(jCheckBox1);
-        activateCheck(jCheckBox2);
-        activateCheck(jCheckBox3);
-        activateCheck(jCheckBox4);
-        activateCheck(jCheckBox5);
-        activateCheck(jCheckBox6);
-        activateCheck(jCheckBox8);
-        activateCheck(jCheckBox10);
-        activateCheck(jCheckBox9);
-        activateCheck(jCheckBox11);
-        activateCheck(jCheckBox12);
+        for(int i=0;i<checkArray.length;i++){
+            activateCheck(checkArray[i]);
+        }
+    }
+    
+    void setCheckSelectedArray(){
+        for(int i=0;i<checkSelected.length;i++){
+            if(checkArray[i].isSelected()){
+                checkSelected[i]=1;
+            }
+            else{
+                checkSelected[i]=0;
+            }
+        }
+           
+    }
+    
+    void selectChecks(){
+        for(int i=0;i<checkSelected.length;i++){
+            if(checkSelected[i]==1){
+                checkArray[i].setSelected(true);
+            }
+        }
     }
 
     void deactivateChecks(TreeMap<String, Object> map) {
-
+        //Shape
         if (!((boolean) map.get("RetinaProccess"))) {
             deactivateCheck(jCheckBox1);
         }
@@ -103,6 +177,34 @@ public class SavePanel extends javax.swing.JPanel {
         }
         if (!(boolean) map.get("V4SimpleShapeScaleInv")) {
             deactivateCheck(jCheckBox12);
+        }
+        //Binocular
+        if (!(boolean) map.get("V1BinocularSimpleCells")) {
+            deactivateCheck(jCheckBox13);
+        }
+        if (!(boolean) map.get("V1BinocularComplexCells")) {
+            deactivateCheck(jCheckBox14);
+            deactivateCheck(jCheckBox15);
+        }
+        if (!(boolean) map.get("V1BinocularMergeProcess")) {
+            deactivateCheck(jCheckBox16);
+        }
+        if (!(boolean) map.get("V3DisparityRange")) {
+            deactivateCheck(jCheckBox17);
+        }
+        
+        //Motion
+        if (!(boolean) map.get("V1MotionCellsNew")) {
+            deactivateCheck(jCheckBox18);
+        }
+        if (!(boolean) map.get("MTComponentCells")) {
+            deactivateCheck(jCheckBox19);
+        }
+        if (!(boolean) map.get("MTPatternCells")) {
+            deactivateCheck(jCheckBox20);
+        }
+        if (!(boolean) map.get("MSTPolarCells")) {
+            deactivateCheck(jCheckBox21);
         }
     }
 
@@ -148,6 +250,7 @@ public class SavePanel extends javax.swing.JPanel {
         jCheckBox20 = new javax.swing.JCheckBox();
         jCheckBox21 = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(57, 57, 57));
         setLayout(new java.awt.GridBagLayout());
@@ -169,8 +272,9 @@ public class SavePanel extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         add(pathField, gridBagConstraints);
 
-        jButton1.setForeground(new java.awt.Color(204, 204, 204));
-        jButton1.setText("[]");
+        jButton1.setBackground(new java.awt.Color(47, 62, 72));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Chose folder");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -421,6 +525,20 @@ public class SavePanel extends javax.swing.JPanel {
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 23;
         add(jButton2, gridBagConstraints);
+
+        jButton3.setBackground(new java.awt.Color(47, 62, 72));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Open Folder");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 23;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        add(jButton3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -485,48 +603,64 @@ public class SavePanel extends javax.swing.JPanel {
                     SaveUtils.saveColorLabels(savePath, nm);
                 }
                 if (isActive(jCheckBox11)) {
-
+                    SaveUtils.saveSimpleCells(savePath, nm);
                 }
                 if (isActive(jCheckBox12)) {
-
+                    SaveUtils.saveMergedShapeCells(savePath, nm);
                 }
                 if (isActive(jCheckBox13)) {
-
+                    SaveUtils.saveBSimpleCells(savePath, nm);
+                    SaveUtils.saveCombinedBSimpleCells(savePath, nm);
                 }
                 if (isActive(jCheckBox14)) {
-
+                    SaveUtils.saveBComplexCells(savePath, nm);
+                    SaveUtils.saveCombinedBComplexCells(savePath, nm);
                 }
                 if (isActive(jCheckBox15)) {
-
+                    SaveUtils.saveBNormCells(savePath, nm);
+                    SaveUtils.saveCombinedBNormCells(savePath, nm);
                 }
                 if (isActive(jCheckBox16)) {
-
+                    SaveUtils.saveBMergedCells(savePath, nm);
+                    SaveUtils.saveCombinedBMergedCells(savePath, nm);
                 }
                 if (isActive(jCheckBox17)) {
-
+                    SaveUtils.saveBRelativeCells(savePath, nm);
+                    SaveUtils.saveCombinedBRelativeCells(savePath, nm);
                 }
                 if (isActive(jCheckBox18)) {
-
+                    SaveUtils.saveV1Motion(savePath, nm);
                 }
                 if (isActive(jCheckBox19)) {
-
+                    SaveUtils.saveMTComponentMotion(savePath, nm);
                 }
                 if (isActive(jCheckBox20)) {
-
+                    SaveUtils.saveMTPatternMotion(savePath, nm);
                 }
                 if (isActive(jCheckBox21)) {
-
+                    SaveUtils.saveMSTRadialMotion(savePath, nm);
                 }
+                saveSelectedChecks();
             } else {
                 JOptionPane.showMessageDialog(null, "The name is required");
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().open(new File(savePath));
+        } catch (IOException ex) {
+            Logger.getLogger(SavePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox10;
     private javax.swing.JCheckBox jCheckBox11;

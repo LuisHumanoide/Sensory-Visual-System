@@ -191,5 +191,21 @@ public class Cell{
             i++;
         }
     }
+    
+    /**
+     * Get the speed string with 2 digits
+     * @return the speed value
+     */
+    public String getSpeed2f(){
+        return String.format("%. 2f", getSpeed()).replace(".", "-");
+    }
+    
+    /**
+     * Get the angle value in a string with 2 digits
+     * @return the speed value
+     */
+    public String getAngle2f(){
+        return String.format("%. 2f", getAngle()).replace(".", "-");
+    }
 
 }

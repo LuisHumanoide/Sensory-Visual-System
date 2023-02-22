@@ -97,5 +97,9 @@ public class MotionCell extends Cell {
         }
         timeCount++;
     }
+    
+    public String getDxDt(){
+        return dx+"-"+dt;
+    }
 
 }

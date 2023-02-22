@@ -84,7 +84,7 @@ public class RetinaPanel extends javax.swing.JPanel {
             if (play) {
                 c++;
                 if (c >= Config.rate) {
-                    createImage(d, !sendManually );
+                    createImage(d, !sendManually);
                     c = 0;
                 }
             }
@@ -336,7 +336,7 @@ public class RetinaPanel extends javax.swing.JPanel {
             Imgproc.resize(srcR, srcR, new Size(Config.width, Config.heigth));
             BufferedImage img2L = Convertor.Mat2Img2(srcL);
             BufferedImage img2R = Convertor.Mat2Img2(srcR);
-            setImage(img2L, img2R, send );
+            setImage(img2L, img2R, send);
         } catch (Exception ex) {
             //Logger.getLogger(RetinaPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -356,10 +356,11 @@ public class RetinaPanel extends javax.swing.JPanel {
      * @return
      */
     String getImageName(String folder, int move) {
+
         String path = folder + "/";
         String imageName = "";
         if (!folder.equals(lastFolder)) {
-            files2 = FileUtils.getFiles(path);
+            files2 = FileUtils.getSortedFiles(path,".jpg",".png");
             files = leftImages(files2);
         }
         lastFolder = folder;
@@ -368,22 +369,23 @@ public class RetinaPanel extends javax.swing.JPanel {
             int size = files.length;
             if (move == 1) {
                 count++;
-                imageName = files[(count) % size];
+                imageName = files[(count) % (size)];
             }
             if (move == -1) {
                 if (count <= 0) {
                     count = size;
                 }
                 count--;
-                imageName = files[(count) % size];
+                imageName = files[(count) % (size)];
             }
             if (move == 0 && count >= 0) {
-                imageName = files[(count) % size];
+                imageName = files[(count) % (size)];
             }
-            timeline.setValue((count) % size);
+            timeline.setValue((count) % (size));
         }
 
         return imageName;
+
     }
 
     /**
@@ -401,7 +403,7 @@ public class RetinaPanel extends javax.swing.JPanel {
             if (name.contains(leftKeyword)) {
                 isStereo = true;
                 stereo = true;
-                Config.stereo=true;
+                Config.stereo = true;
                 check3d.setSelected(true);
                 break;
             }
@@ -420,7 +422,7 @@ public class RetinaPanel extends javax.swing.JPanel {
         if (!isStereo) {
             stereo = false;
             check3d.setSelected(false);
-            Config.stereo=false;
+            Config.stereo = false;
             jLabel2.setIcon(null);
             return newList = list;
         }
@@ -603,13 +605,13 @@ public class RetinaPanel extends javax.swing.JPanel {
         pTree.setBackground(jTree1.getBackground());
         controls = new ControlsPanel(this);
         tools = new ToolsJPanel(this);
-        savePanel=new SavePanel(this);
+        savePanel = new SavePanel(this);
         tabbed = new JTabbedPane();
         jScrollPane2.setViewportView(savePanel);
         tabbed.add("Folders", scroll);
         tabbed.add("Controls", controls);
         tabbed.add("Tools", tools);
-        tabbed.add("Save",jScrollPane2);
+        tabbed.add("Save", jScrollPane2);
         this.add(tabbed);
         this.add(Box.createRigidArea(new Dimension(15, 50)));
 
@@ -625,7 +627,7 @@ public class RetinaPanel extends javax.swing.JPanel {
             stereo = false;
             jLabel2.setIcon(null);
         }
-        createImage(0, !sendManually );
+        createImage(0, !sendManually);
     }
 
     /**
@@ -695,7 +697,7 @@ public class RetinaPanel extends javax.swing.JPanel {
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:}
-        createImage(-1, !sendManually );
+        createImage(-1, !sendManually);
     }
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -718,7 +720,7 @@ public class RetinaPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         folder = evt.getPath().getLastPathComponent().toString();
         count = -1;
-        createImage(1,!sendManually );
+        createImage(1, !sendManually);
         enableTimeline(true);
     }
 
@@ -731,7 +733,7 @@ public class RetinaPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (timelineEnabled) {
             count = timeline.getValue();
-            createImage(0, !sendManually );
+            createImage(0, !sendManually);
         }
     }
     public boolean play = false;

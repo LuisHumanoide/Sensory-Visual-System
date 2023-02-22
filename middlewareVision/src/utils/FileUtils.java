@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -171,6 +172,51 @@ public class FileUtils {
         return arr_res;
     }
 
+    public static String[] getFiles(String dir_path, String... extension) {
+
+        String[] arr_res = null;
+
+        File f = new File(dir_path);
+
+        if (f.isDirectory()) {
+
+            List<String> res = new ArrayList<>();
+            File[] arr_content = f.listFiles();
+
+            int size = arr_content.length;
+
+            for (int i = 0; i < size; i++) {
+
+                if (arr_content[i].isFile()) {
+                    for (String ext : extension) {
+                        if (arr_content[i].toString().toLowerCase().contains(ext)) {
+                            res.add(arr_content[i].toString());
+                        }
+                    }
+                }
+            }
+
+            arr_res = res.toArray(new String[0]);
+
+        } else {
+            System.err.println("¡ Path NO válido !");
+        }
+
+        return arr_res;
+    }
+
+    public static String[] getSortedFiles(String dir_path) {
+        String ar[] = getFiles(dir_path);
+        Arrays.sort(ar);
+        return ar;
+    }
+
+    public static String[] getSortedFiles(String dir_path, String ... extension) {
+        String ar[] = getFiles(dir_path, extension);
+        Arrays.sort(ar);
+        return ar;
+    }
+
     /**
      * Return the number of lines from a file
      *
@@ -188,6 +234,10 @@ public class FileUtils {
      * @return
      */
     public static String[] fileLines(String file) {
+        return FileUtils.readFile(new File(file)).split("\\n");
+    }
+
+    public static String[] fileLinesEx(String file) throws Exception {
         return FileUtils.readFile(new File(file)).split("\\n");
     }
 
