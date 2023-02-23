@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<!--IP CONFIG-->
+	<port>54321</port>
+	<ip>127.0.0.1</ip>
+	<!--CAMERA-->
+	<device>0</device>
+	<!--ORIENTATIONS AND SIZE-->
+	<GaborOrientations>4</GaborOrientations>
+	<dimensions>200</dimensions>
+	<motionDimensions>70</motionDimensions>
+	<!--LGN CONFIG-->
+	<LGNMethod>1</LGNMethod>
+	<KERNEL_SIZE>3</KERNEL_SIZE>
+	<UPPER_KERNEL_SIGMA>0.25f</UPPER_KERNEL_SIGMA>
+	<LOWER_KERNEL_SIGMA>1.25f</LOWER_KERNEL_SIGMA>
+	<LMM_ALPHA>3.2f</LMM_ALPHA>
+	<LMM_BETA>3f</LMM_BETA>
+	<SMLPM_ALPHA>1.2f</SMLPM_ALPHA>
+	<SMLPM_BETA>1.4f</SMLPM_BETA>
+	<SMLPM_GAMMA>0.6f</SMLPM_GAMMA>
+	<SMLPM_DELTA>0.4f</SMLPM_DELTA>
+	<LPM_ALPHA>0.6f</LPM_ALPHA>
+	<LPM_BETA>0.4f</LPM_BETA>
+	<!--DOUBLE OPPONENT CONFIGURATION-->
+	<D_ALPHA>3f</D_ALPHA>
+	<D_BETA>3f</D_BETA>
+	<K_ALPHA>2f</K_ALPHA>
+	<K_BETA>2f</K_BETA>
+	<!--V4 COLOR-->
+	<HueShift>0.20f</HueShift>
+	<NoConcentricCircles>10</NoConcentricCircles>
+	<NoRadialDivisions>10</NoRadialDivisions>
+	<NoHeightDivisions>20</NoHeightDivisions>
+	<!--MOTION-->
+	<V1MotionSubs>1</V1MotionSubs>
+	<MTMotionSubs>1</MTMotionSubs>
+	<!--MST RADIAL-->
+	<dxExpCont>7</dxExpCont>
+	<dtExpCont>1</dtExpCont>
+	<dxRotation>3</dxRotation>
+	<dtRotation>1</dtRotation>
+	<!--DEFAULT IMAGES OF THE FILTER EDITORS-->
+	<filterEditorImage>ConfigFiles/Paris.JPG</filterEditorImage>
+	<filterImageWidth>250</filterImageWidth>
+	<filterImageHeight>250</filterImageHeight>
+	<curvatureEditorImage>ConfigFiles/circles.JPG</curvatureEditorImage>
+	<curvatureImageWidth>200</curvatureImageWidth>
+	<curvatureImageHeight>200</curvatureImageHeight>
+
+</Configuration>

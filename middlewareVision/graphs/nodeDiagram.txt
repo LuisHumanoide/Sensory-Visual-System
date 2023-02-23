@@ -1,0 +1,72 @@
+graph G{
+Alert [ label="Alert" shape="circle" ]
+AlertProcess [ label="AlertProcess" shape="octagon" ]
+TestAttention [ label="TestAttention" shape="circle" ]
+FeedbackProccess [ label="FeedbackProccess" shape="octagon" ]
+LGN [ label="LGN" shape="circle" ]
+LGNSimpleOpponentCells [ label="LGNSimpleOpponentCells" shape="octagon" ]
+MST [ label="MST" shape="circle" ]
+MSTPolarCells [ label="MSTPolarCells" shape="octagon" ]
+MSTTemplateCells [ label="MSTTemplateCells" shape="octagon" ]
+MT [ label="MT" shape="circle" ]
+MTComponentCells [ label="MTComponentCells" shape="octagon" ]
+MTPatternCells [ label="MTPatternCells" shape="octagon" ]
+Retina [ label="Retina" shape="circle" ]
+RetinaProccess [ label="RetinaProccess" shape="octagon" ]
+BasicMotion [ label="BasicMotion" shape="octagon" ]
+V1 [ label="V1" shape="circle" ]
+V1SimpleCells [ label="V1SimpleCells" shape="octagon" ]
+V1ComplexCells [ label="V1ComplexCells" shape="octagon" ]
+V1DoubleOpponent [ label="V1DoubleOpponent" shape="octagon" ]
+V1HyperComplex [ label="V1HyperComplex" shape="octagon" ]
+V1MotionCellsNew [ label="V1MotionCellsNew" shape="octagon" ]
+V1BinocularSimpleCells [ label="V1BinocularSimpleCells" shape="octagon" ]
+V1BinocularComplexCells [ label="V1BinocularComplexCells" shape="octagon" ]
+V1BinocularMergeProcess [ label="V1BinocularMergeProcess" shape="octagon" ]
+V2 [ label="V2" shape="circle" ]
+V2AngularCells [ label="V2AngularCells" shape="octagon" ]
+V2CurvatureCells [ label="V2CurvatureCells" shape="octagon" ]
+V2CornerMotion [ label="V2CornerMotion" shape="octagon" ]
+V3 [ label="V3" shape="circle" ]
+V3DisparityRange [ label="V3DisparityRange" shape="octagon" ]
+V4 [ label="V4" shape="circle" ]
+V4Color [ label="V4Color" shape="octagon" ]
+V4SimpleShapeCells [ label="V4SimpleShapeCells" shape="octagon" ]
+V4SimpleShapeScaleInv [ label="V4SimpleShapeScaleInv" shape="octagon" ]
+
+
+Alert -- AlertProcess;
+
+TestAttention -- FeedbackProccess;
+
+LGN -- LGNSimpleOpponentCells;
+
+MST -- MSTPolarCells;
+MST -- MSTTemplateCells;
+
+MT -- MTComponentCells;
+MT -- MTPatternCells;
+
+Retina -- RetinaProccess;
+Retina -- BasicMotion;
+
+V1 -- V1SimpleCells;
+V1 -- V1ComplexCells;
+V1 -- V1DoubleOpponent;
+V1 -- V1HyperComplex;
+V1 -- V1MotionCellsNew;
+V1 -- V1BinocularSimpleCells;
+V1 -- V1BinocularComplexCells;
+V1 -- V1BinocularMergeProcess;
+
+V2 -- V2AngularCells;
+V2 -- V2CurvatureCells;
+V2 -- V2CornerMotion;
+
+V3 -- V3DisparityRange;
+
+V4 -- V4Color;
+V4 -- V4SimpleShapeCells;
+V4 -- V4SimpleShapeScaleInv;
+
+}

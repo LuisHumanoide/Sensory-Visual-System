@@ -1,0 +1,141 @@
+<batchrender>
+  <environmentinfo>
+    <machineinfo>
+      <machinename>LaptopHumanoid</machinename>
+      <username>luish</username>
+      <processortype>GenuineIntel, stepping 1, model 13, instruction family 6</processortype>
+      <processorname>11th Gen Intel Core i7-11800H</processorname>
+      <processornumber>16</processornumber>
+      <ostype>WINDOWS 64 BIT</ostype>
+      <osversion>Windows 10, 64 Bit, Single Language (build 22000)</osversion>
+      <oglvendorname>NVIDIA</oglvendorname>
+      <oglrendername>NVIDIA GeForce RTX 3060 Laptop GPU</oglrendername>
+      <oglversion>12</oglversion>
+    </machineinfo>
+    <c4dinfo>
+      <c4dversion>25113</c4dversion>
+      <c4dplugins>cadexchangeconfig substanceconfig addons advanced_render alembic archigrass assetbrowser bitmapfilter bpexchange browser bugslife_client c4d_emulation c4d_viewport_render ca ca2 cadexchange clothilde collada14 collada15 colorchoosergui compositing deltamush deployment dwg dwgobjects dynamics exchanges expressiontag fbx gltf goz hair i_skp interop interop_forger io_forger io_obj metrics mkmodeler mocca model mograph motioncam motiontracker nbo nbp newman nodeeditor objects onlineupdater physx_hybrid projectassetinspector python redshift relaxuv scenemanager2 sculpt sculptbrushes shader sketch sky sla spacemouse substance teamrender thinking_particles tool_system_hybrid tpoperators usd uvviewport volumes xpressocore xtensions </c4dplugins>
+    </c4dinfo>
+  </environmentinfo>
+  <fileinfo>
+    <filename>cubo}.c4d</filename>
+    <filepath>C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures</filepath>
+    <renderdatainfo>
+      <rendersettings>My Render Setting</rendersettings>
+      <take>Main</take>
+      <camera>Camera</camera>
+      <width>300</width>
+      <height>300</height>
+      <filmaspect>1</filmaspect>
+      <pixelaspect>1</pixelaspect>
+      <fps>30</fps>
+      <from>0</from>
+      <to>90</to>
+      <steps>1</steps>
+      <saveinfo>
+        <imagepath>C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures</imagepath>
+        <imagedepth>8</imagedepth>
+        <imageformat>JPG</imageformat>
+      </saveinfo>
+    </renderdatainfo>
+  </fileinfo>
+  <renderinfo>
+    <imageinfo frame="0">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0000.jpg</imageinfo>
+    <imageinfo frame="1">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0001.jpg</imageinfo>
+    <imageinfo frame="2">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0002.jpg</imageinfo>
+    <imageinfo frame="3">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0003.jpg</imageinfo>
+    <imageinfo frame="4">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0004.jpg</imageinfo>
+    <imageinfo frame="5">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0005.jpg</imageinfo>
+    <imageinfo frame="6">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0006.jpg</imageinfo>
+    <imageinfo frame="7">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0007.jpg</imageinfo>
+    <imageinfo frame="8">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0008.jpg</imageinfo>
+    <imageinfo frame="9">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0009.jpg</imageinfo>
+    <imageinfo frame="10">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0010.jpg</imageinfo>
+    <imageinfo frame="11">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0011.jpg</imageinfo>
+    <imageinfo frame="12">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0012.jpg</imageinfo>
+    <imageinfo frame="13">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0013.jpg</imageinfo>
+    <imageinfo frame="14">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0014.jpg</imageinfo>
+    <imageinfo frame="15">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0015.jpg</imageinfo>
+    <imageinfo frame="16">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0016.jpg</imageinfo>
+    <imageinfo frame="17">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0017.jpg</imageinfo>
+    <imageinfo frame="18">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0018.jpg</imageinfo>
+    <imageinfo frame="19">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0019.jpg</imageinfo>
+    <imageinfo frame="20">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0020.jpg</imageinfo>
+    <imageinfo frame="21">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0021.jpg</imageinfo>
+    <imageinfo frame="22">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0022.jpg</imageinfo>
+    <imageinfo frame="23">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0023.jpg</imageinfo>
+    <imageinfo frame="24">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0024.jpg</imageinfo>
+    <imageinfo frame="25">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0025.jpg</imageinfo>
+    <imageinfo frame="26">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0026.jpg</imageinfo>
+    <imageinfo frame="27">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0027.jpg</imageinfo>
+    <imageinfo frame="28">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0028.jpg</imageinfo>
+    <imageinfo frame="29">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0029.jpg</imageinfo>
+    <imageinfo frame="30">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0030.jpg</imageinfo>
+    <imageinfo frame="31">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0031.jpg</imageinfo>
+    <imageinfo frame="32">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0032.jpg</imageinfo>
+    <imageinfo frame="33">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0033.jpg</imageinfo>
+    <imageinfo frame="34">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0034.jpg</imageinfo>
+    <imageinfo frame="35">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0035.jpg</imageinfo>
+    <imageinfo frame="36">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0036.jpg</imageinfo>
+    <imageinfo frame="37">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0037.jpg</imageinfo>
+    <imageinfo frame="38">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0038.jpg</imageinfo>
+    <imageinfo frame="39">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0039.jpg</imageinfo>
+    <imageinfo frame="40">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0040.jpg</imageinfo>
+    <imageinfo frame="41">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0041.jpg</imageinfo>
+    <imageinfo frame="42">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0042.jpg</imageinfo>
+    <imageinfo frame="43">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0043.jpg</imageinfo>
+    <imageinfo frame="44">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0044.jpg</imageinfo>
+    <imageinfo frame="45">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0045.jpg</imageinfo>
+    <imageinfo frame="46">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0046.jpg</imageinfo>
+    <imageinfo frame="47">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0047.jpg</imageinfo>
+    <imageinfo frame="48">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0048.jpg</imageinfo>
+    <imageinfo frame="49">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0049.jpg</imageinfo>
+    <imageinfo frame="50">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0050.jpg</imageinfo>
+    <imageinfo frame="51">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0051.jpg</imageinfo>
+    <imageinfo frame="52">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0052.jpg</imageinfo>
+    <imageinfo frame="53">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0053.jpg</imageinfo>
+    <imageinfo frame="54">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0054.jpg</imageinfo>
+    <imageinfo frame="55">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0055.jpg</imageinfo>
+    <imageinfo frame="56">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0056.jpg</imageinfo>
+    <imageinfo frame="57">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0057.jpg</imageinfo>
+    <imageinfo frame="58">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0058.jpg</imageinfo>
+    <imageinfo frame="59">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0059.jpg</imageinfo>
+    <imageinfo frame="60">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0060.jpg</imageinfo>
+    <imageinfo frame="61">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0061.jpg</imageinfo>
+    <imageinfo frame="62">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0062.jpg</imageinfo>
+    <imageinfo frame="63">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0063.jpg</imageinfo>
+    <imageinfo frame="64">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0064.jpg</imageinfo>
+    <imageinfo frame="65">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0065.jpg</imageinfo>
+    <imageinfo frame="66">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0066.jpg</imageinfo>
+    <imageinfo frame="67">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0067.jpg</imageinfo>
+    <imageinfo frame="68">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0068.jpg</imageinfo>
+    <imageinfo frame="69">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0069.jpg</imageinfo>
+    <imageinfo frame="70">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0070.jpg</imageinfo>
+    <imageinfo frame="71">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0071.jpg</imageinfo>
+    <imageinfo frame="72">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0072.jpg</imageinfo>
+    <imageinfo frame="73">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0073.jpg</imageinfo>
+    <imageinfo frame="74">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0074.jpg</imageinfo>
+    <imageinfo frame="75">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0075.jpg</imageinfo>
+    <imageinfo frame="76">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0076.jpg</imageinfo>
+    <imageinfo frame="77">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0077.jpg</imageinfo>
+    <imageinfo frame="78">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0078.jpg</imageinfo>
+    <imageinfo frame="79">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0079.jpg</imageinfo>
+    <imageinfo frame="80">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0080.jpg</imageinfo>
+    <imageinfo frame="81">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0081.jpg</imageinfo>
+    <imageinfo frame="82">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0082.jpg</imageinfo>
+    <imageinfo frame="83">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0083.jpg</imageinfo>
+    <imageinfo frame="84">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0084.jpg</imageinfo>
+    <imageinfo frame="85">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0085.jpg</imageinfo>
+    <imageinfo frame="86">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0086.jpg</imageinfo>
+    <imageinfo frame="87">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0087.jpg</imageinfo>
+    <imageinfo frame="88">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0088.jpg</imageinfo>
+    <imageinfo frame="89">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0089.jpg</imageinfo>
+    <imageinfo frame="90">00:00:00 C:\Users\luish\OneDrive\Documentos\github\MiddlewareVision\middlewareVision\images\3d figures\Stream Left_cubo0090.jpg</imageinfo>
+  </renderinfo>
+  <batchinfo>
+    <added>11/06/2022, 08:55:50 p. m.</added>
+    <started>11/06/2022, 08:55:51 p. m.</started>
+    <rendertime>00:00:08</rendertime>
+    <result>Finished</result>
+  </batchinfo>
+</batchrender>
