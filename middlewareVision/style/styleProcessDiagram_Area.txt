@@ -1,3 +1,0 @@
-fillcolor="lightblue"
-style = dashed
-fontname = "cambria"
