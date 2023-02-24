@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * @author HumanoideFilms
  */
 public class GArea {
-    String name;
-    ArrayList<String> smallNodes;
+    public String name;
+    public ArrayList<String> smallNodes;
 
     public GArea(String name) {
         this.name = name;

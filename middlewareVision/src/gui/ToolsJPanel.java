@@ -12,6 +12,7 @@ import MiniPrograms.MotionV1Speeds;
 import MiniPrograms.RFGeneratorNew;
 import generator.NodeGenerator;
 import generator.SmallNodeList;
+import generator.SmallNodeListOld;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,7 +120,7 @@ public class ToolsJPanel extends javax.swing.JPanel {
         add(b4);
 
         b6.setBackground(new java.awt.Color(100, 114, 123));
-        b6.setText("Small Nodes Startup");
+        b6.setText("Node startup settings");
         b6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b6ActionPerformed(evt);

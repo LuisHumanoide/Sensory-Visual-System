@@ -84,7 +84,7 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="7b" green="72" red="64" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Small Nodes Startup"/>
+        <Property name="text" type="java.lang.String" value="Node startup settings"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b6ActionPerformed"/>

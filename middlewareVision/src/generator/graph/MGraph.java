@@ -23,9 +23,9 @@ import utils.FileUtils;
 public class MGraph {
     
 
-    static ArrayList<GArea> areas=new ArrayList();;
-    static ArrayList<GSmallNode> nodes=new ArrayList();;
-    static HashSet<String> allSmallNodes=new HashSet();;
+    public static ArrayList<GArea> areas=new ArrayList();;
+    public static ArrayList<GSmallNode> nodes=new ArrayList();;
+    public static HashSet<String> allSmallNodes=new HashSet();;
     
     public static void generateGraphs(String path){
         areas.clear();
@@ -34,6 +34,13 @@ public class MGraph {
         walkin(new File(path+"/nodes"));
         generateNodeGraph();
         generateProcessGraph();
+    }
+    
+    public static void generateGraphs2(String path){
+        areas.clear();
+        nodes.clear();
+        allSmallNodes.clear();
+        walkin(new File(path+"/nodes"));
     }
 
     public static void walkin(File dir) {

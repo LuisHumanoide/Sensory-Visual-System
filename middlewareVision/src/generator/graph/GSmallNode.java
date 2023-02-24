@@ -14,8 +14,8 @@ import java.util.HashSet;
  */
 public class GSmallNode {
 
-    String name;
-    HashSet<String> next;
+    public String name;
+    public HashSet<String> next;
 
     public GSmallNode() {
         next = new HashSet();
