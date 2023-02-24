@@ -49,7 +49,7 @@ public class SmallNodeList extends javax.swing.JFrame {
 
         generateFrames();
         loadChecks();
-
+        int curv=12;
         //this.setGlassPane(linker);
         this.setGlassPane(new JComponent() {
             protected void paintComponent(Graphics g) {
@@ -58,45 +58,50 @@ public class SmallNodeList extends javax.swing.JFrame {
                 g.setColor(new Color(0f, 0f, 0f, .3f));
                 for (GSmallNode node : MGraph.nodes) {
                     JCheckBox from = obtainCheckByName(node.name);
-
+                    int i=1;
                     for (String next : node.next) {
                         JCheckBox to = obtainCheckByName(next);
                         if (to != null) {
-
+                            
                             if (Math.abs(checkLocation(from).x - checkLocation(to).x) < 10) {
-
                                 int xpoints[] = {
                                     checkLocation(from).x + 5,
                                     checkLocation(from).x - (int) ((from.getY() + 2) * 0.2),
-                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5,
-                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5,
+                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5*i,
+                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5*i,
                                     checkLocation(from).x - (int) ((from.getY() + 2) * 0.2),
                                     checkLocation(from).x + 5};
                                 int cap = 0;
-                                if (from.getY() < to.getY()) {
-                                    cap = -8;
+                                if (checkLocation(from).y < checkLocation(to).y) {
+                                    cap = curv;
                                 } else {
-                                    cap = 8;
+                                    cap = -curv;
                                 }
                                 int ypoints[] = {
-                                    checkLocation(from).y,
-                                    checkLocation(from).y,
-                                    checkLocation(from).y - cap,
-                                    checkLocation(to).y + cap,
-                                    checkLocation(to).y,
-                                    checkLocation(to).y};
+                                    checkLocation(from).y-5,
+                                    checkLocation(from).y-5,
+                                    checkLocation(from).y + cap-5,
+                                    checkLocation(to).y - cap-5,
+                                    checkLocation(to).y-5,
+                                    checkLocation(to).y-5};
 
                                 g.drawPolyline(xpoints, ypoints, 6);
-                                g.drawOval(checkLocation(from).x + 5, checkLocation(from).y-5, 10, 10);
+                                g.drawOval(checkLocation(from).x , checkLocation(from).y-10, 10, 10);
+                                g.setColor(new Color(1f, 1f, 1f, .5f));
+                                g.fillOval(checkLocation(from).x , checkLocation(from).y-10, 10, 10);
                             } else {
-                                g.drawLine(checkLocation(from).x + from.getWidth() + 30, checkLocation(from).y - 5,
-                                        checkLocation(to).x + 10, checkLocation(to).y);
-                                g.drawOval(checkLocation(from).x + from.getWidth() + 25, checkLocation(from).y - 10, 10, 10);
+                                g.setColor(new Color(0f, 0f, 0f, .3f));
+                                g.drawLine(checkLocation(from).x + 195, checkLocation(from).y - 5,
+                                        checkLocation(to).x + 10, checkLocation(to).y-5);
+                                g.drawOval(checkLocation(from).x + 195-5, checkLocation(from).y - 10, 10, 10);
+                                g.setColor(new Color(1f, 1f, 1f, .5f));
+                                g.fillOval(checkLocation(from).x + 195-5, checkLocation(from).y - 10, 10, 10);
                             }
-                            g.fillOval(checkLocation(to).x + 5, checkLocation(to).y - 3, 7, 7);
+                            g.setColor(new Color(0f, 0f, 0f, .3f));
+                            g.fillOval(checkLocation(to).x + 5, checkLocation(to).y - 8, 7, 7);
 
                         }
-
+                        i++;
                     }
                 }
             }
@@ -309,6 +314,8 @@ public class SmallNodeList extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Node Diagram and List");
         setMinimumSize(new java.awt.Dimension(500, 720));
+        setResizable(false);
+        setType(java.awt.Window.Type.POPUP);
 
         jDesktopPane2.setMinimumSize(new java.awt.Dimension(500, 720));
 
