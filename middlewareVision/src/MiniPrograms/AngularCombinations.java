@@ -125,6 +125,7 @@ public class AngularCombinations extends javax.swing.JFrame {
 
         both.setForeground(new java.awt.Color(204, 204, 204));
         both.setText("Both");
+        both.setEnabled(false);
         both.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bothActionPerformed(evt);
@@ -134,7 +135,7 @@ public class AngularCombinations extends javax.swing.JFrame {
         both.setBounds(310, 20, 80, 28);
 
         left.setForeground(new java.awt.Color(204, 204, 204));
-        left.setText("Left");
+        left.setText("Default");
         left.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftActionPerformed(evt);
@@ -145,6 +146,7 @@ public class AngularCombinations extends javax.swing.JFrame {
 
         right.setForeground(new java.awt.Color(204, 204, 204));
         right.setText("Right");
+        right.setEnabled(false);
         right.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightActionPerformed(evt);

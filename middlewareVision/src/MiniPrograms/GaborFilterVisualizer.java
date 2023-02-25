@@ -6,11 +6,14 @@
 package MiniPrograms;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -227,6 +230,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -242,6 +246,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gabor Visualization");
+        setAlwaysOnTop(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
@@ -421,26 +426,28 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         jButton3.setBounds(90, 140, 96, 32);
 
         jButton4.setBackground(new java.awt.Color(51, 56, 59));
+        jButton4.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         jButton4.setForeground(new java.awt.Color(204, 204, 204));
-        jButton4.setText("Copy Values");
+        jButton4.setText("<html>Copy <br>Values</html>");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
         jPanel2.add(jButton4);
-        jButton4.setBounds(290, 140, 100, 32);
+        jButton4.setBounds(220, 140, 70, 30);
 
         jButton5.setBackground(new java.awt.Color(51, 56, 59));
+        jButton5.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         jButton5.setForeground(new java.awt.Color(204, 204, 204));
-        jButton5.setText("Paste");
+        jButton5.setText("<html>Paste<br>values</html>");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
         jPanel2.add(jButton5);
-        jButton5.setBounds(390, 140, 63, 32);
+        jButton5.setBounds(290, 140, 64, 30);
 
         jButton2.setBackground(new java.awt.Color(51, 56, 59));
         jButton2.setForeground(new java.awt.Color(204, 204, 204));
@@ -463,6 +470,18 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         });
         jPanel2.add(jButton6);
         jButton6.setBounds(610, 140, 90, 32);
+
+        jButton7.setBackground(new java.awt.Color(51, 56, 59));
+        jButton7.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButton7.setForeground(new java.awt.Color(204, 204, 204));
+        jButton7.setText("<html>Paste<br>image</html>");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton7);
+        jButton7.setBounds(350, 140, 70, 30);
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 730, 180));
 
@@ -780,6 +799,46 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         clipboard.setContents(stringSelection, null);
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        if (clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+            // Retrieve the image data from the clipboard
+            Image image;
+            try {
+                image = (Image) clipboard.getData(DataFlavor.imageFlavor);
+                // Create an ImageIcon from the image data
+                ImageIcon icon = new ImageIcon(image);
+                // Set the icon on the JLabel
+                originalImage.setIcon(icon);
+                BufferedImage bi=IconToBufferedImage(icon);
+                imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 200, 200);
+                imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+                originalImage.setIcon(new ImageIcon(imageFile));
+                convolution();
+
+            } catch (UnsupportedFlavorException ex) {
+                System.out.println(ex);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    public BufferedImage IconToBufferedImage(ImageIcon icon) {
+        // Get the image data from the ImageIcon
+        Image image = icon.getImage();
+
+        // Create a BufferedImage with the same width, height, and image type as the original image
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Get the graphics context of the BufferedImage and draw the image onto it
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        return bufferedImage;
+    }
     /**
      * Paste values from the Gabor list
      */
@@ -880,6 +939,7 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JInternalFrame jInternalFrame3;

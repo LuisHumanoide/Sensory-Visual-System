@@ -6,11 +6,14 @@
 package MiniPrograms;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -297,9 +300,11 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         paste2 = new javax.swing.JButton();
         jSlider1 = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gaussian visualizer");
+        setAlwaysOnTop(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
@@ -397,7 +402,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 40, 110, 20));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 50, 110, 20));
 
         jButton3.setText("Copy values");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -405,7 +410,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, 110, 20));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 70, 110, 20));
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("A:");
@@ -583,7 +588,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 110, 20));
+        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 30, 110, 20));
 
         jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
         jCheckBox1.setSelected(true);
@@ -644,6 +649,14 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Z axis zoom:");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 100, -1, -1));
+
+        jButton7.setText("Paste image");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 12, 110, 20));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 1120, 140));
 
@@ -1068,6 +1081,47 @@ public class GaussianVisualizer extends javax.swing.JFrame {
         updatePlot();
     }//GEN-LAST:event_jSlider1MouseDragged
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        if (clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+            // Retrieve the image data from the clipboard
+            Image image;
+            try {
+                image = (Image) clipboard.getData(DataFlavor.imageFlavor);
+                // Create an ImageIcon from the image data
+                ImageIcon icon = new ImageIcon(image);
+                // Set the icon on the JLabel
+                originalImage.setIcon(icon);
+                BufferedImage bi=IconToBufferedImage(icon);
+                imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 200, 200);
+                imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+                originalImage.setIcon(new ImageIcon(imageFile));
+                convolution();
+
+            } catch (UnsupportedFlavorException ex) {
+                System.out.println(ex);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+     public BufferedImage IconToBufferedImage(ImageIcon icon) {
+        // Get the image data from the ImageIcon
+        Image image = icon.getImage();
+
+        // Create a BufferedImage with the same width, height, and image type as the original image
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Get the graphics context of the BufferedImage and draw the image onto it
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        return bufferedImage;
+    }
+    
     /**
      * add the fields of the second gaussian
      */
@@ -1160,6 +1214,7 @@ public class GaussianVisualizer extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     public javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;

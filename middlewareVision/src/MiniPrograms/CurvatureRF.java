@@ -7,10 +7,13 @@ package MiniPrograms;
 
 import java.awt.Desktop;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -84,6 +87,7 @@ public class CurvatureRF extends javax.swing.JFrame {
 
     /**
      * Change the image type in order to be acepted by the OpenCV algorithms
+     *
      * @param eleScreenshot screenshot of the image
      * @param type type
      * @return a image with a new type
@@ -121,11 +125,13 @@ public class CurvatureRF extends javax.swing.JFrame {
                     }
                 } catch (Exception e) {
                 }
+                convolution();
                 return true;
             }
 
         };
         originalImage.setTransferHandler(th);
+
     }
 
     /**
@@ -200,6 +206,7 @@ public class CurvatureRF extends javax.swing.JFrame {
         nfiltersf = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         mulf = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -219,6 +226,7 @@ public class CurvatureRF extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Curvature editor");
+        setAlwaysOnTop(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(86, 83, 83));
@@ -385,7 +393,7 @@ public class CurvatureRF extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(710, 60, 80, 32);
+        jButton1.setBounds(710, 50, 80, 32);
 
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Name:");
@@ -403,14 +411,14 @@ public class CurvatureRF extends javax.swing.JFrame {
         jPanel1.add(jButton2);
         jButton2.setBounds(350, 100, 110, 32);
 
-        jButton3.setText("Paste");
+        jButton3.setText("Paste Gabor Values");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton3);
-        jButton3.setBounds(710, 100, 80, 32);
+        jButton3.setBounds(490, 100, 142, 32);
         jPanel1.add(jSeparator1);
         jSeparator1.setBounds(20, 90, 770, 10);
         jPanel1.add(jSeparator2);
@@ -450,6 +458,15 @@ public class CurvatureRF extends javax.swing.JFrame {
         });
         jPanel1.add(mulf);
         mulf.setBounds(650, 60, 50, 24);
+
+        jButton6.setText("Paste image");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton6);
+        jButton6.setBounds(650, 100, 140, 32);
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, 820, 150));
 
@@ -589,7 +606,8 @@ public class CurvatureRF extends javax.swing.JFrame {
 
     /**
      * It makes load the values from the file that is clicked
-     * @param evt 
+     *
+     * @param evt
      */
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
@@ -600,6 +618,8 @@ public class CurvatureRF extends javax.swing.JFrame {
         }
         namef.setText(jList1.getSelectedValue());
         generateFilters();
+        convolution();
+
     }//GEN-LAST:event_jList1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -623,8 +643,10 @@ public class CurvatureRF extends javax.swing.JFrame {
     }//GEN-LAST:event_sizefKeyPressed
 
     /**
-     * Method for increasing or decreasing the value of the fields when a up or down key is pressed<br>
+     * Method for increasing or decreasing the value of the fields when a up or
+     * down key is pressed<br>
      * the inc/dec is in double/fractions
+     *
      * @param field JTextField
      * @param evt event
      * @param inc increasing value
@@ -651,8 +673,10 @@ public class CurvatureRF extends javax.swing.JFrame {
     }
 
     /**
-     * Method for increasing or decreading the value of the fields when a up or down key is pressed<br>
+     * Method for increasing or decreading the value of the fields when a up or
+     * down key is pressed<br>
      * Increment or decrement with integer values
+     *
      * @param field field to increment or decrement the value of
      * @param evt event
      * @param inc value of increasing/decreasing
@@ -782,9 +806,53 @@ public class CurvatureRF extends javax.swing.JFrame {
         convolution();
     }//GEN-LAST:event_mulfKeyReleased
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        if (clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+            // Retrieve the image data from the clipboard
+            Image image;
+            try {
+                image = (Image) clipboard.getData(DataFlavor.imageFlavor);
+                // Create an ImageIcon from the image data
+                ImageIcon icon = new ImageIcon(image);
+                // Set the icon on the JLabel
+                originalImage.setIcon(icon);
+                BufferedImage bi = IconToBufferedImage(icon);
+                imageFile = Scalr.resize(bi, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 200, 200);
+                imageFile = convertType(imageFile, BufferedImage.TYPE_3BYTE_BGR);
+                originalImage.setIcon(new ImageIcon(imageFile));
+                convolution();
+
+            } catch (UnsupportedFlavorException ex) {
+                System.out.println(ex);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    public BufferedImage IconToBufferedImage(ImageIcon icon) {
+        // Get the image data from the ImageIcon
+        Image image = icon.getImage();
+
+        // Create a BufferedImage with the same width, height, and image type as the original image
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Get the graphics context of the BufferedImage and draw the image onto it
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        return bufferedImage;
+    }
+
     /**
      * Curvature filtering processing<br>
-     * This method is also found in the Functions.java class for more information
+     * This method is also found in the Functions.java class for more
+     * information
+     *
      * @param angle angle of rotation of the filters
      * @return a Mat with the curvature activation
      */
@@ -832,6 +900,7 @@ public class CurvatureRF extends javax.swing.JFrame {
 
     /**
      * Save the parameters from the fields into a file
+     *
      * @param name name of the file filter
      */
     void saveFile(String name) {
@@ -850,6 +919,7 @@ public class CurvatureRF extends javax.swing.JFrame {
 
     /**
      * Index of the file selected from the list of files
+     *
      * @param string string to search
      * @return the index of the string
      */
@@ -865,8 +935,10 @@ public class CurvatureRF extends javax.swing.JFrame {
     }
 
     /**
-     * It makes the concave and convex filters, these filters are rotate Gabor filters<br>
-     * these filters are applied to make a convolution and the result will be multiplied in the method: filterProcess
+     * It makes the concave and convex filters, these filters are rotate Gabor
+     * filters<br>
+     * these filters are applied to make a convolution and the result will be
+     * multiplied in the method: filterProcess
      */
     void makeFilters() {
         concaveFilters = new Mat[numberFilters];
@@ -899,8 +971,10 @@ public class CurvatureRF extends javax.swing.JFrame {
     }
 
     /**
-     * This method make the composed filter in order to show in the visualizer<br>
-     * the composed filter is not used in the curvature process, it's only for visualizing purposes
+     * This method make the composed filter in order to show in the
+     * visualizer<br>
+     * the composed filter is not used in the curvature process, it's only for
+     * visualizing purposes
      */
     void makeComposedFilter() {
         for (int i = 0; i < numberFilters; i++) {
@@ -912,7 +986,8 @@ public class CurvatureRF extends javax.swing.JFrame {
     }
 
     /**
-     * Convert the composed filter into a image to be shown in the label 'filterImage'
+     * Convert the composed filter into a image to be shown in the label
+     * 'filterImage'
      */
     void loadImageFilters() {
         fimg = Convertor.ConvertMat2FilterImage(composedFilter);
@@ -970,8 +1045,9 @@ public class CurvatureRF extends javax.swing.JFrame {
 
     /**
      * Method for shorten the conversion from string to integer
+     *
      * @param text
-     * @return 
+     * @return
      */
     int toInt(String text) {
         return Integer.parseInt(text);
@@ -987,6 +1063,7 @@ public class CurvatureRF extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JInternalFrame jInternalFrame3;

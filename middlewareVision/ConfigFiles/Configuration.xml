@@ -42,8 +42,8 @@
 	<dtRotation>1</dtRotation>
 	<!--DEFAULT IMAGES OF THE FILTER EDITORS-->
 	<filterEditorImage>ConfigFiles/Paris.JPG</filterEditorImage>
-	<filterImageWidth>250</filterImageWidth>
-	<filterImageHeight>250</filterImageHeight>
+	<filterImageWidth>200</filterImageWidth>
+	<filterImageHeight>200</filterImageHeight>
 	<curvatureEditorImage>ConfigFiles/circles.JPG</curvatureEditorImage>
 	<curvatureImageWidth>200</curvatureImageWidth>
 	<curvatureImageHeight>200</curvatureImageHeight>
