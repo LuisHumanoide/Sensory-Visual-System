@@ -95,6 +95,12 @@ RetinaProccess
 BasicMotion
 }
 
+subgraph clustersts {
+ label="sts"
+rank="same"
+sts1
+}
+
 subgraph clusterV1 {
  label="V1"
 rank="same"

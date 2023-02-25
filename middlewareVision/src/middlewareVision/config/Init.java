@@ -42,7 +42,8 @@ public class Init extends Igniter {
             MT.class.getName(),
             MST.class.getName(),
             Alert.class.getName(),
-            V3.class.getName(), //@addNodes
+            V3.class.getName(), 
+            //@addNodes
         };
 
         configuration.setLocal(true);

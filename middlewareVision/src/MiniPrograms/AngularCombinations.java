@@ -13,10 +13,10 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import utils.Config;
 
 /**
- *
- * @author HumanoideFilms
+ *Class for graphically choosing the angular combinations over the angular patches of V2
  */
 public class AngularCombinations extends javax.swing.JFrame {
 
@@ -36,6 +36,9 @@ public class AngularCombinations extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Constructor
+     */
     public AngularCombinations() {
         initComponents();
         gpanel = new GraphPanel(this);
@@ -51,6 +54,11 @@ public class AngularCombinations extends javax.swing.JFrame {
         repaint();
     }
 
+    /**
+     * It sets the combination from a text, it will receive the text and then
+     * the graphical form of the combination is displayed
+     * @param c corresponds to the combination name
+     */
     public void setComb(String c) {
         comb = c;
         setEyeIndex(comb);
@@ -58,6 +66,10 @@ public class AngularCombinations extends javax.swing.JFrame {
         repaint();
     }
 
+    /**
+     * It sets the eye index, the combination name includes the index of the eye
+     * @param st combination string
+     */
     void setEyeIndex(String st) {
         eyeIndex = "" + st.charAt(1);
         if (eyeIndex.equals("0")) {
@@ -76,12 +88,20 @@ public class AngularCombinations extends javax.swing.JFrame {
     int i1 = -1;
     int i2 = -1;
 
+    /**
+     * It sets the combination text to the label that displays the combination<br>
+     * @param n1 number or index of the angular aperture
+     * @param n2 index of the angular direction
+     */
     public void label(int n1, int n2) {
         i1 = n1;
         i2 = n2;
         jLabel1.setText("a" + eyeIndex + "-" + i1 + "" + i2);
     }
 
+    /**
+     * Update the label text
+     */
     public void label() {
         jLabel1.setText("a" + eyeIndex + "-" + i1 + "" + i2);
     }
@@ -262,11 +282,16 @@ public class AngularCombinations extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 }
 
+/**
+ * Class that contains the graphical panel that displays the angular combination
+ * @author Luis Parra
+ */
 class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, MouseListener {
 
     AngularCombinations ac;
 
-    int directions = 8;
+    
+    int directions = Config.gaborOrientations*2;
     Part[] parts;
     int w = 150;
     int dx = 0;
@@ -277,6 +302,11 @@ class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, Mous
     double anglediv = (2 * Math.PI) / directions;
     Pair[] pairs;
 
+    /**
+     * It sets the parts for drawing in the panel<br>
+     * parts are the lines into which the circle is divided
+     * @param ac angular combination frame
+     */
     public GraphPanel(AngularCombinations ac) {
         this.ac = ac;
         parts = new Part[directions];
@@ -303,6 +333,10 @@ class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, Mous
     Part p1 = null;
     Part p2 = null;
 
+    /**
+     * Paint method, it draws the angular parts and the selected pair of lines
+     * @param g 
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(1));
@@ -328,6 +362,10 @@ class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, Mous
 
     }
 
+    /**
+     * set the pairs from the combination string
+     * @param comb 
+     */
     public void setPart(String comb) {
         p1 = null;
         p2 = null;
@@ -348,6 +386,11 @@ class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, Mous
         }catch(Exception ex){}
     }
 
+    /**
+     * get the line part from the index n1 and n2 from the combination string
+     * @param n1 index n1
+     * @param n2 index n2
+     */
     public void getPart(int n1, int n2) {
         for (int i = 0; i < parts.length; i++) {
             if (parts[i].index == n1) {
@@ -357,7 +400,6 @@ class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, Mous
                     p2 = parts[i];
             }
         }
-      //  System.out.println(p1.index+"   ");
     }
 
     @Override
@@ -385,6 +427,12 @@ class GraphPanel extends javax.swing.JPanel implements MouseMotionListener, Mous
 
     }
 
+    /**
+     * It finds the nearest part from the mouse
+     * @param x position x of the mouse
+     * @param y position y of the mouse
+     * @return the nearest part from the mouse
+     */
     Part nearPart(int x, int y) {
         double lessDistance = 10000;
         Part near = null;
@@ -456,17 +504,35 @@ class Part {
     int y;
     double distance;
 
+    /**
+     * Creates an object of the class part, which are essentially a line with an
+     * index 
+     * @param x x position
+     * @param y y position
+     * @param index index
+     */
     public Part(int x, int y, int index) {
         this.index = index;
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * It calculates the distance from the mouse and the end point of the part
+     * @param x2 x position from the mouse
+     * @param y2 y position from the mouse
+     * @return the distance
+     */
     double calcDistance(int x2, int y2) {
         return Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
     }
 }
 
+/**
+ * Class for representing the relation between the part index and the indexes of
+ * the combination string
+ * @author HumanoideFilms
+ */
 class Pair {
 
     int n1;
@@ -474,6 +540,7 @@ class Pair {
     int r1;
     int r2;
 
+    
     public Pair(int n1, int n2, int r1, int r2) {
         this.n1 = n1;
         this.n2 = n2;

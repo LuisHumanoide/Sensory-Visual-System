@@ -14,6 +14,8 @@ MTPatternCells [ label="MTPatternCells" shape="octagon" ]
 Retina [ label="Retina" shape="circle" ]
 RetinaProccess [ label="RetinaProccess" shape="octagon" ]
 BasicMotion [ label="BasicMotion" shape="octagon" ]
+sts [ label="sts" shape="circle" ]
+sts1 [ label="sts1" shape="octagon" ]
 V1 [ label="V1" shape="circle" ]
 V1SimpleCells [ label="V1SimpleCells" shape="octagon" ]
 V1ComplexCells [ label="V1ComplexCells" shape="octagon" ]
@@ -49,6 +51,8 @@ MT -- MTPatternCells;
 
 Retina -- RetinaProccess;
 Retina -- BasicMotion;
+
+sts -- sts1;
 
 V1 -- V1SimpleCells;
 V1 -- V1ComplexCells;

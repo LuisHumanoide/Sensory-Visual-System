@@ -11,11 +11,14 @@ import javax.swing.JTextField;
 import utils.FileUtils;
 
 /**
- *
+ * Class used for fill the values of the filter scales
  * @author HumanoideFilms
  */
 public class ScaleFrame extends javax.swing.JFrame {
 
+    /**
+     * Field in which the values will be settled
+     */
     JTextField field;
 
     /**
@@ -112,6 +115,12 @@ public class ScaleFrame extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * It creates a set of float values from a range of floats with a certain increment<br>
+     * it omits the value 1 because the original receptive field file has the scale 
+     * of 1
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -139,14 +148,30 @@ public class ScaleFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * It formats the float value for shorten to two decimals
+     * @param value float value
+     * @return formated float value
+     */
     float rFloat(float value) {
         return Float.valueOf(String.format(Locale.getDefault(), "%.2f", value));
     }
 
+    /**
+     * It saves the values from the text field in a file in order to be used in
+     * the next time
+     * @param v1 value from the text field
+     * @param v2 value from the text field
+     * @param v3  value from the text field
+     */
     void writeValues(String v1, String v2, String v3) {
         FileUtils.write("ConfigFiles\\scaleValues", v1 + "\n" + v2 + "\n" + v3, "txt");
     }
 
+    /**
+     * Read the values of the fields from a file and then it puts the values in these
+     * fields
+     */
     void readValues() {
         try {
             String[] values = FileUtils.fileLines("ConfigFiles\\scaleValues.txt");

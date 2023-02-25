@@ -26,8 +26,10 @@ import javax.swing.JInternalFrame;
 import utils.FileUtils;
 
 /**
+ * Class for visualizing the node diagram and also choosing what nodes will be
+ * executed
  *
- * @author HumanoideFilms
+ * @author Luis Parra
  */
 public class SmallNodeList extends javax.swing.JFrame {
 
@@ -39,7 +41,7 @@ public class SmallNodeList extends javax.swing.JFrame {
     HashMap<String, String> presets;
 
     /**
-     * Creates new form testgraph
+     * Creates new window of Small Node List
      */
     public SmallNodeList() {
         initComponents();
@@ -49,26 +51,23 @@ public class SmallNodeList extends javax.swing.JFrame {
 
         generateFrames();
         loadChecks();
-        int curv=12;
-        //this.setGlassPane(linker);
+        int curv = 12;
         this.setGlassPane(new JComponent() {
             protected void paintComponent(Graphics g) {
-                // Graphics2D g2d = (Graphics2D) g;
-
                 g.setColor(new Color(0f, 0f, 0f, .3f));
                 for (GSmallNode node : MGraph.nodes) {
                     JCheckBox from = obtainCheckByName(node.name);
-                    int i=1;
+                    int i = 1;
                     for (String next : node.next) {
                         JCheckBox to = obtainCheckByName(next);
                         if (to != null) {
-                            
+
                             if (Math.abs(checkLocation(from).x - checkLocation(to).x) < 10) {
                                 int xpoints[] = {
                                     checkLocation(from).x + 5,
                                     checkLocation(from).x - (int) ((from.getY() + 2) * 0.2),
-                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5*i,
-                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5*i,
+                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5 * i,
+                                    checkLocation(from).x - (int) ((from.getY() + 2) * 0.2) - 5 * i,
                                     checkLocation(from).x - (int) ((from.getY() + 2) * 0.2),
                                     checkLocation(from).x + 5};
                                 int cap = 0;
@@ -78,24 +77,24 @@ public class SmallNodeList extends javax.swing.JFrame {
                                     cap = -curv;
                                 }
                                 int ypoints[] = {
-                                    checkLocation(from).y-5,
-                                    checkLocation(from).y-5,
-                                    checkLocation(from).y + cap-5,
-                                    checkLocation(to).y - cap-5,
-                                    checkLocation(to).y-5,
-                                    checkLocation(to).y-5};
+                                    checkLocation(from).y - 5,
+                                    checkLocation(from).y - 5,
+                                    checkLocation(from).y + cap - 5,
+                                    checkLocation(to).y - cap - 5,
+                                    checkLocation(to).y - 5,
+                                    checkLocation(to).y - 5};
 
                                 g.drawPolyline(xpoints, ypoints, 6);
-                                g.drawOval(checkLocation(from).x , checkLocation(from).y-10, 10, 10);
+                                g.drawOval(checkLocation(from).x, checkLocation(from).y - 10, 10, 10);
                                 g.setColor(new Color(1f, 1f, 1f, .5f));
-                                g.fillOval(checkLocation(from).x , checkLocation(from).y-10, 10, 10);
+                                g.fillOval(checkLocation(from).x, checkLocation(from).y - 10, 10, 10);
                             } else {
                                 g.setColor(new Color(0f, 0f, 0f, .3f));
                                 g.drawLine(checkLocation(from).x + 195, checkLocation(from).y - 5,
-                                        checkLocation(to).x + 10, checkLocation(to).y-5);
-                                g.drawOval(checkLocation(from).x + 195-5, checkLocation(from).y - 10, 10, 10);
+                                        checkLocation(to).x + 10, checkLocation(to).y - 5);
+                                g.drawOval(checkLocation(from).x + 195 - 5, checkLocation(from).y - 10, 10, 10);
                                 g.setColor(new Color(1f, 1f, 1f, .5f));
-                                g.fillOval(checkLocation(from).x + 195-5, checkLocation(from).y - 10, 10, 10);
+                                g.fillOval(checkLocation(from).x + 195 - 5, checkLocation(from).y - 10, 10, 10);
                             }
                             g.setColor(new Color(0f, 0f, 0f, .3f));
                             g.fillOval(checkLocation(to).x + 5, checkLocation(to).y - 8, 7, 7);
@@ -113,11 +112,23 @@ public class SmallNodeList extends javax.swing.JFrame {
 
     }
 
+    /**
+     * It returns the location from a check box
+     *
+     * @param box source JCheckBox
+     * @return a point with the location of the JChechBox
+     */
     Point checkLocation(JCheckBox box) {
         return new Point((box.getLocationOnScreen().x - this.getLocationOnScreen().x) - box.getHeight(),
                 (box.getLocationOnScreen().y - this.getLocationOnScreen().y) - box.getHeight());
     }
 
+    /**
+     * It loads the Process List (Or small nodes) and created the check boxes
+     * for every small node<br>
+     * then each check box is assigned to a internal frame that represents the
+     * area or big node
+     */
     void loadChecks() {
         ProcessList.openList();
         tmap = new TreeMap();
@@ -132,6 +143,13 @@ public class SmallNodeList extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Load the list of presets:<br>
+     * <i> The presets are the combination of check boxes (or active small
+     * nodes) for making a certain task</i>
+     *
+     * <br>then it load the configuration into the check boxes
+     */
     void loadPresets() {
         try {
             String lines[] = FileUtils.fileLines("ConfigFiles\\presets.txt");
@@ -149,6 +167,9 @@ public class SmallNodeList extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Save the preset list into a file
+     */
     void savePresetList() {
         String s = "";
         if (presets.size() > 0) {
@@ -157,9 +178,12 @@ public class SmallNodeList extends javax.swing.JFrame {
             }
         }
         FileUtils.write("ConfigFiles\\presets", s, "txt");
-        //updateComboBox();
     }
 
+    /**
+     * Save the default preset<br>
+     * the default preset is the preset chosen by the user
+     */
     void saveDefault() {
         String s = "";
         String comb = "";
@@ -175,6 +199,10 @@ public class SmallNodeList extends javax.swing.JFrame {
         updateComboBox();
     }
 
+    /**
+     * Update the combo box by deleting all the items and load every preset
+     * again
+     */
     void updateComboBox() {
         jComboBox1.removeAllItems();
         for (String key : presets.keySet()) {
@@ -184,6 +212,11 @@ public class SmallNodeList extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Set the selection value in each check box from each preset
+     *
+     * @param key value of the combinations of the preset
+     */
     void updateChecks(String key) {
         String values = presets.get(key);
         for (int i = 0; i < values.length(); i++) {
@@ -196,6 +229,14 @@ public class SmallNodeList extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * It set each check box from the small node graph, and then it put the box
+     * in the corresponding JInternalFrame that correspond to the area or big
+     * node
+     *
+     * @param key name of the box or small node
+     * @param box JCheckBox for displaying the small node name
+     */
     void addBox(String key, JCheckBox box) {
         for (GArea a : MGraph.areas) {
             for (String name : a.smallNodes) {
@@ -212,6 +253,13 @@ public class SmallNodeList extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * It generates the JInternalFrames<br>
+     * These internal frames correspond to each Area of the model or Big
+     * Node<br>
+     * This information is extracted from the MGraph class which generates the
+     * node diagram
+     */
     public void generateFrames() {
         frames = new JInternalFrame[MGraph.areas.size()];
         positions = new Point[MGraph.areas.size()];
@@ -221,26 +269,30 @@ public class SmallNodeList extends javax.swing.JFrame {
             frames[i] = new JInternalFrame();
             frames[i].setTitle(a.name);
             frames[i].setSize(200, a.smallNodes.size() * 40 + 30);
-            frames[i].setLocation(positions[i].x, positions[i].y);
+            try {
+                frames[i].setLocation(positions[i].x, positions[i].y);
+            }catch(Exception ex){
+                frames[i].setLocation(0, 0);
+            }
             frames[i].addComponentListener(new ComponentListener() {
                 @Override
                 public void componentResized(ComponentEvent e) {
-                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
                 }
 
                 @Override
                 public void componentMoved(ComponentEvent e) {
-                    repaint(); //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    repaint();
                 }
 
                 @Override
                 public void componentShown(ComponentEvent e) {
-                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
                 }
 
                 @Override
                 public void componentHidden(ComponentEvent e) {
-                    // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
                 }
             });
             frames[i].setLayout(new BoxLayout(frames[i].getContentPane(), BoxLayout.Y_AXIS));
@@ -253,6 +305,9 @@ public class SmallNodeList extends javax.swing.JFrame {
 
     int i = 0;
 
+    /**
+     * It saves the position of each JInternalFrame into a file
+     */
     void writePositions() {
         String s = "";
         for (int i = 0; i < positions.length; i++) {
@@ -261,6 +316,12 @@ public class SmallNodeList extends javax.swing.JFrame {
         FileUtils.write("ConfigFiles\\positions", s, "txt");
     }
 
+    /**
+     * It obtain a JCheckBox by its text
+     *
+     * @param name text of the check box
+     * @return the JCheckBox with that name
+     */
     JCheckBox obtainCheckByName(String name) {
         for (JCheckBox box : boxArray) {
             if (box.getText().equals(name)) {
@@ -270,6 +331,9 @@ public class SmallNodeList extends javax.swing.JFrame {
         return null;
     }
 
+    /**
+     * It initializes the position of each JInternalFrame
+     */
     void initializePositions() {
         String s = "";
         for (int i = 0; i < positions.length; i++) {
@@ -278,6 +342,9 @@ public class SmallNodeList extends javax.swing.JFrame {
         FileUtils.write("ConfigFiles\\positions", s, "txt");
     }
 
+    /**
+     * It loads the position of each frame
+     */
     void loadPositions() {
         try {
             String s[] = FileUtils.fileLines("ConfigFiles\\positions.txt");

@@ -799,6 +799,10 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         clipboard.setContents(stringSelection, null);
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    /**
+     * Paste an image and it puts the pasted image into the original image label
+     * @param evt 
+     */
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -826,6 +830,11 @@ public class GaborFilterVisualizer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    /**
+     * Converts an ImageIcon to BufferedImage
+     * @param icon icon image
+     * @return the converted buffered image
+     */
     public BufferedImage IconToBufferedImage(ImageIcon icon) {
         // Get the image data from the ImageIcon
         Image image = icon.getImage();

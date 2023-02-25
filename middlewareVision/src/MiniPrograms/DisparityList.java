@@ -79,6 +79,9 @@ public class DisparityList extends javax.swing.JFrame {
         readValues();
     }
 
+    /**
+     * Method for read the file with the jTextField values
+     */
     void readValues() {
         try {
             String[] values = FileUtils.fileLines("ConfigFiles\\disparityRangeValues.txt");
@@ -96,11 +99,26 @@ public class DisparityList extends javax.swing.JFrame {
 
     }
 
+    /**
+     * It writes the values from the text fields into a file
+     * @param v1 value from a text field
+     * @param v2 value from a text field
+     * @param v3 value from a text field
+     * @param v4 value from a text field
+     * @param v5 value from a text field
+     * @param v6 value from a text field
+     * @param v7 value from a text field
+     */
     void writeValues(String v1, String v2, String v3, String v4, String v5, String v6, String v7) {
         FileUtils.write("ConfigFiles\\disparityRangeValues", checkV(v1) + "\n" + checkV(v2) + "\n" + checkV(v3) + "\n" + checkV(v4) + "\n" 
                 + checkV(v5) + "\n" + checkV(v6) + "\n" + checkV(v7), "txt");
     }
     
+    /**
+     * If the text field has nothing in it, it will return a 0
+     * @param value string in the text field
+     * @return the value of the text field or 0
+     */
     String checkV(String value){
         if(value.trim().length()<1){
             return "0";
@@ -367,6 +385,10 @@ public class DisparityList extends javax.swing.JFrame {
         writeValues(fromField.getText(),toField.getText(),stepsField.getText(),rfrom.getText(),rto.getText(),rteps.getText(),rrange.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Fills the relative disparity Gaussians from the values of the text fields
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int from = Integer.parseInt(rfrom.getText());
@@ -465,6 +487,10 @@ public class DisparityList extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 }
 
+/**
+ * Class that represents the Gaussians used in the relative disparity
+ * @author HumanoideFilms
+ */
 class gaussian {
 
     double a;
